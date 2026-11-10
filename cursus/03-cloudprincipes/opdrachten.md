@@ -12,7 +12,7 @@ Gebruik als voorbeeld `cloud-media`, `192.168.77.110/24`, 2 vCPU, 2 GB RAM en ee
 
 ## H3.2 Een sleutel maken en een VM uitrollen
 
-Maak op Xubuntu een SSH-sleutelpaar met wachtzin. Maak in Proxmox een full clone van het Ubuntu-template. Vul vóór de eerste start gebruiker `student`, jouw publieke SSH-sleutel en netwerk in bij cloud-init. Controleer na de eerste start naam, adres, tijd en SSH-aanmelding.
+Maak op Xubuntu een SSH-sleutelpaar met wachtzin `Student123`. Maak in Proxmox een full clone van het Ubuntu-template. Vul vóór de eerste start gebruiker `student`, jouw publieke SSH-sleutel en netwerk in bij cloud-init. Stel voor het lokale account `student` ook `Student123` in. Controleer na de eerste start naam, adres, tijd en SSH-aanmelding.
 
 **Klaar als:** je met jouw sleutel op de juiste server aanmeldt en de hostsleutel hebt gecontroleerd.
 
@@ -20,7 +20,7 @@ Maak op Xubuntu een SSH-sleutelpaar met wachtzin. Maak in Proxmox een full clone
 
 Installeer Jellyfin via de officiële Ubuntu-installatieprocedure. Maak `/srv/media/Movies`, `/srv/media/Audio` en `/srv/media/Shows`. Upload drie kleine eigen of vrije testbestanden, passend bij de mappen. Controleer leesrechten voor Jellyfin.
 
-Maak een beheeraccount en een afzonderlijk kijkaccount. De lokale beheerconsole of een tijdelijke SSH-tunnel helpt bij de eerste configuratie.
+Maak een beheeraccount en een afzonderlijk kijkaccount, allebei met `Student123`. De lokale beheerconsole of een tijdelijke SSH-tunnel helpt bij de eerste configuratie.
 
 **Klaar als:** Jellyfin de testbestanden vindt en het kijkaccount geen beheerfuncties nodig heeft.
 
@@ -40,7 +40,7 @@ Speel op beide clients een klein bestand af. Noteer account, client, adres en re
 
 Beantwoord de vijf theorievragen. Schrijf daarnaast een korte keuze: welke taken zou een aanbieder overnemen als dit SaaS was? Welke taken hou jij zelf?
 
-Bewaar de server voor later. Voeg de proxyconfiguratie en relevante commando's als codeblokken toe aan je enige verslag. Noteer certificaatnamen en vervaldatum, maar geen private sleutels of wachtwoorden.
+Bewaar de server voor later. Voeg de proxyconfiguratie en relevante commando's als codeblokken toe aan je enige verslag. Noteer certificaatnamen en vervaldatum, maar geen private sleutels. Het vaste labowachtwoord mag in configuratievoorbeelden staan.
 
 | Onderdeel | Punten |
 | --- | --- |

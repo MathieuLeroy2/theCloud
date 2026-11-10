@@ -4,6 +4,8 @@ Deze cursus is inhoudelijk uitgewerkt voor de onderstaande basis. De voorbeelden
 
 ## Basis per leseditie
 
+Alle laboaccounts gebruiken `Student123`, inclusief herstelwachtwoorden en SSH-wachtzinnen. Bij Windows-laboaccounts staat een verplichte eerste wachtwoordwijziging uit. De MQTT-aanmeld-, rechten- en persistentietests zijn ook met `Student123` voor beide accounts herhaald en slagen.
+
 | Onderdeel | Keuze in de cursus | Nog te doen op de opleiding |
 | --- | --- | --- |
 | Proxmox VE | 9.x | Exacte ISO, netwerk en opslag vastleggen |

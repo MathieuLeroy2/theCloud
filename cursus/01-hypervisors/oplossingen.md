@@ -61,7 +61,7 @@ Gebruik je de schoolomgeving? Ga dan naar stap 2 en voer de installatie alleen u
 2. Kies de virtuele schijf waarop je Proxmox wilt installeren. Controleer dat dit de schijf van je oefenmachine is.
 3. Laat de docent de verdeling van de schijfruimte nakijken. Je hebt ruimte nodig voor Proxmox, de ISO-bestanden en de schijven van de twee Linux-VM's. Voor dit labo gebruiken we bijvoorbeeld ext4 en LVM-thin, een opslagtype waarop je snapshots kunt maken.
 4. Stel België, tijdzone `Europe/Brussels` en het juiste toetsenbord in.
-5. Kies een eigen beheerwachtwoord en vul de opgegeven contactgegevens in.
+5. Gebruik `Student123` als beheerwachtwoord en vul de opgegeven contactgegevens in.
 6. Stel de naam en netwerkgegevens in. In ons voorbeeld is de volledige naam `pve-lab.lab.test`, het adres `192.168.77.10/24`, de gateway `192.168.77.2` en de DNS-server `192.168.77.2`.
 7. Bekijk de samenvatting en start de installatie.
 8. Ontkoppel na afloop de ISO en herstart. Anders kun je opnieuw in de installer terechtkomen.
@@ -131,7 +131,7 @@ Zet de schijven op de opslagplaats waarop snapshots mogelijk zijn. Laat eventuel
 3. Vul bij **Subnet** `192.168.77.0/24` in en bij **Address** `192.168.77.100`. Let op het verschil: het eerste is het netwerk, het tweede is het adres van deze machine.
 4. Vul `192.168.77.2` in als gateway en DNS-server, of gebruik je eigen waarden.
 5. Gebruik de virtuele schijf van 24 GB voor Ubuntu. Volg de eenvoudige schijfindeling van de installer.
-6. Geef de computer de naam `cloud-web`. Maak de gebruiker `student` met een eigen wachtwoord. In de commando's hieronder gebruiken we die gebruikersnaam.
+6. Geef de computer de naam `cloud-web`. Maak de gebruiker `student` met wachtwoord `Student123`. In de commando's hieronder gebruiken we die gebruikersnaam.
 7. Vink de installatie van **OpenSSH Server** aan. Extra serverprogramma's zijn nu niet nodig.
 8. Rond af, ontkoppel de ISO en herstart.
 

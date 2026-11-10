@@ -1,5 +1,8 @@
 # Hoofdstuk 3 Een dienst aanbieden op een server
 
+**Vast labowachtwoord:** gebruik voor alle accounts in dit hoofdstuk `Student123`. Gebruik dezelfde waarde voor herstelwachtwoorden en SSH-wachtzinnen. Alleen bij een test die bewust moet mislukken vul je een fout wachtwoord in.
+
+
 Je maakt een nieuwe VM vanuit een template. Daarop bied je met Jellyfin een mediadienst aan, bereikbaar via HTTPS vanaf twee clients.
 
 ## Wat leer je?

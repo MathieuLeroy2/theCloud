@@ -15,11 +15,11 @@ ssh-keygen -t ed25519 -f ~/.ssh/thecloud-h3
 cat ~/.ssh/thecloud-h3.pub
 ```
 
-Kies een wachtzin wanneer het programma daarom vraagt. Bestaat dat bestand al, overschrijf het niet: kies een andere naam en pas de latere commando's aan. De inhoud van `.pub` is de publieke sleutel. Het bestand zonder `.pub` blijft privé.
+Vul `Student123` in als het programma om een wachtzin vraagt en herhaal die bij de bevestiging. Bestaat dat bestand al, overschrijf het niet: kies een andere naam en pas de latere commando's aan. De inhoud van `.pub` is de publieke sleutel. Het bestand zonder `.pub` blijft privé.
 
-**In Proxmox:** kies het docenttemplate, **Clone**, een vrije VMID en **Full clone**. Geef de naam `cloud-media`. Controleer RAM, CPU en bridge. Pas bij **Cloud-Init** de gebruiker, publieke SSH-sleutel, DNS en IPv4-instellingen aan. Pas daarna de cloud-init-disk opnieuw toe met de beschikbare knop en start de VM. Het template moet cloud-init bevatten; zomaar de bestaande `cloud-web` kopiëren is niet hetzelfde.
+**In Proxmox:** kies het docenttemplate, **Clone**, een vrije VMID en **Full clone**. Geef de naam `cloud-media`. Controleer RAM, CPU en bridge. Pas bij **Cloud-Init** de gebruiker, publieke SSH-sleutel, DNS en IPv4-instellingen aan. Stel `Student123` in als wachtwoord voor het lokale account. Pas daarna de cloud-init-disk opnieuw toe met de beschikbare knop en start de VM. Het template moet cloud-init bevatten; zomaar de bestaande `cloud-web` kopiëren is niet hetzelfde.
 
-Open de VM-console voor de vertrouwde hostsleutelcontrole. Een template met alleen sleuteltoegang heeft mogelijk geen consolewachtwoord; de docent voorziet daarvoor een individueel beheerpad. Controleer de Ed25519-vingerafdruk zoals in H1.
+Open de VM-console voor de vertrouwde hostsleutelcontrole. Een template met alleen sleuteltoegang heeft mogelijk geen consolewachtwoord; de docent stelt voor de console het lokale account in met `Student123`. Controleer de Ed25519-vingerafdruk zoals in H1.
 
 **Op Xubuntu:**
 
@@ -36,7 +36,7 @@ ip route
 cloud-init status --wait
 ```
 
-De eerste configuratie hoort voltooid te zijn. Controleer ook DNS en tijd, net als in H1. Wachtwoorden voor lokale consoletoegang staan niet in het verslag. De docent moet een template gebruiken dat de naam en sleutels per nieuwe VM goed opbouwt.
+De eerste configuratie hoort voltooid te zijn. Controleer ook DNS en tijd, net als in H1. Voor de lokale consoletoegang gebruik je `Student123`. De docent moet een template gebruiken dat de naam en sleutels per nieuwe VM goed opbouwt.
 
 ## H3.3 Jellyfin installeren
 
@@ -98,9 +98,9 @@ echo $?
 ssh -i ~/.ssh/thecloud-h3 -L 18096:127.0.0.1:8096 student@192.168.77.110
 ```
 
-Open daar in de browser `http://localhost:18096`. De SSH-verbinding stuurt die poort versleuteld door naar Jellyfin. Doorloop de wizard, maak een eigen beheeraccount en voeg de drie mappen toe als passende bibliotheken. Zet automatisch port mapping/UPnP niet aan.
+Open daar in de browser `http://localhost:18096`. De SSH-verbinding stuurt die poort versleuteld door naar Jellyfin. Doorloop de wizard, maak een beheeraccount met wachtwoord `Student123` en voeg de drie mappen toe als passende bibliotheken. Zet automatisch port mapping/UPnP niet aan.
 
-Maak bij gebruikers een afzonderlijk kijkaccount dat alleen de bedoelde bibliotheken mag zien. Voeg bij de geavanceerde netwerkinstellingen **Known proxies** `127.0.0.1` toe. Laat de overige standaardinstellingen staan tenzij de docent een concrete aanpassing opgeeft.
+Maak bij gebruikers een afzonderlijk kijkaccount met `Student123` dat alleen de bedoelde bibliotheken mag zien. Voeg bij de geavanceerde netwerkinstellingen **Known proxies** `127.0.0.1` toe. Laat de overige standaardinstellingen staan tenzij de docent een concrete aanpassing opgeeft.
 
 ## H3.4 HTTPS met NGINX
 
@@ -167,4 +167,4 @@ Test opnieuw. De accounts, bibliotheken en bestanden moeten bewaard zijn. Test v
 
 Geen SSH? Controleer adres, cloud-init-resultaat, gebruiker en publieke sleutel. Geen media? Controleer pad en leesrecht als jellyfin. Geen HTTPS? Test eerst Jellyfin via loopback, daarna `nginx -t`, het certificaat en de clientroute. Een slecht afspeelbaar bestand kan een formaat- of capaciteitsprobleem zijn; probeer een klein bekend testbestand.
 
-Bewaar alle relevante uitvoer en de proxyconfiguratie in één `verslag.md`. De VM blijft staan; je verslag bevat geen private sleutel, mediabijlagen of wachtwoorden.
+Bewaar alle relevante uitvoer en de proxyconfiguratie in één `verslag.md`. De VM blijft staan; je verslag bevat geen private sleutel of mediabijlagen.

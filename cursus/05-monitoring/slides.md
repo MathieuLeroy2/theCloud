@@ -227,7 +227,8 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 In **verslag.md** staan targets, queries, YAML, testtijden
 en de volledige dashboard-JSON.
 
-Geen los exportbestand en geen Grafana-secret.
+Grafana gebruikt **Student123**.
+Geen los exportbestand of secretbestand nodig.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.

@@ -10,7 +10,7 @@ Beide varianten gebruiken dezelfde schaal. De docent kiest de variant vooraf en 
 | H6.4 Dashboard | 5 | Per paneel 1 punt: juiste target/label, betekenisvolle query en juiste eenheid. |
 | H6.5 Alert | 2 | Firing en herstel met verklaarde testdrempel en uiteindelijke normale instelling. |
 | H6.5 Foutonderzoek | 2 | Gerichte test, bruikbare verklaring en herstel. |
-| H6.6 Eén verslag | 1 | Alles staat leesbaar in één Markdown-bestand zonder secrets. |
+| H6.6 Eén verslag | 1 | Alles staat leesbaar in één Markdown-bestand zonder private sleutels. |
 | **Totaal** | **20** | |
 
 Bij toepassing A horen zowel HTML- als CSS-toegang bij de werking. Bij toepassing B horen de toegestane én geweigerde MQTT-acties bij de werking. De mondelinge controle gebruikt steeds het eigen werk van de student.

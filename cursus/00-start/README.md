@@ -4,6 +4,24 @@ In deze cursus maak je zelf een kleine serveromgeving. Je begint met twee virtue
 
 Je gebruikt je machines in meerdere hoofdstukken. Bewaar ze tot de docent zegt dat ze weg mogen.
 
+## Eén wachtwoord voor alle labo's
+
+Gebruik altijd **`Student123`**, met hoofdletter S. Kies geen eigen wachtwoord en laat het ook niet leeg.
+
+| Waar? | Wachtwoord |
+| --- | --- |
+| Proxmox en de lokale Linux-/Windows-accounts | `Student123` |
+| Domeinbeheerder, Roodkapje, Big1 en Wolf | `Student123` |
+| DSRM-herstelwachtwoord van Active Directory | `Student123` |
+| Jellyfin-beheerder en kijkaccount | `Student123` |
+| Home Assistant, MQTT-sensor en MQTT-dashboard | `Student123` |
+| Grafana-admin en database-monitoringaccount | `Student123` |
+| Wachtzin van je SSH-private sleutel | `Student123` |
+
+Schakel bij de laboaccounts geen verplichte wachtwoordwijziging bij de eerste aanmelding in. Alleen wanneer een opdracht bewust een verkeerde aanmelding test, gebruik je daar een fout wachtwoord. Je maakt nog steeds aparte accounts met verschillende rechten, ook al is het wachtwoord hetzelfde.
+
+Heb je een labo al gemaakt met een ander wachtwoord? Wijzig dat account dan naar `Student123`. Bewaar de bestaande VM's en gegevens.
+
 ## Wat moet je al kunnen?
 
 Je hebt al gewerkt met IP-adressen en subnetmaskers. Je kunt bestanden en mappen beheren, eenvoudige HTML en CSS schrijven en basiscommando's in een Linux-terminal uitvoeren.
@@ -63,7 +81,7 @@ Boven de commando's staat op welke machine je werkt. Een terminal op Xubuntu is 
 
 Gebruik `sudo` waar de opdracht beheerdersrechten nodig heeft. Op een gedeelde schoolserver voert de docent sommige stappen samen met je uit.
 
-Schrijf geen wachtwoorden of private SSH-sleutels in je verslag of in Git. Test fouten alleen op je eigen oefenmachines. Zet geen eigen DHCP-server op het schoolnetwerk en maak de beheerpagina van Proxmox niet bereikbaar voor iedereen op internet.
+Gebruik overal het vaste labowachtwoord `Student123`. Dat mag ook in je configuratievoorbeelden staan. Neem geen private SSH-sleutels op in je verslag of in Git. Test fouten alleen op je eigen oefenmachines. Zet geen eigen DHCP-server op het schoolnetwerk en maak de beheerpagina van Proxmox niet bereikbaar voor iedereen op internet.
 
 ## Je verslag
 

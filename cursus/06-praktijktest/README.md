@@ -1,5 +1,8 @@
 # Hoofdstuk 6 De praktijktest
 
+**Vast labowachtwoord:** gebruik voor alle accounts in dit hoofdstuk `Student123`. Gebruik dezelfde waarde voor herstelwachtwoorden en SSH-wachtzinnen. Alleen bij een test die bewust moet mislukken vul je een fout wachtwoord in.
+
+
 Je combineert de technieken uit de vorige hoofdstukken. Er zijn twee varianten. De docent vertelt vooraf welke je maakt. De test duurt drie uur, met een voorbereide VM- en monitoringbasis.
 
 - [Herhaling en voorbereiding](theorie.md)

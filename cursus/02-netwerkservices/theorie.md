@@ -38,7 +38,7 @@ Roodkapje wordt lid van `GG-Rood`, Big1 van `GG-Big` en Wolf van `GG-Beheer`. Al
 
 **Beheren** betekent meer mogen dan een gewoon programma gebruiken. Een beheerder kan bijvoorbeeld software installeren voor alle gebruikers. Wolf krijgt die rechten alleen op de twee oefen-pc's. Wolf hoeft daarvoor geen beheerder van het hele domein te zijn.
 
-Gebruik een gewoon account voor dagelijks werk en een apart beheeraccount voor beheertaken. Neem nooit een gedeeld klaswachtwoord over uit een voorbeeld.
+Gebruik een gewoon account voor dagelijks werk en een apart beheeraccount voor beheertaken. Voor alle accounts in deze labo-omgeving gebruiken we `Student123`. De accounts en hun rechten blijven wel apart.
 
 ## 4. Mappen voor computers en centrale afspraken
 

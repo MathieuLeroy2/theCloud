@@ -7,7 +7,7 @@ Route A of B:
 
 Dit is je enige in te dienen bestand: `verslag.md`. Schrijf hierin je instellingen, stappen en testresultaten. Plaats ook je HTML, CSS en netwerkinstellingen in codeblokken onderaan. Gebruik tekstuitvoer als bewijs; er zijn geen aparte afbeeldingen of bijlagen nodig.
 
-Neem geen wachtwoorden of private SSH-sleutels op.
+Het wachtwoord voor alle laboaccounts is `Student123`. Neem geen private SSH-sleutels op.
 
 ## H1.1 Mijn plan
 
@@ -22,7 +22,7 @@ Neem geen wachtwoorden of private SSH-sleutels op.
 | Op welke machine oefen ik de Proxmox-installatie? | In te vullen |
 | Welke Proxmox-machine gebruik ik daarna verder? | In te vullen |
 | Welk adres open ik om Proxmox te beheren? | In te vullen |
-| Met welke gebruikersnaam meld ik aan? | In te vullen, zonder wachtwoord |
+| Met welke gebruikersnaam meld ik aan? | In te vullen, wachtwoord Student123 |
 | Welke aanmeldmethode kies ik bij Realm? | Docent vult aan |
 
 ### Mijn netwerk
@@ -173,4 +173,4 @@ Beschrijf tot slot één probleem dat je had. Welke test hielp je om het te vind
 
 Plaats hieronder de volledige inhoud van `index.html`, `style.css` en je gebruikte netwerkinstellingen in afzonderlijke codeblokken. Schrijf de bestandsnaam boven elk blok. Geen extra bijlagen of links naar bestanden op je laptop.
 
-Laat wachtwoorden weg. Vervang ze in configuraties door `<WEGGELATEN>`.
+Gebruik in de configuratievoorbeelden steeds `Student123`. Neem geen private sleutels op.

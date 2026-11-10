@@ -1,5 +1,8 @@
 # Hoofdstuk 5 Zien of je systemen goed werken
 
+**Vast labowachtwoord:** gebruik voor alle accounts in dit hoofdstuk `Student123`. Gebruik dezelfde waarde voor herstelwachtwoorden en SSH-wachtzinnen. Alleen bij een test die bewust moet mislukken vul je een fout wachtwoord in.
+
+
 Je volgt Linux, Windows en containers op met je eigen Prometheus en Grafana. Je maakt een dashboard en laat waarschuwingen afgaan en herstellen.
 
 ## Wat leer je?

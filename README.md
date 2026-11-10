@@ -2,6 +2,8 @@
 
 Cursus voor het tweede jaar graduaat Internet of Things. Je leert virtuele infrastructuur opbouwen, diensten aanbieden en hun werking opvolgen. De labo's gebruiken eigen infrastructuur of infrastructuur van de opleiding. Een commerciële cloudaccount of kredietkaart is niet nodig.
 
+**Vast labowachtwoord: `Student123`.** Dit geldt voor alle laboaccounts, herstelwachtwoorden en SSH-wachtzinnen. Alleen bij een test die een verkeerde aanmelding moet aantonen, gebruik je bewust een fout wachtwoord.
+
 ## Starten
 
 Lees eerst de [startgids](cursus/00-start/README.md). Elk inhoudelijk hoofdstuk bundelt theorie, Marp-slides, opdrachten, oplossingen en ondersteunende bestanden.

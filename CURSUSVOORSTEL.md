@@ -92,7 +92,7 @@ Windows Server, Active Directory, twee Windows-clients, domeingebruikers en RDP.
 - Met één domein, enkele gebruikers en groepen werken. Forests en trusts blijven op overzichtsniveau.
 - Een matrix opnemen met wie op welke machine lokaal en via RDP mag aanmelden. Zowel toegelaten als geweigerde toegang aantonen.
 - Wolf alleen de vereiste beheertoegang op de betrokken clients geven. Geen Domain Admins-lidmaatschap gebruiken als algemene oplossing voor lokale beheertaken.
-- Persoonlijke labwachtwoorden en aparte beheerdersaccounts gebruiken. Geen gedeeld wachtwoord als aanbevolen werkwijze.
+- Voor alle laboaccounts het vaste wachtwoord `Student123` gebruiken. Gewone accounts en beheerdersaccounts blijven apart.
 - Eén eenvoudige Group Policy toevoegen, bijvoorbeeld voor de bedoelde RDP-toegang.
 - mRemoteNG als hulpmiddel behandelen, met een alternatief voor studenten op een ander hostbesturingssysteem. Beoordelen op verbinding en begrip, niet op het specifieke programma.
 - Verwijzingen naar XP, Windows 7 en andere niet-gebruikte systemen verwijderen. Accountomwegen vervangen door een door de opleiding voorbereide installatieprocedure en passende licentie- of evaluatieafspraken.
@@ -141,7 +141,7 @@ Docker Engine op Linux, images, containers, CLI, volumes en poorten. Home Assist
 - Een bewust gekozen container-netwerk gebruiken. Bij bridge networking communiceren diensten via hun servicenaam, bijvoorbeeld `mosquitto`, in plaats van via een gekopieerd tijdelijk container-IP. Host networking alleen gebruiken als de concrete Home Assistant-functionaliteit dat vraagt.
 - De officiële Home Assistant Container-installatie als referentie nemen. Uitleggen dat deze installatie geen beheerde apps/add-ons aanbiedt en dat Mosquitto daarom apart draait. Zie [Home Assistant op Linux](https://www.home-assistant.io/installation/linux/).
 - MQTT-authenticatie verplicht maken en toegang tot topics beperken. De huidige opdracht vraagt credentials, terwijl de screenshotoplossing `allow_anonymous true` instelt. Dit wordt één consistente configuratie met een negatieve aanmeldtest. Zie [Mosquitto-authenticatie](https://mosquitto.org/documentation/authentication-methods/).
-- `chmod 777`, typefouten zoals `mosquito` en `eclipse-mosquito`, verouderde `--link`-voorbeelden en vaste wachtwoorden uit de aanvullingen vervangen.
+- `chmod 777`, typefouten zoals `mosquito` en `eclipse-mosquito`, verouderde `--link`-voorbeelden uit de aanvullingen vervangen. Alle labowachtwoorden worden `Student123`.
 - Persistentie aantonen door containers opnieuw aan te maken met behoud van configuratie. Logs, restartbeleid en een gecontroleerde update bespreken.
 - KMI als uitbreiding aanbieden, zodat externe bereikbaarheid of een gewijzigde integratie de kernopdracht niet blokkeert. Een desktop-MQTT-client of CLI blijft een alternatief voor de telefoonapp.
 - Kubernetes en Swarm kort situeren. Geen extra cluster opzetten binnen dit labo.

@@ -72,7 +72,7 @@ Een bericht heeft een **topic**, bijvoorbeeld `iot/labo/deur`, en een inhoud of 
 
 Met **retain** bewaart de broker het laatste bericht voor nieuwe abonnees. Home Assistant kan daardoor na een herstart meteen zien wat de laatste bekende deurtoestand was. Zonder nieuw bericht weet je daarmee niet of een echte sensor nog online is. Een beschikbaarheidstopic is een mogelijke uitbreiding.
 
-We maken twee accounts. `sensor` mag alleen in `iot/labo/#` schrijven. `dashboard` mag die berichten lezen. Een **ACL** legt die topicrechten vast. Een correct wachtwoord geeft dus nog niet automatisch toegang tot elk topic.
+We maken twee accounts, allebei met wachtwoord `Student123`. `sensor` mag alleen in `iot/labo/#` schrijven. `dashboard` mag die berichten lezen. Een **ACL** legt die topicrechten vast. Een correct wachtwoord geeft dus nog niet automatisch toegang tot elk topic.
 
 In dit labo gaat MQTT via een SSH-tunnel. Voor rechtstreeks gebruik over een onvertrouwd netwerk heb je bijvoorbeeld MQTT met TLS of een beschermde VPN-route nodig.
 

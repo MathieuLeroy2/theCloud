@@ -1,5 +1,8 @@
 # Hoofdstuk 4 Twee programma’s in containers
 
+**Vast labowachtwoord:** gebruik voor alle accounts in dit hoofdstuk `Student123`. Gebruik dezelfde waarde voor herstelwachtwoorden en SSH-wachtzinnen. Alleen bij een test die bewust moet mislukken vul je een fout wachtwoord in.
+
+
 Je laat een fictieve deur open en dicht gaan met MQTT. Mosquitto ontvangt berichten en Home Assistant toont de toestand.
 
 ## Wat leer je?

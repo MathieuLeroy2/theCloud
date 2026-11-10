@@ -42,7 +42,7 @@ Denk ook aan kosten zonder factuur per uur. De opleiding betaalt hardware, stroo
 
 Een **template** is een voorbereid vertrekpunt voor nieuwe VM's. In plaats van opnieuw de installer te doorlopen, maak je een kopie van dat vertrekpunt.
 
-Met **cloud-init** vul je bij de eerste start gegevens in: computernaam, gebruiker, SSH-sleutel en netwerkinstellingen. Iedere kopie krijgt haar eigen gegevens. Je deelt dus geen volledig ingericht gebruikersaccount met een klasgenoot.
+Met **cloud-init** vul je bij de eerste start gegevens in: computernaam, gebruiker, SSH-sleutel en netwerkinstellingen. Iedere kopie krijgt haar eigen gegevens. Elke student houdt zo een eigen VM en eigen sleutels. Het wachtwoord van de laboaccounts is wel steeds `Student123`.
 
 We gebruiken een voorbereid Ubuntu Server-template. Een **full clone** maakt een zelfstandige kopie van de schijf. Dat is voor deze oefening eenvoudig te bewaren. Een kopie van een reeds gebruikte VM zonder voorbereiding kan daarentegen dezelfde naam, IP-adressen en sleutels houden. Denk aan de hersteltest uit hoofdstuk 1.
 
@@ -53,7 +53,7 @@ Tot nu toe kon je met een wachtwoord aanmelden. SSH kan ook een sleutelpaar gebr
 - De **publieke sleutel** mag naar de server. Die geeft aan welke sleutel de server mag herkennen.
 - De **private sleutel** blijft op je eigen computer. Daarmee bewijs je dat jij de bijbehorende sleutel bezit.
 
-Beveilig de private sleutel met een wachtzin. De publieke sleutel eindigt vaak op `.pub`. Controleer goed welk bestand je uploadt. De hostsleutel van de server blijft een aparte controle: die helpt jou de juiste server herkennen.
+Gebruik `Student123` als wachtzin voor de private sleutel in dit labo. De publieke sleutel eindigt vaak op `.pub`. Controleer goed welk bestand je uploadt. De hostsleutel van de server blijft een aparte controle: die helpt jou de juiste server herkennen.
 
 ## 6. Jellyfin en de bestanden die het leest
 
@@ -82,7 +82,7 @@ Het certificaat maakt de VM niet automatisch vanaf overal bereikbaar. Daarvoor b
 
 Een geslaagde SSH-login betekent nog niet dat de mediadienst werkt. Test de hele weg: client, HTTPS, aanmelding en een klein bestand afspelen.
 
-Maak een apart kijkaccount naast je beheeraccount. Je hoeft voor het bekijken van media geen serverbeheerder te zijn.
+Maak een apart kijkaccount naast je beheeraccount. Beide gebruiken `Student123`. Je hoeft voor het bekijken van media geen serverbeheerder te zijn.
 
 Je bewijst ook dat data bewaard blijft. Stop en start de dienst. Is de bibliotheek nog aanwezig? Verwijder geen gebruikersdata om een herstart te testen.
 

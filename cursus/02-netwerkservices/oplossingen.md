@@ -6,7 +6,7 @@ Gebruik de adressen uit je verslag. De voorbeelden gebruiken `.20` voor Sprookje
 
 Maak in Proxmox de drie VM's uit de opdracht. Windows 11 gebruikt de door de opleiding geteste UEFI- en TPM 2.0-instellingen. Koppel de VirtIO-driver-ISO als de installer de schijf of netwerkkaart niet ziet. De docent zet die drivers vooraf klaar. Gebruik geen omweg die de installatie-eisen van Windows uitschakelt.
 
-Installeer op de server **Desktop Experience**, zodat je een bureaublad krijgt. Installeer op de clients de Pro- of Education-editie. Gebruik de account- en licentieprocedure van de opleiding. Het is niet nodig om voor deze cursus een eigen Microsoft-cloudaccount aan te maken.
+Installeer op de server **Desktop Experience**, zodat je een bureaublad krijgt. Installeer op de clients de Pro- of Education-editie. Gebruik de account- en licentieprocedure van de opleiding. Stel lokale labaccounts en Administrator in met `Student123`. Gebruik op de Windows-clients bijvoorbeeld `labbeheer` als lokaal beheeraccount. Het is niet nodig om voor deze cursus een eigen Microsoft-cloudaccount aan te maken.
 
 **Op elke machine, als beheerder:** open `sysdm.cpl`, kies **Change** en geef de juiste computernaam. Herstart. Open daarna `ncpa.cpl`, kies de Ethernet-kaart en open de IPv4-eigenschappen. Vul adres, masker, gateway en DNS in. De server gebruikt zijn eigen adres `.20` als DNS; beide clients gebruiken ook `.20`.
 
@@ -25,7 +25,7 @@ Controleer naam, adres en DNS. Op de clients mag geen tweede publieke DNS-server
 
 1. Kies **Add a new forest**, met naam `sprookjes.test`.
 2. Laat DNS en Global Catalog aanstaan. Gebruik de voorgestelde functionele niveaus die bij de serverversie passen.
-3. Stel een eigen DSRM-herstelwachtwoord in. Bewaar dat veilig, buiten je verslag.
+3. Gebruik `Student123` als DSRM-herstelwachtwoord.
 4. De korte NetBIOS-naam wordt `SPROOKJESBOS`; pas ze aan als de wizard iets anders voorstelt.
 5. Laat de voorgestelde databasepaden staan en controleer de vereisten. Een melding over het ontbreken van een DNS-delegatie is in dit aparte testdomein mogelijk. Andere fouten los je vóór installatie op.
 6. Installeer en laat de server herstarten. Meld aan met `SPROOKJESBOS\Administrator`.
@@ -48,7 +48,7 @@ Open op de client `sysdm.cpl`, **Change**, kies **Domain** en vul `sprookjes.tes
 **Op de server, Active Directory Users and Computers:**
 
 1. Maak onder het domein een OU `LabGebruikers`. Maak daarin de gebruikers `Roodkapje`, `Big1` en `Wolf`.
-2. Kies voor elk een eigen sterk wachtwoord. Laat ze dat bij hun eerste gewone consoleaanmelding wijzigen. Doe die eerste aanmelding vóór de RDP-tests; NLA kan anders een verplichte wachtwoordwijziging blokkeren.
+2. Gebruik voor alle drie `Student123`. Vink **User must change password at next logon** uit en **Password never expires** aan voor deze laboaccounts. Zo blijft het wachtwoord gedurende de labo’s hetzelfde.
 3. Maak in dezelfde OU drie **Global Security**-groepen: `GG-Rood`, `GG-Big`, `GG-Beheer`.
 4. Voeg Roodkapje, Big1 en Wolf aan hun bijbehorende groep toe.
 5. Maak naast LabGebruikers de OU's `PcRood` en `PcBig`. Verplaats de computeraccounts van de twee clients uit `Computers` naar de juiste OU. Verplaats de domeincontroller niet.
@@ -120,7 +120,7 @@ Open op de Windows-machine waarvan je vertrekt `mstsc`. Vul de volledige naam va
 
 Meld volledig af na elke poging. Windows-clientedities bieden hier geen onbeperkt aantal gelijktijdige actieve bureaubladsessies.
 
-**Beheertest:** meld Wolf aan op een client en open PowerShell met **Run as administrator**. Dat moet als Wolf kunnen na de UAC-bevestiging. Roodkapje moet voor diezelfde actie gegevens van een afzonderlijke beheerder opgeven. Noteer alleen de uitkomst; voer geen extra wachtwoorden in het verslag in.
+**Beheertest:** meld Wolf aan op een client en open PowerShell met **Run as administrator**. Dat moet als Wolf kunnen na de UAC-bevestiging. Roodkapje moet voor diezelfde actie gegevens van een afzonderlijke beheerder opgeven. Gebruik bij de gevraagde beheerder ook `Student123` en noteer de uitkomst.
 
 Gaat een geweigerde test toch door? Controleer de groepen van de gebruiker, zijn lokale rechten op de doel-pc en `gpresult`. Staat de computer nog in de verkeerde OU? Dan wordt de bedoelde GPO niet toegepast.
 

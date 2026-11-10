@@ -89,7 +89,7 @@ Je demonstreert de werking en dient **verslag.md** in.
 
 Alle instellingen, code, query’s, dashboard-JSON
 en testresultaten staan in dat ene bestand.
-Geheimen en losse bijlagen blijven eruit.
+Alle accounts gebruiken **Student123**. Geen private sleutels of bijlagen.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.

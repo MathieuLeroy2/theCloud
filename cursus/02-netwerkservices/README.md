@@ -1,5 +1,8 @@
 # Hoofdstuk 2 Eén account voor meerdere computers
 
+**Vast labowachtwoord:** gebruik voor alle accounts in dit hoofdstuk `Student123`. Gebruik dezelfde waarde voor herstelwachtwoorden en SSH-wachtzinnen. Alleen bij een test die bewust moet mislukken vul je een fout wachtwoord in.
+
+
 Je bouwt een Windows-domein met een server en twee pc’s. Je test wie waar mag aanmelden en hoe je die toegang centraal regelt.
 
 ## Wat leer je?

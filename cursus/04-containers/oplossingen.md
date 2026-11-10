@@ -55,13 +55,13 @@ Plaats `compose.yaml` hier. Plaats `mosquitto.conf` en `acl` in de map `mosquitt
 Maak eerst de twee brokeraccounts met de officiële Mosquitto-tool:
 
 ```bash
-sudo docker run --rm -it --user 0 --entrypoint mosquitto_passwd -v "$PWD/mosquitto:/mosquitto/config" eclipse-mosquitto:2.0.22 -c /mosquitto/config/passwords sensor
-sudo docker run --rm -it --user 0 --entrypoint mosquitto_passwd -v "$PWD/mosquitto:/mosquitto/config" eclipse-mosquitto:2.0.22 /mosquitto/config/passwords dashboard
+sudo docker run --rm --user 0 --entrypoint mosquitto_passwd -v "$PWD/mosquitto:/mosquitto/config" eclipse-mosquitto:2.0.22 -b -c /mosquitto/config/passwords sensor Student123
+sudo docker run --rm --user 0 --entrypoint mosquitto_passwd -v "$PWD/mosquitto:/mosquitto/config" eclipse-mosquitto:2.0.22 -b /mosquitto/config/passwords dashboard Student123
 sudo chown 1883:1883 mosquitto/passwords
 sudo chmod 640 mosquitto/passwords
 ```
 
-De tool vraagt telkens het wachtwoord zonder het in je shellcommando te schrijven. Gebruik `-c` alleen de eerste keer: het maakt een nieuw bestand en zou anders het eerste account overschrijven. De image gebruikt voor Mosquitto UID/GID 1883. Het bestand moet voor die service leesbaar zijn. Zet geen `chmod 777`.
+De optie `-b` gebruikt het opgegeven labowachtwoord `Student123` voor beide accounts. Gebruik `-c` alleen de eerste keer: het maakt een nieuw bestand en zou anders het eerste account overschrijven. De image gebruikt voor Mosquitto UID/GID 1883. Het bestand moet voor die service leesbaar zijn. Zet geen `chmod 777`.
 
 Controleer en start:
 
@@ -74,6 +74,8 @@ sudo docker compose logs --tail 30 mosquitto
 
 `config --quiet` controleert de Compose-file. Bij een fout start je niet verder. In de brokerlogs verwacht je geen fout over het wachtwoordbestand of de ACL.
 
+Draaide de broker al met andere wachtwoorden? Voer na het bijwerken `sudo docker compose restart mosquitto` uit, zodat hij `Student123` opnieuw inleest. Pas ook het opgeslagen MQTT-wachtwoord in Home Assistant aan naar `Student123`.
+
 ## H4.4 De tunnel en Home Assistant
 
 **Op Xubuntu:**
@@ -84,9 +86,9 @@ ssh -L 18123:127.0.0.1:8123 -L 11883:127.0.0.1:1883 student@192.168.77.120
 
 Gebruik `-i` als jouw VM alleen je SSH-sleutel accepteert. Houd dit venster open. De clientpoort 18123 gaat naar Home Assistant; 11883 gaat naar MQTT. Beide verbindingen lopen door SSH.
 
-Open op **Xubuntu** `http://localhost:18123`. Wacht bij de eerste start tot Home Assistant klaar is. Maak je eigen Home Assistant-account. Dit is niet hetzelfde account als de Mosquitto-gebruiker.
+Open op **Xubuntu** `http://localhost:18123`. Wacht bij de eerste start tot Home Assistant klaar is. Maak je Home Assistant-account met wachtwoord `Student123`. Dit is niet hetzelfde account als de Mosquitto-gebruiker.
 
-Bij **Settings > Devices & services > Add integration** kies je MQTT. Vul broker `mosquitto`, poort `1883`, gebruiker `dashboard` en diens wachtwoord in. Deze verbinding komt van de Home Assistant-container en gebruikt het Compose-netwerk.
+Bij **Settings > Devices & services > Add integration** kies je MQTT. Vul broker `mosquitto`, poort `1883`, gebruiker `dashboard` en wachtwoord `Student123` in. Deze verbinding komt van de Home Assistant-container en gebruikt het Compose-netwerk.
 
 **Op cloud-containers:** maak een back-up van `homeassistant/configuration.yaml`. Voeg de inhoud van het sensorvoorbeeld toe. Bestaat al een hoofdsleutel `mqtt:`? Voeg de sensor daaronder in; maak geen tweede sleutel met dezelfde naam.
 
@@ -105,14 +107,13 @@ De standaardconfiguratie die Home Assistant al schreef, blijft behouden. De sens
 
 ```bash
 sudo apt install mosquitto-clients
-read -r -s -p 'Wachtwoord van sensor: ' LAB_SENSOR_PASS
 ```
 
-De variabele houdt het wachtwoord uit de getypte opdrachtgeschiedenis. Het is geen algemene oplossing voor alle secretbeheer: programma-argumenten kunnen tijdens uitvoering zichtbaar zijn voor bevoegde lokale gebruikers. Neem de waarde niet op in het verslag. De tunnel moet openstaan.
+De tunnel moet openstaan. Gebruik voor sensor en dashboard telkens `Student123`. Alleen de eerste fouttest hieronder gebruikt bewust een ander wachtwoord.
 
 ```bash
-mosquitto_pub -V mqttv5 -h 127.0.0.1 -p 11883 -u sensor -P "$LAB_SENSOR_PASS" -t iot/labo/deur -m OPEN -r -q 1
-mosquitto_pub -V mqttv5 -h 127.0.0.1 -p 11883 -u sensor -P "$LAB_SENSOR_PASS" -t iot/labo/deur -m DICHT -r -q 1
+mosquitto_pub -V mqttv5 -h 127.0.0.1 -p 11883 -u sensor -P Student123 -t iot/labo/deur -m OPEN -r -q 1
+mosquitto_pub -V mqttv5 -h 127.0.0.1 -p 11883 -u sensor -P Student123 -t iot/labo/deur -m DICHT -r -q 1
 ```
 
 `-r` bewaart het laatste bericht, `-q 1` vraagt bevestiging van de broker. In Home Assistant verwacht je eerst open en daarna gesloten. MQTT 5 kan een publicatie-afwijzing duidelijker terugmelden dan oudere protocolversies.
@@ -121,9 +122,8 @@ Test vervolgens:
 
 ```bash
 mosquitto_pub -V mqttv5 -h 127.0.0.1 -p 11883 -u sensor -P bewust-fout -t iot/labo/deur -m OPEN -q 1
-mosquitto_pub -V mqttv5 -h 127.0.0.1 -p 11883 -u sensor -P "$LAB_SENSOR_PASS" -t ander/topic -m TEST -q 1
-read -r -s -p 'Wachtwoord van dashboard: ' LAB_DASH_PASS
-mosquitto_pub -V mqttv5 -h 127.0.0.1 -p 11883 -u dashboard -P "$LAB_DASH_PASS" -t iot/labo/deur -m OPEN -q 1
+mosquitto_pub -V mqttv5 -h 127.0.0.1 -p 11883 -u sensor -P Student123 -t ander/topic -m TEST -q 1
+mosquitto_pub -V mqttv5 -h 127.0.0.1 -p 11883 -u dashboard -P Student123 -t iot/labo/deur -m OPEN -q 1
 ```
 
 Het eerste commando moet bij de aanmelding mislukken. Bij de andere twee zijn de credentials geldig, maar staat de ACL de publicatie niet toe. Controleer de foutmeldingen en de brokerlogs op de server. De deur blijft DICHT. Een client-exitcode alleen is niet bij elke MQTT-versie voldoende bewijs.
@@ -131,14 +131,10 @@ Het eerste commando moet bij de aanmelding mislukken. Bij de andere twee zijn de
 Met de dashboardgebruiker kun je de bewaarde toestand lezen:
 
 ```bash
-mosquitto_sub -h 127.0.0.1 -p 11883 -u dashboard -P "$LAB_DASH_PASS" -t iot/labo/deur -C 1 -W 5
+mosquitto_sub -h 127.0.0.1 -p 11883 -u dashboard -P Student123 -t iot/labo/deur -C 1 -W 5
 ```
 
-Je verwacht `DICHT`. Verwijder na de tests de tijdelijke shellvariabelen:
-
-```bash
-unset LAB_SENSOR_PASS LAB_DASH_PASS
-```
+Je verwacht `DICHT`.
 
 ## H4.6 Containers opnieuw maken
 

@@ -92,7 +92,7 @@ De [oplossing](oplossingen.md) toont de installatie en de controles uitgebreider
 2. Kies voor de netwerkkaart **VirtIO** en verbind ze met de bridge van je verslag. De docent geeft een eventuele VLAN-tag op.
 3. Start de installatie vanaf de Ubuntu Server-ISO.
 4. Vul tijdens de installatie het vaste IP-adres, subnet, gateway en DNS in.
-5. Maak de gewone gebruiker `student` met een eigen wachtwoord. Die gebruiker mag met `sudo` beheertaken uitvoeren.
+5. Maak de gewone gebruiker `student` met wachtwoord `Student123`. Die gebruiker mag met `sudo` beheertaken uitvoeren.
 6. Laat OpenSSH Server installeren. Daarmee kun je later vanaf Xubuntu op de server aanmelden.
 7. Rond af en ontkoppel de ISO. Start de VM opnieuw vanaf haar eigen schijf.
 
@@ -213,7 +213,7 @@ Lever precies één bestand in: **`verslag.md`**. Zet daarin:
 - De gebruikte netwerkinstellingen en commando's in codeblokken.
 - De resultaten van de controles en je antwoorden op de zeven vragen onderaan de theorie.
 
-Gebruik tekstuitvoer voor de controles en beschrijf wat je in de browser zag. Voeg geen aparte screenshots of bestanden toe. Laat geen wachtwoorden of private SSH-sleutels in je verslag staan. Toon de werking ook kort aan de docent.
+Gebruik tekstuitvoer voor de controles en beschrijf wat je in de browser zag. Voeg geen aparte screenshots of bestanden toe. Het vaste labowachtwoord mag in je configuratievoorbeelden staan. Neem geen private SSH-sleutels op. Toon de werking ook kort aan de docent.
 
 Werk je op je laptop? Sluit eerst Ubuntu en Xubuntu netjes af, daarna Proxmox. Werk je op school? Volg de afspraken van de docent. Verwijder je oorspronkelijke machines niet.
 

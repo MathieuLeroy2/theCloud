@@ -57,6 +57,8 @@ Behoud de juiste vaktermen en leerdoelen. Eenvoudige taal betekent niet dat we e
 
 Een student dient per labo of praktijktest precies één `verslag.md` in. Gebruik de instellingenrubriek van dat verslag in plaats van een aparte labkaart. Laat ook configuraties, HTML/CSS, queries en dashboard-JSON in codeblokken opnemen. Gebruik tekstuitvoer voor bewijs, zodat geen losse screenshots, exportbestanden of externe bijlagen nodig zijn. De werkbestanden op de VM blijven wel nodig voor de demonstratie.
 
+Alle laboaccounts en SSH-wachtzinnen gebruiken `Student123`. Dit vaste labowachtwoord mag in de voorbeelden en het verslag staan. Private sleutels en gehashte wachtwoordbestanden blijven buiten het verslag. Alleen negatieve aanmeldtests gebruiken bewust een fout wachtwoord.
+
 Publiceer de benodigde theorie, opdrachten, slides en startbestanden. Bepaal per onderwijsfase of modeloplossingen beschikbaar zijn. Alleen een bestand weglaten uit een website verbergt het niet voor iemand met toegang tot de Git-repository en haar geschiedenis.
 
 Neem `base/`, `node_modules/` en lokale testuitvoer niet op in een studentenexport. Bewaar bij een cursusrelease de gebruikte versies en validatiestatus uit [versies.md](versies.md).

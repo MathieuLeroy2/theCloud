@@ -230,7 +230,8 @@ Noteer image-tags en de gebruikte digests.
 Zet Compose, ACL, broker- en sensorconfiguratie samen
 met je tests in **verslag.md**.
 
-Wachtwoorden en hun hashbestand blijven eruit.
+Beide accounts gebruiken **Student123**.
+Het gehashte wachtwoordbestand blijft eruit.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.

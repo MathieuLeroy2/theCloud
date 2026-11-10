@@ -1,5 +1,13 @@
 # Infrastructuur voor de cursus
 
+## Vast labowachtwoord
+
+Alle door studenten gebruikte laboaccounts krijgen **`Student123`**. Dat geldt ook voor Proxmox, lokale OS-accounts, domeinaccounts, DSRM-herstel, applicatieaccounts, MQTT, Grafana, het database-monitoringaccount en SSH-wachtzinnen. Geef dit wachtwoord ook mee in templates en voorbereide VM's. De publieke/private SSH-sleutels en de machine-identiteit blijven per student/VM apart.
+
+Bij Windows-laboaccounts staat **User must change password at next logon** uit en **Password never expires** aan. Gebruik bijvoorbeeld `labbeheer` als lokaal Windows-beheeraccount; zo bevat het vaste wachtwoord niet de volledige accountnaam `student` wanneer Windows wachtwoordcomplexiteit controleert. Pas op een gedeelde node alleen de toegewezen studentaccounts aan, niet het beheeraccount van de opleiding.
+
+Voor reeds ingerichte laboaccounts wordt het bestaande wachtwoord aangepast naar `Student123`, met behoud van hun data. Een bestaand Grafana-volume leest niet opnieuw een initiële adminwaarde in: wijzig dat accountwachtwoord via Grafana of het beheerpad van de docent.
+
 Dit document beschrijft de voorbereiding voor hoofdstuk 1 en de afspraken waarop latere hoofdstukken kunnen voortbouwen. Vul de definitieve omgevingswaarden in de verslagen in. De cursus veronderstelt geen bestaand school-VPN, vast subnet of gekozen hosthypervisor.
 
 ## Route A Eigen nested Proxmox
@@ -130,9 +138,9 @@ qm resize 9000 scsi0 32G
 qm template 9000
 ```
 
-Start deze basisimage niet eerst met gedeelde studentcredentials. Studenten vullen op hun clone vóór de eerste start een eigen gebruiker, publieke sleutel, IP/DNS en naam in. Verifieer dat iedere clone eigen machine-identiteit en SSH-hostsleutels opbouwt en dat cloud-init de disk benut. Voor H4 vergroot je de clonedisk tot 40 GB en controleer je de guestfilesystemgrootte.
+Start de basisimage niet eerst als een al gebruikte student-VM. Studenten vullen op hun clone vóór de eerste start een eigen gebruiker, publieke sleutel, IP/DNS en naam in. Verifieer dat iedere clone eigen machine-identiteit en SSH-hostsleutels opbouwt en dat cloud-init de disk benut. Voor H4 vergroot je de clonedisk tot 40 GB en controleer je de guestfilesystemgrootte.
 
-Voorzie een individueel tijdelijk consolebeheeraccount of een andere vertrouwde methode om de servervingerafdruk te controleren. Een cloud image met alleen SSH-sleutels geeft niet automatisch een werkende wachtwoordlogin via de Proxmox-console. Neem zo'n tijdelijk geheim niet in het verslag op.
+Voorzie op elke student-VM een lokaal consoleaccount met `Student123`, zodat de student de servervingerafdruk kan controleren. Een cloud image met alleen SSH-sleutels geeft niet automatisch een werkende wachtwoordlogin via de Proxmox-console. Stel dat account vóór de eerste les expliciet in.
 
 ### Labcertificaten voor H3
 

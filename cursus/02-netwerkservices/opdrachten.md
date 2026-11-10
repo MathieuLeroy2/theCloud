@@ -20,7 +20,7 @@ Installeer de machines, geef ze hun namen en vaste adressen. Noteer gateway, VMI
 
 ## H2.2 Het domein maken
 
-Installeer op SprookjesBoom AD DS met DNS en maak het domein `sprookjes.test`, met korte naam `SPROOKJESBOS`. Stel een DNS-forwarder in naar de bevestigde lab-DNS. Bewaar het herstelwachtwoord buiten je verslag.
+Installeer op SprookjesBoom AD DS met DNS en maak het domein `sprookjes.test`, met korte naam `SPROOKJESBOS`. Stel een DNS-forwarder in naar de bevestigde lab-DNS. Gebruik ook voor het DSRM-herstelwachtwoord `Student123`.
 
 Laat beide clients alleen SprookjesBoom als DNS-server gebruiken. Voeg ze aan het domein toe en herstart ze.
 
@@ -28,7 +28,7 @@ Laat beide clients alleen SprookjesBoom als DNS-server gebruiken. Voeg ze aan he
 
 ## H2.3 Accounts, groepen en OU's
 
-Maak de gebruikers Roodkapje, Big1 en Wolf met eigen wachtwoorden. Maak de groepen `GG-Rood`, `GG-Big` en `GG-Beheer` en voeg de gebruikers toe zoals in de theorie.
+Maak de gebruikers Roodkapje, Big1 en Wolf met wachtwoord `Student123`. Maak de groepen `GG-Rood`, `GG-Big` en `GG-Beheer` en voeg de gebruikers toe zoals in de theorie.
 
 Maak twee aparte computer-OU's. Verplaats RoodkapjesHuis en BiggetjesHuis elk naar hun eigen OU. Geef `GG-Beheer` lokale beheerdersrechten op beide clients. Voeg Wolf niet toe aan Domain Admins.
 
@@ -60,7 +60,7 @@ Beschrijf de fout. Zet de juiste DNS terug en herhaal de zoekopdracht. Test geen
 
 ## H2.7 Indienen
 
-Dien alleen `verslag.md` in. Daarin staan de instellingen, relevante PowerShell-/commandouitvoer, de twee GPO-instellingen per pc, de twaalf testresultaten en de antwoorden op de vijf theorievragen. Wachtwoorden blijven eruit. Bewaar de machines, maar sluit ze af volgens de afspraken van de docent.
+Dien alleen `verslag.md` in. Daarin staan de instellingen, relevante PowerShell-/commandouitvoer, de twee GPO-instellingen per pc, de twaalf testresultaten en de antwoorden op de vijf theorievragen. Private sleutels blijven eruit; het vaste labowachtwoord mag in de voorbeelden staan. Bewaar de machines, maar sluit ze af volgens de afspraken van de docent.
 
 | Onderdeel | Punten |
 | --- | --- |

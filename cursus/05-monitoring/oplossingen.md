@@ -56,18 +56,18 @@ Geen uitvoer? Test zonder `-s` om de fout te zien. Controleer de service, het do
 
 De meegeleverde monitoringcontainers gebruiken het netwerk van deze Linux-VM en luisteren op loopback. Dat is bewust anders dan het bridge-netwerk uit H4: Prometheus bereikt zo cAdvisor op dezelfde host zonder de meetpoorten voor de hele klas te openen. Deze instelling is voor een Linux Docker Engine op je eigen VM, niet Docker Desktop.
 
-Maak het Grafana-secretbestand zonder het wachtwoord te tonen:
+Maak het Grafana-secretbestand met het vaste labowachtwoord:
 
 ```bash
 cd ~/thecloud-monitoring
-read -r -s -p 'Nieuw Grafana-beheerwachtwoord: ' LAB_GRAFANA_PASS
-printf '%s' "$LAB_GRAFANA_PASS" > grafana-admin.txt
-unset LAB_GRAFANA_PASS
+printf '%s' 'Student123' > grafana-admin.txt
 sudo chown 472:472 grafana-admin.txt
 sudo chmod 400 grafana-admin.txt
 ```
 
 De Grafana-image gebruikt UID 472. Het secretbestand moet voor die gebruiker leesbaar zijn. Neem het niet op in je verslag. Het stelt het eerste adminwachtwoord in; bij een bestaand Grafana-volume verandert alleen dit bestand het bestaande accountwachtwoord niet.
+
+Heb je Grafana al met een ander wachtwoord gebruikt? Meld aan met dat bestaande account en wijzig het wachtwoord via je profiel naar `Student123`. Verwijder het datavolume niet: je dashboards moeten behouden blijven. Ben je het oude wachtwoord kwijt, dan helpt de docent om alleen het account te herstellen.
 
 Pas de targetadressen aan in `prometheus.yml`. Controleer of de hostpaden van cAdvisor op jouw Ubuntu-VM bestaan. Docker hoort hier zijn gewone datafolder `/var/lib/docker` te gebruiken. Bij een afwijkende opslagdriver of datamap moet de docent de cAdvisor-mounts passend maken.
 
@@ -86,7 +86,7 @@ Je verwacht een geslaagde configuratiecontrole. cAdvisor is de enige service met
 ssh -L 13000:127.0.0.1:3000 -L 19090:127.0.0.1:9090 student@192.168.77.120
 ```
 
-Voeg indien nodig je SSH-sleutel met `-i` toe. Open `http://localhost:19090` voor Prometheus en `http://localhost:13000` voor Grafana. Meld bij Grafana aan als `admin` met je gekozen wachtwoord.
+Voeg indien nodig je SSH-sleutel met `-i` toe. Open `http://localhost:19090` voor Prometheus en `http://localhost:13000` voor Grafana. Meld bij Grafana aan als `admin` met wachtwoord `Student123`.
 
 Bij Prometheus **Targets** verwacht je de jobs linux, windows, cadvisor, web en prometheus op UP. De webtarget is de scrape van Blackbox; controleer daarnaast `probe_success{job="web"}`. In Grafana staat de databron al klaar dankzij het provisioningbestand.
 

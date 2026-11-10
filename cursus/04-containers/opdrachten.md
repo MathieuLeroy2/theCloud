@@ -18,13 +18,13 @@ Start een kleine NGINX-container met `docker run`, alleen bereikbaar op `127.0.0
 
 ## H4.3 Mosquitto beveiligen
 
-Zet de [Compose-file](bestanden/compose.yaml), [brokerinstellingen](bestanden/mosquitto/mosquitto.conf) en [ACL](bestanden/mosquitto/acl) op de VM in één werkmap. Maak de accounts `sensor` en `dashboard` met eigen wachtwoorden. Controleer de leesrechten van het gehashte wachtwoordbestand. Anonieme toegang staat uit.
+Zet de [Compose-file](bestanden/compose.yaml), [brokerinstellingen](bestanden/mosquitto/mosquitto.conf) en [ACL](bestanden/mosquitto/acl) op de VM in één werkmap. Maak de accounts `sensor` en `dashboard` allebei met wachtwoord `Student123`. Controleer de leesrechten van het gehashte wachtwoordbestand. Anonieme toegang staat uit.
 
 **Klaar als:** de broker start en verkeerde credentials worden geweigerd.
 
 ## H4.4 Home Assistant verbinden
 
-Start beide diensten met Compose. Maak vanaf Xubuntu een SSH-tunnel naar de twee loopbackpoorten. Open Home Assistant en maak je beheeraccount.
+Start beide diensten met Compose. Maak vanaf Xubuntu een SSH-tunnel naar de twee loopbackpoorten. Open Home Assistant en maak je beheeraccount met wachtwoord `Student123`.
 
 Voeg de MQTT-integratie toe met broker `mosquitto`, poort 1883 en gebruiker `dashboard`. Voeg [de sensorconfiguratie](bestanden/homeassistant-mqtt.yaml.example) aan het bestaande configuratiebestand toe en maak de deur zichtbaar op een dashboard.
 
@@ -44,7 +44,7 @@ Laat de deur op DICHT staan met retain. Stop de stack met `docker compose down` 
 
 ## H4.7 Uitleg en indienen
 
-Beantwoord de vijf theorievragen. Neem in je enige verslag de Compose-file, brokerconfiguratie, ACL, sensor-YAML, commando's en testuitvoer op. Wachtwoorden en het gehashte wachtwoordbestand neem je niet over. Noteer alleen hoe je dat bestand gemaakt en beschermd hebt.
+Beantwoord de vijf theorievragen. Neem in je enige verslag de Compose-file, brokerconfiguratie, ACL, sensor-YAML, commando's en testuitvoer op. Het vaste labowachtwoord mag in de commando’s staan. Het gehashte wachtwoordbestand neem je niet over. Noteer alleen hoe je dat bestand gemaakt en beschermd hebt.
 
 KMI en een echte telefoonclient zijn extra: alleen doen als de docent de benodigde toegang en actuele integratie bevestigt. De kernopdracht moet zonder externe weerdata werken.
 

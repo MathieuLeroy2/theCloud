@@ -5,7 +5,7 @@ Klas:
 Datum:
 Eigen laptop of schoolomgeving:
 
-Dit is mijn enige in te dienen bestand: **verslag.md**. Ik plak instellingen, commando’s, gebruikte code en relevante testuitvoer hierin. Ik voeg geen losse bijlagen of afbeeldingen toe en laat geheimen weg.
+Dit is mijn enige in te dienen bestand: **verslag.md**. Ik plak instellingen, commando’s, gebruikte code en relevante testuitvoer hierin. Ik voeg geen losse bijlagen of afbeeldingen toe en laat private sleutels weg.
 
 ## Mijn instellingen
 
@@ -95,7 +95,7 @@ Neem de volledige aangepaste inhoud van deze bestanden hieronder op, telkens met
 - Sensorstuk van configuration.yaml
 - Commando’s en testuitvoer; geen passwords-bestand of echte geheimen
 
-Vervang echte wachtwoorden in voorbeelden door <WEGGELATEN>. Een verwijzing naar een bestand op mijn laptop is geen vervanging voor de inhoud.
+Gebruik `Student123` waar een wachtwoord nodig is. Neem geen private sleutels op. Een verwijzing naar een bestand op mijn laptop is geen vervanging voor de inhoud.
 
 ## Terugblik
 

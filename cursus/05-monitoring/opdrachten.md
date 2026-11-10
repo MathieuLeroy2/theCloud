@@ -18,7 +18,7 @@ Installeer Node Exporter op cloud-web en windows_exporter op de Windows-client. 
 
 ## H5.3 Je monitoringstack starten
 
-Kopieer de [startbestanden](bestanden/compose.yaml) met hun submappen naar `~/thecloud-monitoring` op cloud-containers. Pas de targetadressen in `prometheus.yml` aan. Maak een eigen Grafana-beheerwachtwoordbestand zoals in de oplossing.
+Kopieer de [startbestanden](bestanden/compose.yaml) met hun submappen naar `~/thecloud-monitoring` op cloud-containers. Pas de targetadressen in `prometheus.yml` aan. Maak het Grafana-beheerwachtwoordbestand met `Student123`, zoals in de oplossing.
 
 Controleer de YAML en Prometheus-configuratie en start de stack. Open Grafana en Prometheus via een SSH-tunnel. Bekijk de targets.
 
@@ -49,7 +49,7 @@ Test ook de schijfalert door de drempel tijdelijk lager te zetten dan het huidig
 
 ## H5.6 Bewaren en indienen
 
-Sla je dashboard op. Exporteer het dashboard als JSON en plak die JSON in je enige verslag, samen met queries, aangepaste YAML en testuitvoer. Zet geen wachtwoorden of secrets in dat bestand. De Grafana-export is dus geen aparte bijlage.
+Sla je dashboard op. Exporteer het dashboard als JSON en plak die JSON in je enige verslag, samen met queries, aangepaste YAML en testuitvoer. Het vaste labowachtwoord mag in voorbeelden staan. Neem geen private sleutels of persoonlijke geheimen op. De Grafana-export is dus geen aparte bijlage.
 
 Beantwoord de vijf theorievragen. Laat het dashboard ook aan de docent zien. Apache/MariaDB-monitoring staat als extra oefening in [de uitbreiding](uitbreiding-web-database.md).
 

@@ -25,18 +25,18 @@ Ubuntu-pakketten gebruiken voor de exporters meestal `/etc/default/prometheus-ap
 **In de MariaDB-shell, gestart met `sudo mariadb`:**
 
 ```sql
-CREATE USER 'exporter'@'localhost' IDENTIFIED BY '<EIGEN-WACHTWOORD>' WITH MAX_USER_CONNECTIONS 3;
+CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'Student123' WITH MAX_USER_CONNECTIONS 3;
 GRANT PROCESS, REPLICATION CLIENT ON *.* TO 'exporter'@'localhost';
 ```
 
-Vervang de placeholder door een eigen geheim dat niet in het verslag komt. Dit is een apart monitoringaccount. Voor het kernvoorbeeld gebruiken we alleen globale statusmetingen, niet het uitlezen van alle applicatietabellen.
+Gebruik ook voor dit monitoringaccount het vaste labowachtwoord `Student123`. Dit is een apart monitoringaccount. Voor het kernvoorbeeld gebruiken we alleen globale statusmetingen, niet het uitlezen van alle applicatietabellen.
 
 Maak `/etc/prometheus/mysql-exporter.cnf`:
 
 ```ini
 [client]
 user=exporter
-password=<EIGEN-WACHTWOORD>
+password=Student123
 socket=/run/mysqld/mysqld.sock
 ```
 

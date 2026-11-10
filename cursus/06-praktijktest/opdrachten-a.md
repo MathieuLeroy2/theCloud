@@ -36,4 +36,4 @@ De docent geeft bovendien één kleine fout in je toetsopstelling, bijvoorbeeld 
 
 ## H6.6 Indienen
 
-Neem in één `verslag.md` op: instellingen, HTML, CSS, volledige docker-runopdracht, testuitvoer, vijf queries, dashboard-JSON, alert-YAML en je foutonderzoek. Geen secrets of losse bijlagen. Toon de werking kort aan de docent. De [beoordeling](beoordeling.md) geldt voor beide varianten.
+Neem in één `verslag.md` op: instellingen, HTML, CSS, volledige docker-runopdracht, testuitvoer, vijf queries, dashboard-JSON, alert-YAML en je foutonderzoek. Gebruik `Student123` waar een wachtwoord nodig is. Geen private sleutels of losse bijlagen. Toon de werking kort aan de docent. De [beoordeling](beoordeling.md) geldt voor beide varianten.

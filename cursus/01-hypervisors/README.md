@@ -1,5 +1,8 @@
 # Hoofdstuk 1 Virtuele machines met Proxmox
 
+**Vast labowachtwoord:** gebruik voor alle accounts in dit hoofdstuk `Student123`. Gebruik dezelfde waarde voor herstelwachtwoorden en SSH-wachtzinnen. Alleen bij een test die bewust moet mislukken vul je een fout wachtwoord in.
+
+
 In dit hoofdstuk maak je twee virtuele computers. Op de eerste zet je een website. Op de tweede open je die website in een browser. Je gebruikt daarvoor Proxmox: software waarmee je virtuele computers maakt en beheert.
 
 Daarna maak je de website even onbereikbaar. Je zoekt uit wat er misloopt en zet alles weer recht. Je oefent ook hoe je een vorige versie van je machine terugzet.

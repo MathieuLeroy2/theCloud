@@ -47,7 +47,7 @@ mkdir -p ~/praktijk-b/mosquitto
 cd ~/praktijk-b
 ```
 
-Maak `mosquitto/mosquitto.conf` en `acl` volgens H4. Je mag de daar geleerde instellingen als vertrekpunt gebruiken, maar maakt nieuwe toetsaccounts. Gebruik de mosquitto_passwd-container uit H4 met deze nieuwe map. Maak sensor en dashboard, bescherm het wachtwoordbestand met de juiste eigenaar en rechten. De hash en geheimen komen niet in het verslag.
+Maak `mosquitto/mosquitto.conf` en `acl` volgens H4. Je mag de daar geleerde instellingen als vertrekpunt gebruiken, maar maakt nieuwe toetsaccounts. Gebruik de mosquitto_passwd-container uit H4 met deze nieuwe map. Maak sensor en dashboard allebei met `Student123`, bescherm het wachtwoordbestand met de juiste eigenaar en rechten. Het gehashte wachtwoordbestand komt niet in het verslag; `Student123` mag wel in de gebruikte commando’s staan.
 
 ```bash
 sudo docker volume create praktijk-mqtt-data
@@ -61,11 +61,11 @@ sudo docker logs praktijk-mqtt
 ssh -L 11884:127.0.0.1:1884 student@192.168.77.120
 ```
 
-In een tweede terminal lees je de wachtwoorden tijdelijk in variabelen zoals in H4. Publiceer de eigen code:
+Publiceer vanuit een tweede terminal met het vaste labowachtwoord de eigen code:
 
 ```bash
-mosquitto_pub -V mqttv5 -h 127.0.0.1 -p 11884 -u sensor -P "$LAB_SENSOR_PASS" -t iot/labo/deur -m 'OPEN-MIJN-CODE' -r -q 1
-mosquitto_sub -h 127.0.0.1 -p 11884 -u dashboard -P "$LAB_DASH_PASS" -t iot/labo/deur -C 1 -W 5
+mosquitto_pub -V mqttv5 -h 127.0.0.1 -p 11884 -u sensor -P "Student123" -t iot/labo/deur -m 'OPEN-MIJN-CODE' -r -q 1
+mosquitto_sub -h 127.0.0.1 -p 11884 -u dashboard -P "Student123" -t iot/labo/deur -C 1 -W 5
 ```
 
 Vervang de payload door de toegewezen code. Test fout wachtwoord en een verboden publicatie zoals in H4, nu op 11884. Lees opnieuw met dashboard: het behouden bericht mag niet door de verboden publicatie vervangen zijn.

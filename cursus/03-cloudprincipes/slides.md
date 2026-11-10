@@ -102,7 +102,8 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 **Publiek (.pub):** mag naar Proxmox of de server.
 
-**Privé:** blijft op je eigen computer, met een wachtzin.
+**Privé:** blijft op je eigen computer.
+Gebruik als wachtzin **Student123**.
 
 De hostsleutel van de server controleer je ook nog.
 
@@ -197,7 +198,7 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 Noteer template, netwerk, tests en proxyconfiguratie
 in **verslag.md**.
 
-Geen private sleutels, echte wachtwoorden of mediabijlagen.
+Gebruik **Student123**. Geen private sleutels of mediabijlagen.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.

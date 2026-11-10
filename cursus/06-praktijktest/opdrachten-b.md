@@ -8,7 +8,7 @@ Noteer VM's, adressen, poorten, Docker-image en gegevensopslag. Gebruik de nieuw
 
 ## H6.2 De toepassing
 
-Maak een nieuwe broker met de afgesproken Mosquitto-image via **docker run**, niet Compose. Gebruik een eigen configuratiemap en een apart gegevensvolume. Maak accounts `sensor` en `dashboard` met eigen wachtwoorden, zonder anonieme toegang.
+Maak een nieuwe broker met de afgesproken Mosquitto-image via **docker run**, niet Compose. Gebruik een eigen configuratiemap en een apart gegevensvolume. Maak accounts `sensor` en `dashboard` allebei met `Student123`, zonder anonieme toegang.
 
 Sensor mag schrijven op `iot/labo/#`, dashboard mag daar alleen lezen. Gebruik als payload bijvoorbeeld `OPEN-<jouw-code>`. Kies als hostpoort `127.0.0.1:1884`, zodat de H4-broker op 1883 blijft werken.
 
@@ -38,4 +38,4 @@ De docent brengt één kleine fout aan in je toetsopstelling, bijvoorbeeld een v
 
 ## H6.6 Indienen
 
-Neem alles op in één `verslag.md`: instellingen, docker-runopdracht, brokerconfiguratie, ACL, commando's om accounts te maken zonder hun geheimen, testresultaten, vijf queries, dashboard-JSON, alert-YAML en foutonderzoek. Neem het echte wachtwoordbestand niet over. Toon de werking kort aan de docent. Zie de [beoordeling](beoordeling.md).
+Neem alles op in één `verslag.md`: instellingen, docker-runopdracht, brokerconfiguratie, ACL, commando's om accounts te maken met het vaste labowachtwoord, testresultaten, vijf queries, dashboard-JSON, alert-YAML en foutonderzoek. Neem het echte wachtwoordbestand niet over. Toon de werking kort aan de docent. Zie de [beoordeling](beoordeling.md).

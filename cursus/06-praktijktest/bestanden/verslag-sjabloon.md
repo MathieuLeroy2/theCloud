@@ -6,7 +6,7 @@ Datum:
 Variant A of B:
 Toegewezen herkenningscode:
 
-Dit is het enige bestand dat ik indien. Geen echte wachtwoorden, private sleutels of losse bijlagen.
+Dit is het enige bestand dat ik indien. Alle laboaccounts gebruiken `Student123`. Neem geen private sleutels of losse bijlagen op.
 
 ## H6.1 Mijn plan
 
@@ -20,7 +20,7 @@ Mappen en eventueel volume:
 
 Volledige docker-runopdracht:
 Volledige HTML/CSS of brokerconfiguratie en ACL in codeblokken:
-Hoe ik eventuele accounts maakte, zonder geheimen:
+Hoe ik eventuele accounts maakte, met het vaste wachtwoord Student123:
 Mijn test vanaf de client en herkenningscode:
 Mijn negatieve tests indien MQTT:
 
@@ -57,5 +57,5 @@ Mijn geslaagde test na herstel:
 
 Is mijn code zichtbaar en alle gebruikte code in dit verslag opgenomen?
 Zijn bestaande labo’s behouden?
-Zijn geheimen verwijderd?
+Zijn private sleutels verwijderd?
 Is de dienst klaar voor demonstratie?
