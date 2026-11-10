@@ -1,31 +1,39 @@
-# Hoofdstuk 1 Hypervisors en virtuele infrastructuur
+# Hoofdstuk 1 Virtuele machines met Proxmox
 
-Je bouwt een kleine serveromgeving met Proxmox VE. Een Ubuntu Server-VM biedt een website aan. Een Xubuntu-VM gebruikt die dienst. Je leert de onderdelen configureren, hun communicatie testen en een eerdere toestand herstellen. Deze omgeving blijft beschikbaar voor de volgende hoofdstukken.
+In dit hoofdstuk maak je twee virtuele computers. Op de eerste zet je een website. Op de tweede open je die website in een browser. Je gebruikt daarvoor Proxmox: software waarmee je virtuele computers maakt en beheert.
 
-## Leerdoelen
+Daarna maak je de website even onbereikbaar. Je zoekt uit wat er misloopt en zet alles weer recht. Je oefent ook hoe je een vorige versie van je machine terugzet.
+
+Je houdt beide machines bij. We gebruiken ze opnieuw in de volgende hoofdstukken.
+
+## Wat leer je?
 
 Na dit hoofdstuk kun je:
 
-1. De rol van een hypervisor uitleggen en type I, type II en nested virtualisatie onderscheiden.
-2. Proxmox in je toegewezen oefenomgeving installeren en de beheerinterface bereiken.
-3. VM's maken met een onderbouwde keuze voor CPU, RAM, disk en netwerk.
-4. Twee Linux-gasten vaste IPv4-instellingen geven en hun netwerk testen.
-5. Een website via NGINX publiceren met passende bestandsrechten en beheertoegang.
-6. Een eenvoudige storing onderzoeken en een snapshot en back-up gecontroleerd herstellen.
+1. Uitleggen wat een virtuele machine is en wat een hypervisor doet.
+2. Proxmox installeren en de beheerpagina openen.
+3. Twee virtuele machines maken en er Linux op installeren.
+4. De machines een vast IP-adres geven en hun verbinding testen.
+5. Een eigen website op de server zetten en vanuit de andere machine openen.
+6. Een fout zoeken en een machine herstellen met een snapshot of back-up.
 
-## Materiaal en leesvolgorde
+Je leert ook het verschil tussen een hypervisor van type I en type II. We leggen die woorden uit met de computers die je zelf gebruikt.
 
-| Bestand | Gebruik |
-| --- | --- |
-| [Theorie](theorie.md) | Zelfstandige uitleg en begrippen |
-| [Slides](slides.md) | Marp-presentatie voor de les |
-| [Opdrachten](opdrachten.md) | Labo met controlepunten en beoordeling |
-| [Oplossingen](oplossingen.md) | Modeluitwerking, verklaringen en troubleshooting |
-| [Labkaart](bestanden/labkaart-sjabloon.md) | Jouw toegewezen netwerk en resources |
-| [Verslagsjabloon](bestanden/verslag-sjabloon.md) | Bewijs en reflectie bij H1.1 tot en met H1.8 |
-| [Voorbeeldconfiguratie netwerk](bestanden/01-lab-server.yaml.example) | Aan te passen Netplan-voorbeeld voor Ubuntu Server |
-| [Voorbeeldwebsite](bestanden/website/index.html) | Kleine startwebsite met [CSS](bestanden/website/style.css) |
+## Waar begin je?
 
-Voorzie ongeveer 4,5 uur voor het labo, na de theorie. ISO's en het netwerk zijn vooraf beschikbaar. De [startgids](../00-start/README.md) en je ingevulde labkaart zijn het vertrekpunt.
+1. Lees de [theorie](theorie.md). Daar staat wat je gaat bouwen en waarom.
+2. Volg de [opdrachten](opdrachten.md) tijdens het labo.
+3. Vul je [verslag](bestanden/verslag-sjabloon.md) aan terwijl je werkt. Je dient alleen dit ene Markdown-bestand in.
+4. Zit je vast? Vergelijk je stappen met de [oplossingen](oplossingen.md).
 
-De voorbeelden gebruiken `192.168.77.0/24`. Gebruik de waarden uit jouw labkaart als die afwijken. De modeloplossing beschrijft beide infrastructuurroutes. De docent moet de uitwerking nog op de concrete lesinfrastructuur valideren.
+De [slides](slides.md) ondersteunen de uitleg in de les.
+
+## Wat heb je nodig?
+
+De docent vertelt of je op je eigen laptop werkt of op een omgeving van de opleiding. De [startgids](../00-start/README.md) beschrijft de voorbereiding. Voorzie ongeveer 4,5 uur voor het labo. De installatiebestanden staan vooraf klaar.
+
+In de voorbeelden heeft de server het adres `192.168.77.100`. Dat adres kan bij jou anders zijn. Op je verslag schrijf je samen met de docent op welke adressen jij gebruikt.
+
+Je krijgt ook een [voorbeeldwebsite](bestanden/website/index.html) met [CSS](bestanden/website/style.css) en een [voorbeeld van de netwerkinstellingen](bestanden/01-lab-server.yaml.example). Pas die bestanden aan waar de opdracht dat vraagt.
+
+Deze eerste versie moet nog volledig worden uitgeprobeerd op de computers van de opleiding.

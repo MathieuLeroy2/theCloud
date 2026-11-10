@@ -1,6 +1,6 @@
 # Infrastructuur voor de cursus
 
-Dit document beschrijft de voorbereiding voor hoofdstuk 1 en de afspraken waarop latere hoofdstukken kunnen voortbouwen. Vul de definitieve omgevingswaarden in de labkaarten in. De cursus veronderstelt geen bestaand school-VPN, vast subnet of gekozen hosthypervisor.
+Dit document beschrijft de voorbereiding voor hoofdstuk 1 en de afspraken waarop latere hoofdstukken kunnen voortbouwen. Vul de definitieve omgevingswaarden in de verslagen in. De cursus veronderstelt geen bestaand school-VPN, vast subnet of gekozen hosthypervisor.
 
 ## Route A Eigen nested Proxmox
 
@@ -42,7 +42,7 @@ De laptop hoort via de virtuele hostadapter het subnet te bereiken. Een telefoon
 
 Voorzie per student een geïsoleerde oefenomgeving met een toegewezen subnet, gateway, DNS en VMID-bereik. Dit kan een eigen nested Proxmox zijn of beperkte toegang tot een bestaande node. Geef geen nodebrede beheerrechten op een gedeeld cluster. Gebruik een aparte wegwerpomgeving om Proxmox te installeren.
 
-De beheerder legt de toegestane bridge en eventuele VLAN-tag vast. Het labsubnet mag andere studenten en het fysieke beheernetwerk niet ongecontroleerd bereiken. Bij een gedeelde node kan het Proxmox-beheeradres in een ander netwerk liggen dan de Linux-gasten. De labkaart heeft daarvoor aparte velden.
+De beheerder legt de toegestane bridge en eventuele VLAN-tag vast. Het labsubnet mag andere studenten en het fysieke beheernetwerk niet ongecontroleerd bereiken. Bij een gedeelde node kan het Proxmox-beheeradres in een ander netwerk liggen dan de Linux-gasten. De verslag heeft daarvoor aparte velden.
 
 Verifieer vanuit de studentverbinding:
 
@@ -60,7 +60,7 @@ Gebruik voor de gastdisks opslag die VM-snapshots ondersteunt, bijvoorbeeld LVM-
 
 Een installatiedisk van 100 GB met standaardpartities biedt mogelijk te weinig ruimte in `local` voor ISO's. Bij een eigen Proxmox-installatie kan op de cursusdisk bijvoorbeeld circa 24 GiB voor root en 2 GiB swap worden voorzien, met ruimte voor de thin pool en vrije marge. De exacte indeling hangt af van de installer en schijfgrootte. Laat de docent de indeling controleren vóór installatie. Gebruik hier geen ZFS-opstelling als extra afhankelijkheid.
 
-Voorzie een back-updoel buiten de actieve gastdisks, bij voorkeur op andere fysieke opslag. Een gemounte directory, netwerkstorage of Proxmox Backup Server is mogelijk. Noem die storage in de labkaart. Een tweede virtuele disk in hetzelfde laptopbestand is hoogstens een oefendoel en beschermt niet tegen verlies van de laptop.
+Voorzie een back-updoel buiten de actieve gastdisks, bij voorkeur op andere fysieke opslag. Een gemounte directory, netwerkstorage of Proxmox Backup Server is mogelijk. Noem die storage in de verslag. Een tweede virtuele disk in hetzelfde laptopbestand is hoogstens een oefendoel en beschermt niet tegen verlies van de laptop.
 
 Voor de korte restoretest volstaat een gestopte back-up van Ubuntu Server. Herstel naar een vrije nieuwe VMID. Start de kopie eerst met de virtuele netwerkkaart losgekoppeld, zodat hetzelfde vaste IP en dezelfde identiteit niet dubbel op het netwerk verschijnen. Test de website in de console via `localhost`. Laat de originele VM behouden.
 
@@ -68,7 +68,7 @@ Voor de korte restoretest volstaat een gestopte back-up van Ubuntu Server. Herst
 
 1. Kies de ISO-versies, verifieer de checksums en noteer ze in [versies.md](versies.md).
 2. Probeer één volledige studentenroute uit, inclusief snapshot en restore naar een andere VMID.
-3. Vul de labkaarten in en bevestig de netwerkisolatie en capaciteit.
+3. Vul de verslagen in en bevestig de netwerkisolatie en capaciteit.
 4. Voorzie de kleine websitebestanden lokaal, zodat een externe download geen opdracht blokkeert.
 5. Controleer eventuele Proxmox-abonnementsrepositories. Configureer een passende repository via de officiële repository-instructies. Schakel controles of handtekeningverificatie niet uit om een foutmelding te verbergen.
 6. Begroot ongeveer 4,5 uur voor het labo na de theorie. Installeerbestanden staan vooraf klaar. Bij trage installaties kan de onafhankelijke restoretest als korte begeleide vervolgcontrole plaatsvinden.
@@ -78,3 +78,103 @@ Voor de korte restoretest volstaat een gestopte back-up van Ubuntu Server. Herst
 - [Proxmox VE kenmerken](https://www.proxmox.com/en/products/proxmox-virtual-environment/features)
 - [Proxmox VE documentatie](https://www.proxmox.com/en/downloads/proxmox-virtual-environment/documentation)
 - [Proxmox VE pakketrepositories](https://pve.proxmox.com/wiki/Package_Repositories)
+
+## Voorbereiding voor hoofdstukken 2 tot en met 6
+
+Studenten schrijven alle omgevingsgegevens in hun enige verslag. Deel de benodigde waarden uit via de lesinstructie; laat geen apart in te dienen omgevingsdocument maken.
+
+| Hoofdstuk | Wat staat vooraf klaar? | Machines die tegelijk nodig zijn |
+| --- | --- | --- |
+| 2 | Windows Server 2022 Desktop Experience en Windows 11 Pro/Education met licentie/evaluatie, VirtIO-drivers, UEFI/TPM en lokaal installatiepad | Domeincontroller 3 GB, twee clients elk 4 GB, Proxmox zelf |
+| 3 | Ubuntu-cloud-init-template, individueel consolebeheerpad, certificaat/CA en twee bereikbare clients | Media-VM 2 GB en client(s) |
+| 4 | Ubuntu-template, Ubuntu Docker-pakketten en images | Container-VM 4 GB en Xubuntu/client |
+| 5 | Windows-exporter MSI, Linux-pakketten, monitoringimages en bereikbare meetpoorten | cloud-web, container-VM, Windows-client, eventueel DC voor domeindiensten, client |
+| 6 | Werkende basis van H4/H5, lokaal beschikbare toetsimages en gecontroleerde metriclabels | Container-VM, cloud-web en client; niet-benodigde Windows-VM's mogen uit |
+
+De Proxmox-VM van 8 GB uit H1 is geen budget voor het hele vak. H2 vraagt al 11 GB voor alleen de gasten. Voor H5 kan inclusief desktopclient en DC circa 18–20 GB binnen Proxmox nodig zijn. Bied een schoolomgeving aan als de laptop dit niet aankan. Vergroot ook de oorspronkelijke schijf niet blind: begroot alle bewaarde virtuele disks, ISO's, thin-poolmarge en back-ups. Een grotere toegewezen VM-disk maakt nog geen fysieke SSD-ruimte vrij.
+
+### Voorbeeldadressen
+
+Alle voorbeelden horen bij hetzelfde per student geïsoleerde subnet. Vervang het netwerk als de omgeving anders is.
+
+| Rol | Voorbeeld |
+| --- | --- |
+| Windows-domeincontroller | `.20` |
+| Windows-clients | `.30` en `.40` |
+| Bestaande native webserver | `.100` |
+| Jellyfin-server | `.110` |
+| Docker en monitoring | `.120` |
+| Optionele Apache/MariaDB-VM | `.140` |
+| Xubuntu | `.200` |
+
+Let op: `.140` zit in de voorbeeld-DHCP-pool van route A. Reserveer dit adres expliciet of kies voor de uitbreiding een ander vrij adres buiten de pool. In de hoofdopdrachten zitten `.110` en `.120` buiten die pool. De gastclients van H2 gebruiken `.20` als DNS. De overige Linux-VM's blijven de door de opleiding opgegeven lab-DNS gebruiken.
+
+### Ubuntu-template voor H3 en H4
+
+Maak dit vooraf op een eigen beheerde Proxmox-oefenomgeving. Gebruik een officiële Ubuntu 24.04 cloud image, registreer de checksum en bewaar die image voor de leseditie. De URL `https://cloud-images.ubuntu.com/noble/current/` wijzigt in de tijd en is dus geen versiebevriezing.
+
+Een mogelijke voorbereiding via de Proxmox-shell, met **vrije** template-ID 9000, bridge en storage aangepast aan de omgeving:
+
+```bash
+qm create 9000 --name ubuntu2404-template --memory 2048 --cores 2 --net0 virtio,bridge=vmbr0
+qm importdisk 9000 noble-server-cloudimg-amd64.img local-lvm
+qm config 9000
+```
+
+Lees de exacte volumenaam bij `unused0` uit de laatste uitvoer. Gebruik die bij het koppelen; de voorbeeldnaam hieronder is niet universeel:
+
+```bash
+qm set 9000 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9000-disk-0
+qm set 9000 --ide2 local-lvm:cloudinit --boot order=scsi0 --serial0 socket --vga serial0
+qm resize 9000 scsi0 32G
+qm template 9000
+```
+
+Start deze basisimage niet eerst met gedeelde studentcredentials. Studenten vullen op hun clone vóór de eerste start een eigen gebruiker, publieke sleutel, IP/DNS en naam in. Verifieer dat iedere clone eigen machine-identiteit en SSH-hostsleutels opbouwt en dat cloud-init de disk benut. Voor H4 vergroot je de clonedisk tot 40 GB en controleer je de guestfilesystemgrootte.
+
+Voorzie een individueel tijdelijk consolebeheeraccount of een andere vertrouwde methode om de servervingerafdruk te controleren. Een cloud image met alleen SSH-sleutels geeft niet automatisch een werkende wachtwoordlogin via de Proxmox-console. Neem zo'n tijdelijk geheim niet in het verslag op.
+
+### Labcertificaten voor H3
+
+Beheer een lab-CA buiten de studentenrepository. De private CA-sleutel blijft bij de docent. Lever per student een certificaat met de juiste Subject Alternative Name voor diens werkelijke IP of DNS-naam. Laat alleen de publieke CA aan clients toevoegen, nooit de private CA-sleutel.
+
+Een voorbeeld voor een **afzonderlijke tijdelijke lab-CA**, in een afgeschermde docentmap:
+
+```bash
+umask 077
+openssl req -x509 -newkey rsa:3072 -nodes -keyout lab-ca.key -out lab-ca.crt -days 30 -subj '/CN=The Cloud Lab CA' -addext 'basicConstraints=critical,CA:TRUE' -addext 'keyUsage=critical,keyCertSign,cRLSign'
+openssl req -new -newkey rsa:2048 -nodes -keyout media.key -out media.csr -subj '/CN=media.lab.test'
+```
+
+Maak `media.ext` met de echte waarden:
+
+```ini
+subjectAltName=IP:192.168.77.110,DNS:media.lab.test
+basicConstraints=critical,CA:FALSE
+keyUsage=critical,digitalSignature,keyEncipherment
+extendedKeyUsage=serverAuth
+```
+
+```bash
+openssl x509 -req -in media.csr -CA lab-ca.crt -CAkey lab-ca.key -CAcreateserial -out media.crt -days 14 -sha256 -extfile media.ext
+```
+
+Voor een echte opleiding-CA volg je het bestaande beleid in plaats van een extra uitgever te maken. Kopieer de server-private sleutel alleen via een vertrouwde route naar de eigen VM en geef root leesrecht. Bewaar geen private sleutels in Git of in studentverslagen.
+
+Op Xubuntu kan de publieke lab-CA na verificatie in `/usr/local/share/ca-certificates/thecloud-lab.crt` geplaatst worden en met `sudo update-ca-certificates` worden geladen. Controleer afzonderlijk Firefox, de tweede client en eventuele apps: niet elke client gebruikt dezelfde certificaatopslag. Geef zo nodig de concrete importstappen via Certificate Authorities mee. Een certificaatuitzondering of `curl -k` telt niet als geslaagde eindtest.
+
+### Docker en meetpoorten
+
+De verplichte Docker-applicatiepoorten zijn aan `127.0.0.1` gebonden en bereikbaar via SSH-tunnels. Zo is de taak niet afhankelijk van publiek bereikbare poorten of veronderstelde UFW-filtering van Docker. Bij een andere netwerkroute moet de opleiding de afscherming op de passende laag toepassen.
+
+Node Exporter op cloud-web accepteert alleen de monitoring-VM als bron. De Windows MSI krijgt `REMOTE_ADDR` met dezelfde bron. cAdvisor draait met brede leesrechten en privileged uitsluitend in de eigen Ubuntu-VM. De hostnetwerkmodus van H5 is bewust bedoeld voor Linux Docker Engine, niet voor rechtstreeks gebruik op een persoonlijke desktop of een gedeelde Proxmox-node.
+
+Controleer `/dev/kmsg`, `/dev/disk` en het echte Docker Data Root. Docker met een andere opslagopzet, cgroup-instelling of containerd-image store kan aangepaste cAdvisor-mounts of flags vragen. Bevestig vóór de les dat de label-, geheugen-, CPU- en netwerkmetrics voor een eigen proefcontainer bestaan. Een succesvolle start van cAdvisor alleen is onvoldoende.
+
+### Praktijktest en extra oefening
+
+De kernhoofdstukken bevatten geen afhankelijkheid van weerservices, torrents, cloudaccounts of nieuwe GUI-containerimages. H5 bewaart Apache/MariaDB als optionele uitbreiding. H6 toetst de eerder geoefende website of MQTT-broker. Probeer de tijdsduur en moeilijkheid van de gekozen variant vooraf met dezelfde images uit.
+
+## Eén bestand als studentresultaat
+
+Elk labo en iedere toets heeft één `verslag.md`. Instellingen, antwoorden, commando's, configbestanden, HTML/CSS, queries en dashboard-JSON staan daarin als tekst. De toepassingen blijven uiteraard hun eigen werkbestanden op de VM gebruiken. Een VM-demonstratie vervangt geen verslag en een verslag vervangt geen werkende toepassing.

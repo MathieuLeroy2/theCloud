@@ -4,6 +4,8 @@ Dit voorstel vertrekt van alle twintig bestanden in `base` en richt zich op het 
 
 De vijf bestaande hoofdstukken blijven de basis. We vervangen de Azure-afhankelijkheden door eigen infrastructuur, versterken de uitleg achter de opdrachten en maken opdrachten en oplossingen reproduceerbaar. Er komt geen verplichte commerciële cloudaccount of kredietkaart in het leerpad. Ook Grafana Cloud en Chrome Remote Desktop zijn niet nodig voor de basisopdrachten.
 
+**Aanvulling na feedback:** alle hoofdstukken worden in gewone taal uitgewerkt. Studenten dienen per labo of toets één `verslag.md` in, met instellingen, code en testresultaten. Er komt geen aparte labkaart of verzameling bijlagen. De cursusbronbestanden blijven per hoofdstuk gegroepeerd. De praktijktesten gebruiken een website of MQTT-broker die in de nieuwe lessen geoefend zijn.
+
 ## 1. Analyse van het bronmateriaal
 
 De tekst, opdrachten, beoordelingscriteria en links van alle bestanden zijn doorgenomen. De screenshotdocumenten bevatten aanvullende uitwerkingen die bij de herwerking als bron kunnen dienen. De bestaande labo's zijn nog niet opnieuw technisch uitgevoerd; dit document is een inhoudelijk voorstel, geen validatie van de bestaande commando's of een afgewerkte cursus.

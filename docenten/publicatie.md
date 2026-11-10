@@ -12,7 +12,7 @@ npm run check
 npm run slides:build
 ```
 
-Open `dist/slides/01-hypervisors.html` in een browser. De HTML-export bevat het thema en kan als presentatie worden gebruikt. `npm run slides:preview` opent de bron in de Marp-previewomgeving.
+Dit bouwt alle zes presentaties in `dist/slides`. Open bijvoorbeeld `dist/slides/01-hypervisors.html` in een browser. De HTML-export bevat het thema. Met `npm run slides:build -- 04` bouw je alleen hoofdstuk 4. `npm run slides:preview -- 04` opent dat hoofdstuk in de Marp-previewomgeving; zonder nummer start de preview bij hoofdstuk 1.
 
 De `package-lock.json` legt de afhankelijkheden vast. Voer geen automatische update naar de nieuwste Marp-versie uit vlak vóór een les zonder de exports opnieuw te controleren.
 
@@ -39,6 +39,23 @@ Met Marp for VS Code kun je de slides tijdens het schrijven bekijken. De reposit
 Gebruik korte slides en plaats toelichting in Marp-commentaren als sprekersnotities. De theorie bevat de volledige uitleg. Ondersteunende illustraties horen bij het hoofdstuk; bronverwijzingen bij een slide staan in de bijbehorende notities.
 
 ## Studentenpublicatie
+
+### Taal van de cursus
+
+Schrijf voor studenten die het onderwerp voor het eerst in de praktijk gebruiken. Hoofdstuk 1 is hiervoor in gewone taal herwerkt. Gebruik die aanpak ook bij volgende hoofdstukken:
+
+- Begin met iets dat de student gaat maken of zien, bijvoorbeeld een website op de server openen vanaf Xubuntu.
+- Leg één nieuw begrip tegelijk uit. Introduceer eerst de handeling of het voorbeeld en geef daarna de vakterm.
+- Gebruik korte zinnen en vaste namen voor de machines. Vermijd opeenvolgende onbekende afkortingen.
+- Zet bij commando's waar de student ze uitvoert, wat ze doen en welk resultaat verwacht wordt.
+- Verdeel opdrachten in kleine stappen. Eindig een deel met een concrete controle, zoals ‘zie je de pagina in je browser?’.
+- Vraag uitleg over de eigen opstelling en testresultaten. Gebruik die als vertrekpunt voor de algemene begrippen.
+
+Behoud de juiste vaktermen en leerdoelen. Eenvoudige taal betekent niet dat we een technisch onjuist beeld geven of studenten kinderachtig aanspreken.
+
+### Welke bestanden geef je mee?
+
+Een student dient per labo of praktijktest precies één `verslag.md` in. Gebruik de instellingenrubriek van dat verslag in plaats van een aparte labkaart. Laat ook configuraties, HTML/CSS, queries en dashboard-JSON in codeblokken opnemen. Gebruik tekstuitvoer voor bewijs, zodat geen losse screenshots, exportbestanden of externe bijlagen nodig zijn. De werkbestanden op de VM blijven wel nodig voor de demonstratie.
 
 Publiceer de benodigde theorie, opdrachten, slides en startbestanden. Bepaal per onderwijsfase of modeloplossingen beschikbaar zijn. Alleen een bestand weglaten uit een website verbergt het niet voor iemand met toegang tot de Git-repository en haar geschiedenis.
 

@@ -4,9 +4,9 @@
   "private": true,
   "description": "Markdown-cursus en Marp-slides voor graduaat Internet of Things",
   "scripts": {
-    "slides:build": "marp cursus/01-hypervisors/slides.md --theme-set thema/the-cloud.css --output dist/slides/01-hypervisors.html",
-    "slides:pdf": "marp cursus/01-hypervisors/slides.md --theme-set thema/the-cloud.css --pdf --output dist/slides/01-hypervisors.pdf",
-    "slides:preview": "marp cursus/01-hypervisors/slides.md --theme-set thema/the-cloud.css --preview",
+    "slides:build": "node scripts/build-slides.mjs",
+    "slides:pdf": "node scripts/build-slides.mjs --pdf",
+    "slides:preview": "node scripts/build-slides.mjs --preview",
     "check": "node scripts/check-course.mjs"
   },
   "devDependencies": {

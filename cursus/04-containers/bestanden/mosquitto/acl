@@ -1,0 +1,7 @@
+user sensor
+topic write iot/labo/#
+
+user dashboard
+topic read iot/labo/#
+topic read homeassistant/#
+topic write homeassistant/status

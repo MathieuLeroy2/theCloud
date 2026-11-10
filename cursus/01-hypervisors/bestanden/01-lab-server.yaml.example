@@ -1,6 +1,8 @@
-# Voorbeeld voor Ubuntu Server; geen configuratie voor Proxmox of Xubuntu.
-# Pas de bestaande Netplan-definitie aan. Maak geen tweede definitie voor dezelfde kaart.
-# Vervang enp6s18 en alle adressen door de bevestigde waarden uit je labkaart.
+# Alleen voor Ubuntu Server. Niet voor Proxmox of Xubuntu.
+# Gebruik de adressen van je verslag als ze anders zijn.
+# Zoek met ip -br address de echte kaartnaam en vervang hieronder enp6s18.
+# Pas het bestaande bestand voor die kaart aan; maak geen tweede instelling erbij.
+# Gebruik spaties om in te springen, geen tabs.
 network:
   version: 2
   renderer: networkd

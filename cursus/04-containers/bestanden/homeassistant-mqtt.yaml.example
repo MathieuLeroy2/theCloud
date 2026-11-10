@@ -1,0 +1,10 @@
+# Voeg dit toe aan configuration.yaml. Er mag maar één mqtt: hoofdsleutel zijn.
+# De brokerverbinding zelf stel je in via Settings > Devices & services > MQTT.
+mqtt:
+  - binary_sensor:
+      name: Voordeur
+      unique_id: thecloud_voordeur
+      state_topic: iot/labo/deur
+      payload_on: OPEN
+      payload_off: DICHT
+      device_class: door

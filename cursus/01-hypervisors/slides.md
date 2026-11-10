@@ -4,7 +4,7 @@ theme: the-cloud
 size: 16:9
 paginate: true
 lang: nl
-title: Hypervisors en virtuele infrastructuur
+title: Virtuele machines met Proxmox
 description: The Cloud voor het tweede jaar graduaat Internet of Things
 header: 'The Cloud · Hoofdstuk 1'
 footer: 'Graduaat Internet of Things'
@@ -12,225 +12,236 @@ footer: 'Graduaat Internet of Things'
 
 <!-- _class: lead -->
 
-# Hypervisors en virtuele infrastructuur
+# Virtuele machines met Proxmox
 
-Een eigen serveromgeving voor je IoT-diensten
+Een website op de ene computer.
+Een browser op de andere.
 
 <!--
-Laat studenten voorbeelden noemen van software achter een IoT-toepassing.
-De bestaande hypervisorles en het Proxmox-labo uit base vormen het vertrekpunt.
+Begin met het concrete resultaat. De studenten bouwen een websiteomgeving.
+Vraag wie al eens een virtuele machine heeft gebruikt en wat die ermee deed.
 -->
 
 ---
 
-# De infrastructuur achter een sensor
+# Dit gaan we bouwen
 
-Een meetwaarde heeft een bestemming nodig.
-
-- Een broker ontvangt berichten.
-- Een database bewaart gegevens.
-- Een dashboard maakt gegevens zichtbaar.
-
-Die software gebruikt **CPU, RAM, opslag en netwerk**.
-
-<!--
-Laat een student het pad van een temperatuurmeting naar een dashboard beschrijven.
-Verbind dit met de infrastructuur die we vandaag bouwen.
--->
-
----
-
-# Het resultaat van dit hoofdstuk
-
-| Onderdeel | Functie |
+| Onderdeel | Wat doe je ermee? |
 | --- | --- |
-| Proxmox VE | VM's en hun resources beheren |
-| Ubuntu Server | Website aanbieden via NGINX |
-| Xubuntu | De website als client gebruiken |
-| Snapshot en back-up | Een eerdere toestand herstellen |
+| Proxmox | Twee virtuele machines maken |
+| Ubuntu Server | Je website aanbieden |
+| Xubuntu | Je website openen in de browser |
+
+Daarna zet je een oude versie terug met een snapshot en back-up.
 
 <!--
-De twee gasten blijven behouden voor volgende hoofdstukken.
-De telefoon is vandaag geen noodzakelijke client.
+Maak het verschil zichtbaar tussen de server die de pagina verstuurt en de client die ze opvraagt.
+Beide machines blijven bewaard voor latere hoofdstukken.
 -->
 
 ---
 
-# De hypervisor
+# Een virtuele machine
 
-Een hypervisor verdeelt fysieke resources over VM's.
+Een **VM** is een computer die met software wordt nagebouwd.
 
-Elke VM krijgt virtuele hardware en een eigen gast-OS.
+Je kunt er Linux op installeren, programma's starten
+en bestanden bewaren.
 
-De gasten delen de onderliggende host.
-**Uitval van die ene host treft alle gasten daarop.**
+Zo maak je op één laptop meerdere computers voor je labo.
 
 <!--
-Vraag welke fout een tweede VM op dezelfde laptop niet kan opvangen.
-Virtualisatie en hoge beschikbaarheid zijn afzonderlijke onderwerpen.
+Laat een VM zien voordat je nieuwe termen introduceert.
+Een VM is geen tweede fysieke computer in de laptop.
+-->
+
+---
+
+# De hypervisor verdeelt het werk
+
+De **hypervisor** laat de VM's de echte computer gebruiken.
+Hij verdeelt processor, geheugen en opslag.
+
+- **Host:** de computer waarop de VM's draaien.
+- **Gast:** het besturingssysteem in een VM.
+
+Zet je de host uit, dan stoppen de VM's daarop ook.
+
+<!--
+Gebruik een concreet voorbeeld: een Windows-laptop met een Ubuntu-VM.
+Vraag wat er gebeurt als de batterij van de laptop leeg is.
 -->
 
 ---
 
 # Type I en type II
 
-| Type | Plaats | Voorbeeld |
+| Type | Hoe gebruik je het? | Voorbeeld |
 | --- | --- | --- |
-| I | Virtualisatielaag op serverhardware | KVM in Proxmox VE |
-| II | Toepassing op een host-OS | Workstation, VirtualBox |
+| I | Op een server, rechtstreeks op de hardware | KVM in Proxmox |
+| II | Als programma op je bestaande computer | Workstation |
 
-Proxmox VE beheert onder meer **KVM-VM's** en LXC.
-In dit hoofdstuk gebruiken we VM's.
+Proxmox is het beheerplatform.
+KVM is het onderdeel dat de VM's laat draaien.
 
 <!--
-Proxmox is het beheerplatform. De Debian/Linux-basis maakt KVM geen gewone type II-desktoptoepassing.
+Laat studenten de programma's koppelen aan hun eigen opstelling.
+VirtualBox is een ander voorbeeld van type II.
 Bron: https://www.proxmox.com/en/products/proxmox-virtual-environment/features
 -->
 
 ---
 
-# Nested virtualisatie
+# Een VM in een VM
 
-Bij de laptoproute staan deze lagen boven elkaar:
+Op je eigen laptop kan het zo werken:
 
-1. Fysieke laptop en hostbesturingssysteem.
-2. Hosthypervisor met een Proxmox-VM.
-3. KVM in Proxmox met de twee Linux-gasten.
+1. Je opent Workstation.
+2. Daarin start je de VM met Proxmox.
+3. In Proxmox start je Ubuntu Server en Xubuntu.
 
-De buitenste hypervisor geeft hardwarevirtualisatie door.
+Dit heet **nested virtualisatie**.
 
 <!--
-Bij een fysieke schoolnode ontbreken de buitenste laptoplagen.
-Laat studenten benoemen op welke laag een KVM-startfout onderzocht moet worden.
+Toon de vensters in die volgorde. Op een fysieke schoolserver ontbreken de Workstation-stappen.
+Workstation moet de virtualisatiefunctie aan Proxmox doorgeven.
 -->
 
 ---
 
-# Het RAM-budget
+# Je kunt RAM niet dubbel gebruiken
 
-| Binnen de Proxmox-VM | Werkbudget |
+De Proxmox-VM krijgt in ons voorbeeld **8 GB RAM**.
+
+| Daarvan gebruikt ... | Hoeveel? |
 | --- | --- |
 | Ubuntu Server | 2 GB |
 | Xubuntu | 3 GB |
-| Proxmox en overhead | Circa 3 GB |
-| Totaal | 8 GB |
+| Proxmox zelf en zijn andere werk | Ongeveer 3 GB |
 
-De laptop heeft daarnaast RAM nodig voor zijn eigen OS.
+Je laptop heeft daarnaast RAM nodig voor Windows of Linux.
 
 <!--
-Dit is een cursusbudget voor hoofdstuk 1, geen officiële minimumvereiste.
-Gebruik vaste geheugentoewijzing om de berekening zichtbaar te houden.
+Laat studenten 2 + 3 + 3 optellen. De gasten gebruiken geheugen binnen de Proxmox-VM.
+Dit is het werkbudget van het labo, geen universeel minimum.
 -->
 
 ---
 
-# vCPU en fysieke capaciteit
+# De processor doet het rekenwerk
 
-Een vCPU krijgt uitvoeringstijd op een fysieke processor.
+**vCPU** betekent virtuele processor.
+De echte processor verdeelt zijn tijd over de VM's.
 
-Meer toegewezen vCPU's kunnen dezelfde capaciteit delen.
-Bij gelijktijdige belasting ontstaat wachttijd.
+Ubuntu en Xubuntu installeren tegelijk updates.
+Daardoor kunnen beide trager reageren.
 
-**Bespreek:** helpt meer vCPU's instellen altijd bij een trage VM?
+Meer vCPU's invullen maakt je laptop niet krachtiger.
 
 <!--
-Bespreek overcommitment. Laat ook RAM-tekort en opslagvertraging als oorzaken noemen.
+Vraag of studenten dit herkennen wanneer meerdere programma's tegelijk veel werk doen.
+Noem de vakterm overcommitment alleen als daar tijdens de les behoefte aan is.
 -->
 
 ---
 
-# Virtuele disks en thin provisioning
+# Een virtuele schijf
 
-Een disk van 24 GB kan aanvankelijk minder fysiek innemen.
+Elke Linux-VM krijgt een schijf van **24 GB**.
+Die gebruikt uiteindelijk ruimte op je echte schijf.
 
-De fysieke behoefte groeit wanneer de gast data schrijft.
+Bij **thin provisioning** groeit de gebruikte ruimte
+naarmate je bestanden toevoegt.
 
-Controleer daarom vrije ruimte **in de gast én op de host**.
-Een volle thin pool kan meerdere VM's treffen.
+Controleer vrije ruimte in de VM, in Proxmox en op je laptop.
 
 <!--
-Gebruik de vraag: de gast toont vrije ruimte, maar de Proxmox-storage is vol. Waar zoek je?
+Voorbeeld: Ubuntu ziet nog ruimte, maar de opslag waarop alle VM's staan is vol.
+Laat in Proxmox zien waar studenten die ruimte kunnen bekijken.
 -->
 
 ---
 
-# De virtuele netwerkbridge
+# De bridge is je virtuele switch
 
-`vmbr0` verbindt netwerkinterfaces op laag 2.
-Vergelijk de rol met die van een switch.
+In Proxmox zie je bijvoorbeeld **vmbr0**.
+Dat is een bridge: vergelijk ze met een netwerkswitch.
 
-De bridge koppelt in ons lab beide gasten aan hun segment.
+Je verbindt beide VM's met die bridge.
 
-**Routering, DHCP en NAT zijn afzonderlijke functies.**
+Voor internet heb je ook een verbinding met een router nodig.
 
 <!--
-Toon tijdens de demonstratie de uplink van de bridge.
-Een lege bridge zonder uplink maakt niet automatisch internet.
+Wijs vmbr0 en de netwerkkaarten aan in de echte opstelling.
+Vermijd een uitleg over OSI-lagen voordat studenten zien wat ze moeten verbinden.
 -->
 
 ---
 
-# Het voorbeeldnetwerk
+# Elke machine krijgt een adres
 
-| Functie | Adres |
+| In ons voorbeeld | IP-adres |
 | --- | --- |
-| Gateway en bevestigde DNS-forwarder | `192.168.77.2` |
-| Proxmox-beheer bij route A | `192.168.77.10` |
+| Proxmox | `192.168.77.10` |
 | Ubuntu Server | `192.168.77.100` |
 | Xubuntu | `192.168.77.200` |
 
-Subnet: `192.168.77.0/24`. **Jouw labkaart is bepalend.**
+Bij dit netwerk gebruiken we `/24` als subnetmasker.
+**Schrijf jouw echte instellingen in je verslag.**
 
 <!--
-De opleiding of buitenste hypervisor moet dit subnet daadwerkelijk voorzien.
-Op route B kan het beheeradres in een ander netwerk liggen.
+De voorbeeldadressen werken pas als dat netwerk voorbereid is.
+De docent bevestigt dat de vaste adressen vrijgehouden zijn.
 -->
 
 ---
 
-# Gateway, DNS en NAT
+# Gateway en DNS hebben elk een taak
 
-- De **gateway** routeert naar andere netwerken.
-- **DNS** vertaalt namen naar adressen.
-- **NAT** vertaalt adressen bij het doorsturen.
+**Gateway:** de router naar andere netwerken.
+Je gebruikt die bijvoorbeeld om updates te downloaden.
 
-Ubuntu en Xubuntu communiceren in hetzelfde subnet
-rechtstreeks, zonder de default gateway.
+**DNS:** zoekt een IP-adres bij een naam.
+Bijvoorbeeld bij `archive.ubuntu.com`.
+
+In ons voorbeeld doet `192.168.77.2` beide taken.
 
 <!--
-Vraag of een DNS-fout verkeer naar een bekend IP verhindert.
-De NAT-gateway staat bij route A op de buitenste hypervisor, niet vanzelf op Proxmox.
+Vraag wat er kan mislopen als toegang via een IP werkt, maar via een naam niet.
+Ubuntu en Xubuntu hebben in ditzelfde subnet geen default gateway nodig om elkaar te bereiken.
 -->
 
 ---
 
-# De route naar een gast
+# Internet via je laptop
 
-Uitgaande internettoegang vanuit een VM is één verbinding.
+**NAT** in Workstation helpt je VM's om via de laptop
+verbinding met internet te maken.
 
-Toegang vanaf een telefoon is een andere route.
-Die vraagt een geschikt netwerkpad of VPN.
+Dat betekent nog niet dat je telefoon de VM kan bereiken.
+Je telefoon zit mogelijk op een ander netwerk.
 
-Vandaag testen we vanuit **Xubuntu op het labsegment**.
+Vandaag openen we de website vanaf **Xubuntu**.
 
 <!--
-Laat studenten het verschil tussen de laptop-hostadapter en wifi op de telefoon uitleggen.
-Er is voor dit labo geen publieke portforward nodig.
+NAT vertaalt de adressen bij het verkeer naar buiten.
+Laat studenten op hun verslag aanwijzen via welke verbinding ze Proxmox bereiken.
 -->
 
 ---
 
-# Vaste netwerkinstellingen
+# Een vast IP-adres instellen
 
-| Gast | Methode in deze cursus |
+| Machine | Wanneer en waarmee? |
 | --- | --- |
-| Ubuntu Server | Tijdens installatie, daarna Netplan controleren |
-| Xubuntu | Na installatie via een NetworkManager-profiel |
+| Ubuntu Server | Tijdens de installatie; Netplan bewaart het |
+| Xubuntu | Na de installatie, met NetworkManager |
 
-Eerst de echte interface en het actieve profiel opzoeken.
-Daarna pas de instellingen wijzigen.
+De oplossing toont beide manieren stap voor stap.
+Gebruik overal de waarden van je verslag.
 
 <!--
+Leg uit dat nmcli het commando is om NetworkManager te bedienen.
 Bronnen:
 https://documentation.ubuntu.com/server/explanation/networking/configuring-networks/
 https://networkmanager.dev/docs/api/latest/nmcli.html
@@ -238,169 +249,171 @@ https://networkmanager.dev/docs/api/latest/nmcli.html
 
 ---
 
-# Het netwerk onderzoeken
+# Wat is mijn adres?
+
+Op de Linux-machine waarop je werkt:
 
 ```bash
 ip -br address
-ip route
-resolvectl query archive.ubuntu.com
 ```
 
-Welke uitvoer helpt bij een verkeerd adres?
-Welke uitvoer helpt bij een DNS-probleem?
+Zoek het adres van de netwerkkaart.
+Komt het overeen met je verslag?
 
 <!--
-Voer deze controles live uit in de console van een gast.
-Een ontbrekende route is iets anders dan een onbereikbare DNS-server.
+Voer het commando live uit op beide machines.
+Toon ook de kaartnaam en wijs 127.0.0.1 aan als het eigen loopbackadres.
+Laat de student eerst deze uitvoer lezen vóór je meer commando's toevoegt.
 -->
 
 ---
 
-# IP-verkeer en een toepassing
+# Ping werkt, maar de website niet
 
-Een geslaagde `ping` onderzoekt ICMP-bereikbaarheid.
-Voor HTTP moet ook een webdienst op TCP 80 luisteren.
+`ping` vraagt of de andere machine antwoordt.
+Een website vraagt ook een werkende webserver.
 
 ```bash
 curl -I http://192.168.77.100
 ```
 
-**Bespreek:** wat kan nog fout zijn als ping wel slaagt?
+Dit vraagt een antwoord aan NGINX op je server.
+Bij een werkende pagina verwacht je bijvoorbeeld **200 OK**.
 
 <!--
-Verwachte voorbeelden: NGINX gestopt, firewall blokkeert TCP 80, verkeerd luisteradres.
+Leg -I uit als het tonen van antwoordinformatie zonder de hele HTML.
+Vraag wat er gebeurt als NGINX gestopt is maar Ubuntu nog draait.
 -->
 
 ---
 
-# SSH en SFTP
+# Op de server werken vanaf Xubuntu
 
-**SSH** biedt een versleutelde shell op de server.
-Vergelijk bij de eerste verbinding de hostsleutelvingerafdruk.
+**SSH:** je opent een terminal op Ubuntu Server.
+Controleer bij de eerste verbinding de servercode.
+Die code heet de hostsleutelvingerafdruk.
 
-**SFTP** gebruikt dezelfde SSH-dienst voor bestandsoverdracht.
-Upload eerst naar je eigen home-directory.
-
-Daarna publiceer je met gerichte beheerdersrechten.
+**SFTP:** je stuurt je HTML en CSS naar de server.
+Je uploadt eerst naar je eigen gebruikersmap.
 
 <!--
-Laat de vingerafdruk in de serverconsole en bij de client zien.
-SFTP betekent SSH File Transfer Protocol.
+Demonstreer het vergelijken van de SHA256-code met de console.
+SFTP is SSH File Transfer Protocol en gebruikt hier dezelfde SSH-dienst op poort 22.
 -->
 
 ---
 
-# De statische website
+# Wie mag je website aanpassen?
 
-| Onderdeel | Locatie in de voorbeeldopstelling |
+De website staat in **/var/www/html**.
+
+- Jij maakt en bewerkt je HTML en CSS in je eigen map.
+- Je plaatst de bestanden met `sudo install` in de webmap.
+- NGINX mag de bestanden lezen en versturen.
+
+NGINX hoeft je HTML niet te kunnen wijzigen.
+
+<!--
+NGINX gebruikt hier www-data voor het verwerken van webvragen.
+Leg de bestandsrechten pas uit bij het tonen van de gepubliceerde bestanden.
+Bron: https://documentation.ubuntu.com/server/how-to/web-services/install-nginx/
+-->
+
+---
+
+# Poorten: bij welk programma kom je uit?
+
+| Wat wil je doen? | Poort |
 | --- | --- |
-| HTML en CSS | `/var/www/html` |
-| Beheerder van gepubliceerde bestanden | `root` |
-| NGINX-worker | `www-data` |
-| Toegang voor de webdienst | Lezen en directories doorlopen |
+| Proxmox beheren | TCP 8006 |
+| SSH of SFTP gebruiken | TCP 22 |
+| De website openen via HTTP | TCP 80 |
 
-Schrijven door de webdienst is voor deze site overbodig.
+Laat SSH toe **vóór** je de firewall op Ubuntu aanzet.
 
 <!--
-Verklaar 0644 voor bestanden en 0755 voor de directory.
-Bron voor het Ubuntu-pakket: https://documentation.ubuntu.com/server/how-to/web-services/install-nginx/
+Een poortnummer helpt de verbinding bij het juiste programma te brengen.
+Laat de studenten na het aanzetten een nieuwe SSH-verbinding testen.
 -->
 
 ---
 
-# Poorten en toegang
+# We zetten NGINX even uit
 
-| Poort | Functie | Toegestane bron |
-| --- | --- | --- |
-| TCP 8006 | Proxmox-beheer | Bevestigde beheerroute |
-| TCP 22 | SSH en SFTP op de gast | Toegestane labbron |
-| TCP 80 | HTTP op de gast | Toegestane labbron |
-
-Voeg de SSH-regel toe vóór je de gastfirewall activeert.
-
-<!--
-De Ubuntu-firewallregels horen bij de gast, niet bij Proxmox.
-HTTP is hier beperkt tot statische oefeninhoud in het afgeschermde lab.
--->
-
----
-
-# Een gestopte webdienst
-
-| Controle | Tijdens onze storing |
+| Wat test je? | Wat zie je normaal? |
 | --- | --- |
-| VM-status | De VM draait |
-| Ping | De server antwoordt |
-| NGINX-service | Gestopt |
-| HTTP | Mislukt |
+| Staat de Ubuntu-VM aan? | Ja |
+| Krijg je antwoord op ping? | Ja |
+| Opent de website? | Nee |
 
-De combinatie van controles onderbouwt de diagnose.
+Start NGINX weer. Test daarna ook vanaf Xubuntu.
 
 <!--
-Laat studenten voorspellen voordat je NGINX stopt.
-Vraag ook hoe ze na herstel bewijzen dat het netwerkpad weer werkt.
+Laat studenten voorspellen en voer de proef daarna uit.
+We veranderen tijdens deze oefening geen IP-adressen of firewallregels.
 -->
 
 ---
 
-# Snapshot en back-up
+# Je oude website terughalen
 
-| Snapshot | Back-up |
-| --- | --- |
-| Snel terugkeerpunt | Afzonderlijke herstelkopie |
-| Afhankelijk van de VM-storage | Kan buiten die storage staan |
-| Geschikt vóór een wijziging | Geschikt om een VM te herstellen |
+**Snapshot:** een toestand om naar terug te keren.
+Handig vóór je iets verandert.
 
-Bescherming tegen opslagverlies vraagt een kopie elders.
+**Back-up:** een aparte kopie om uit te herstellen.
+Bewaar die ook op een andere fysieke schijf of server.
+
+Een snapshot op een kapotte schijf ben je ook kwijt.
 
 <!--
-We maken in dit labo een disksnapshot en back-up van een netjes afgesloten gast.
-Een tweede virtuele disk op dezelfde laptop is geen onafhankelijke fysieke locatie.
+Concrete proef: verander een zin en zet de snapshot terug.
+Maak duidelijk dat ook andere wijzigingen na de snapshot verdwijnen bij rollback.
 -->
 
 ---
 
-# De hersteltest
+# Een back-up testen
 
-1. Back-up herstellen naar een vrije nieuwe VMID.
-2. Automatisch starten uit, netwerkkaart losgekoppeld.
-3. Website controleren via de console en `localhost`.
-4. Kopie afsluiten en het origineel behouden.
+1. Zet de back-up terug naar een **nieuw VM-nummer**.
+2. Koppel de netwerkkaart los vóór je de kopie start.
+3. Test in haar console met `curl http://localhost`.
+4. Sluit de kopie af. Bewaar het origineel.
 
-Het vaste gast-IP zit ook in de back-up.
+De kopie bevat nog het IP-adres van de originele server.
 
 <!--
-Laat uitleggen waarom een nieuw MAC-adres alleen het IP-conflict niet oplost.
-De Proxmox-naam van de kopie verandert de hostname binnen de gast niet automatisch.
+Localhost betekent de machine waarop je nu werkt.
+Twee actieve machines met hetzelfde vaste adres kunnen het netwerk verstoren.
 -->
 
 ---
 
-# Het labo
+# Aan het werk
 
-**H1.1–H1.3** Plan, hypervisor en twee Linux-gasten.
+**H1.1–H1.3:** instellingen noteren en machines installeren.
 
-**H1.4–H1.6** Netwerk, eigen website en diagnose.
+**H1.4–H1.6:** verbinding testen, website maken en fout zoeken.
 
-**H1.7–H1.8** Herstellen, verklaren en opleveren.
+**H1.7–H1.8:** terugzetten en je werk indienen.
 
-Gebruik de labkaart en noteer bewijs per controlepunt.
+Schrijf tijdens het werken kort op wat je doet en ziet.
 
 <!--
-Verwijs naar opdrachten.md en verslag-sjabloon.md.
-Richttijd is 4,5 uur met vooraf beschikbare ISO's en ingericht netwerk.
+Verwijs naar opdrachten.md en het verslagsjabloon.
+De richttijd is 4,5 uur met vooraf beschikbare ISO's en een voorbereid netwerk.
 -->
 
 ---
 
-# Controle aan het einde
+# Dit laat je aan het einde zien
 
-- Beide gasten behouden hun adressen na een herstart.
-- Xubuntu bereikt je eigen HTML en CSS.
-- Je verklaart de storing met concrete tests.
-- Snapshotrollback en geïsoleerde restore werken.
-- Je originele omgeving blijft bewaard voor het vervolg.
+- Je adressen blijven na een herstart juist staan.
+- Je eigen website met CSS opent op Xubuntu.
+- Je legt uit wat er gebeurt als NGINX uitstaat.
+- Je zet de snapshot en back-up met succes terug.
+- Je bewaart je originele machines voor de volgende les.
 
 <!--
-Gebruik deze slide voor de demonstratie en de korte mondelinge controle.
+Gebruik deze slide bij de korte demonstratie aan het einde van het labo.
+Laat studenten met hun eigen testresultaten uitleggen wat ze hebben geleerd.
 -->

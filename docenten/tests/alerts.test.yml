@@ -1,0 +1,45 @@
+rule_files:
+  - /etc/prometheus/alerts.yml
+evaluation_interval: 15s
+tests:
+  - interval: 15s
+    input_series:
+      - series: 'probe_success{job="web",instance="site"}'
+        values: '0x12'
+      - series: 'windows_logical_disk_free_bytes{job="windows",volume="C:",instance="win"}'
+        values: '20x12'
+      - series: 'windows_logical_disk_size_bytes{job="windows",volume="C:",instance="win"}'
+        values: '100x12'
+    alert_rule_test:
+      - eval_time: 45s
+        alertname: WebsiteOnbereikbaar
+        exp_alerts: []
+      - eval_time: 1m
+        alertname: WebsiteOnbereikbaar
+        exp_alerts:
+          - exp_labels: {job: web, instance: site, severity: warning}
+            exp_annotations: {summary: De oefenwebsite antwoordt niet met HTTP 200}
+      - eval_time: 2m
+        alertname: WindowsSchijfVol
+        exp_alerts:
+          - exp_labels: {job: windows, volume: 'C:', instance: win, severity: warning}
+            exp_annotations: {summary: De Windows C-schijf is meer dan 75 procent gevuld}
+  - interval: 15s
+    input_series:
+      - series: 'probe_success{job="web",instance="site"}'
+        values: '0 0 0 0 1x12'
+      - series: 'windows_logical_disk_free_bytes{job="windows",volume="C:",instance="win"}'
+        values: '100x20'
+      - series: 'windows_logical_disk_size_bytes{job="windows",volume="C:",instance="win"}'
+        values: '400x20'
+      - series: 'windows_logical_disk_free_bytes{job="windows",volume="D:",instance="win"}'
+        values: '1x20'
+      - series: 'windows_logical_disk_size_bytes{job="windows",volume="D:",instance="win"}'
+        values: '400x20'
+    alert_rule_test:
+      - eval_time: 3m
+        alertname: WindowsSchijfVol
+        exp_alerts: []
+      - eval_time: 3m
+        alertname: WebsiteOnbereikbaar
+        exp_alerts: []

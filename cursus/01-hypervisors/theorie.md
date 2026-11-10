@@ -1,215 +1,325 @@
-# Hypervisors en virtuele infrastructuur
+# Virtuele machines met Proxmox
 
-Een IoT-toepassing bestaat vaak uit meer dan een sensor en een microcontroller. Meetwaarden komen terecht bij een broker, database of dashboard. Die software heeft een besturingssysteem, rekenkracht, geheugen, opslag en een netwerk nodig. In dit hoofdstuk leer je die onderlaag opbouwen met virtuele machines.
+Stel: je wilt de temperatuur van een lokaal op een website tonen. Je hebt een sensor die meet en een computer die de website aanbiedt. Je wilt de website ook testen. Dat doe je vanaf een tweede computer met een browser.
 
-Je maakt een kleine omgeving waarin een Linux-server een website aanbiedt en een tweede Linux-machine die website gebruikt. Je bekijkt ook wat er gebeurt wanneer een onderdeel uitvalt. Zo leg je de basis voor de diensten en monitoring in latere hoofdstukken.
+Voor dit labo heb je geen twee extra computers nodig. Je maakt twee **virtuele machines**. Dat zijn computers die met software worden nagebouwd. Je kunt er een besturingssysteem op installeren, programma's starten en bestanden bewaren.
 
-## 1. Een fysieke server delen
+We bouwen eerst een gewone website. De sensorgegevens komen later in de cursus aan bod.
 
-Zonder virtualisatie installeer je een besturingssysteem rechtstreeks op een computer. Dat systeem beheert de processor, het RAM, de disks en de netwerkinterfaces. Wanneer je voor elke kleine toepassing een aparte fysieke computer gebruikt, blijven resources vaak ongebruikt. Het vervangen of herstellen van een systeem vraagt bovendien werk aan die specifieke computer.
+## 1. Wat gaan we maken?
 
-Een **hypervisor** maakt het mogelijk om meerdere virtuele machines, of VM's, op dezelfde fysieke computer te gebruiken. Elke VM krijgt virtuele hardware en draait een eigen besturingssysteem. De hypervisor verdeelt de fysieke resources over die VM's.
+Je gebruikt drie onderdelen:
 
-De fysieke computer is de **host**. Een besturingssysteem in een VM is een **gast**. Een Linux-gast kan tegelijk met een Windows-gast op dezelfde host draaien. De gasten hebben elk hun eigen kernel en systeemconfiguratie.
+| Onderdeel | Wat doet het in ons labo? |
+| --- | --- |
+| Proxmox | Hiermee maak en beheer je de virtuele machines. |
+| Ubuntu Server | Deze virtuele machine bewaart je website en verstuurt de pagina naar een browser. |
+| Xubuntu | Op deze virtuele machine open je de website in een browser. |
 
-De scheiding is nuttig, maar de fysieke afhankelijkheid blijft bestaan. Als de enige host uitvalt, vallen alle VM's daarop uit. Meer VM's op één host bouwen levert dus geen automatische hoge beschikbaarheid op.
+Ubuntu Server is dus de **server**: de computer die iets aanbiedt. Xubuntu is de **client**: de computer die er gebruik van maakt.
+
+Je kent dat al van een bezoek aan een website. Je browser vraagt een pagina op. Een webserver stuurt die pagina terug. In dit labo beheer je zelf de server én de client.
+
+## 2. Wat doet een hypervisor?
+
+Een gewone computer heeft een processor, werkgeheugen, opslag en een netwerkkaart. Een virtuele machine heeft die onderdelen ook, maar dan in een virtuele vorm.
+
+Een **hypervisor** is de software die dat mogelijk maakt. Hij verdeelt de onderdelen van de echte computer over de virtuele machines.
+
+Zo kun je op één computer tegelijk een Linux-machine en een Windows-machine laten draaien. Elke machine heeft haar eigen besturingssysteem en bestanden. Je kunt de ene afsluiten terwijl de andere verder werkt.
+
+Er blijft wel één echte computer onder zitten. Zet je die uit, dan stoppen alle virtuele machines die erop draaien.
+
+Twee woorden die je in documentatie vaak ziet:
+
+- **Host:** de computer waarop de virtuele machines draaien.
+- **Gast:** het besturingssysteem dat in een virtuele machine draait.
+
+**Voorbeeld:** draait Ubuntu in een virtuele machine op je Windows-laptop? Dan is de laptop de host en Ubuntu de gast.
 
 ### Type I en type II
 
-| Type | Plaats van de hypervisor | Voorbeeld |
-| --- | --- | --- |
-| Type I | Beheert virtualisatie rechtstreeks op de serverhardware | KVM zoals gebruikt door Proxmox VE, VMware ESXi |
-| Type II | Werkt als toepassing op een bestaand hostbesturingssysteem | VMware Workstation, VirtualBox |
+Er zijn twee veelgebruikte manieren om een hypervisor te gebruiken.
 
-Proxmox VE is een beheerplatform rond onder meer KVM en LXC. In dit hoofdstuk gebruiken we KVM-VM's. Een Proxmox-node draait zelf op Linux. Dat betekent niet dat je hem daarom als een gewone type II-desktoptoepassing moet beschouwen. De plaats en werking van de virtualisatielaag bepalen het onderscheid. [Proxmox VE](https://www.proxmox.com/en/products/proxmox-virtual-environment/features)
+**Type I:** je installeert de software voor virtualisatie rechtstreeks op een server. Proxmox gebruikt daarvoor KVM. Je beheert de virtuele machines via de Proxmox-website. Dit is een gebruikelijke aanpak op servers.
 
-### Nested virtualisatie
+**Type II:** je installeert een programma zoals VMware Workstation of VirtualBox op je bestaande Windows- of Linux-computer. Je opent dat programma en maakt daarin virtuele machines.
 
-Op een eigen laptop installeren we Proxmox eventueel in een VM van een hosthypervisor. Binnen die Proxmox-VM maken we opnieuw VM's. Dat heet **nested virtualisatie**.
+Proxmox is de naam van het beheerplatform. **KVM** is het onderdeel dat de virtuele machines laat draaien. Je hoeft in dit hoofdstuk niet alle onderdelen van Proxmox te kennen. [Meer over Proxmox](https://www.proxmox.com/en/products/proxmox-virtual-environment/features)
+
+### Een virtuele machine in een virtuele machine
+
+Op je eigen laptop gebruiken we mogelijk deze opstelling:
+
+1. Je start je laptop, bijvoorbeeld met Windows.
+2. Je opent VMware Workstation.
+3. Daarin start je een virtuele machine met Proxmox.
+4. In Proxmox start je Ubuntu Server en Xubuntu.
+
+Dat heet **nested virtualisatie**. Het woord *nested* betekent hier dat de ene virtuele omgeving in de andere zit.
 
 ```mermaid
 flowchart TB
-    laptop["Fysieke laptop"] --> hostos["Hostbesturingssysteem"]
-    hostos --> buiten["Hosthypervisor, bijvoorbeeld Workstation"]
-    buiten --> proxmox["Proxmox-VM met KVM"]
-    proxmox --> server["Ubuntu Server-VM"]
-    proxmox --> client["Xubuntu-VM"]
+    laptop["Je laptop met bijvoorbeeld Windows"] --> workstation["VMware Workstation"]
+    workstation --> proxmox["Virtuele machine met Proxmox"]
+    proxmox --> server["Virtuele machine met Ubuntu Server"]
+    proxmox --> client["Virtuele machine met Xubuntu"]
 ```
 
-De buitenste hypervisor moet hardwarevirtualisatie doorgeven. Anders kan Proxmox wel starten terwijl de VM's daarin niet met KVM willen starten. Op een toegewezen fysieke Proxmox-server van de opleiding ontbreken de buitenste laptoplagen.
+Workstation moet de virtualisatiefunctie van de processor doorgeven aan Proxmox. Daarvoor bestaat een instelling in Workstation. Staat die niet goed, dan kan Proxmox starten terwijl Ubuntu en Xubuntu niet willen starten.
 
-Nested virtualisatie laat je de beheertaken oefenen zonder een fysieke server te reserveren. De extra lagen vragen resources en kunnen de prestaties beïnvloeden. Bij problemen kijk je daarom eerst op welke laag de fout ontstaat.
+Werk je op een Proxmox-server van de opleiding? Dan zijn de bovenste laptopstappen niet nodig.
 
-**Denkvraag:** Proxmox werkt, maar beide gasten weigeren te starten met een KVM-fout. Waarom is het weinig zinvol om eerst de IP-adressen van de gasten te wijzigen?
+**Even controleren:** Ubuntu start niet en Proxmox toont een fout over KVM. Kijk je dan eerst naar de instelling voor virtualisatie of naar het IP-adres van Ubuntu?
 
-## 2. De resources van een VM
+## 3. Hoeveel krijgt elke machine?
 
-### Processor
+Wanneer je een virtuele machine maakt, kies je hoeveel processor, geheugen en opslag ze krijgt. In documentatie heten die onderdelen samen ook **resources**.
 
-Een **vCPU** is een virtuele processor die de hypervisor op beschikbare fysieke rekencapaciteit inplant. Twee vCPU's betekenen niet dat de VM permanent twee fysieke cores bezit. VM's kunnen op dezelfde fysieke capaciteit wachten.
+### Processor: het rekenwerk
 
-Je kunt meer vCPU's toewijzen dan de host gelijktijdig kan uitvoeren. Dat is een vorm van **overcommitment**. Voor rustige machines kan dat werken. Wanneer alle machines tegelijk rekenen, ontstaat concurrentie. Meer vCPU's instellen lost een overbelaste host dan niet vanzelf op.
+Bij de processor zie je de afkorting **vCPU**. Dat betekent virtuele processor.
 
-### Geheugen
+In dit labo krijgt elke Linux-machine twee vCPU's. Daarmee kan ze rekenwerk laten uitvoeren op de echte processor. Die processor moet zijn tijd wel verdelen over alle machines die draaien.
 
-Een gast heeft RAM nodig voor zijn besturingssysteem en toepassingen. Ook de hypervisor en het hostbesturingssysteem vragen geheugen. In ons voorbeeld krijgen de gasten samen 5 GB uit de 8 GB van de Proxmox-VM. Het resterende budget is nodig voor Proxmox en overhead.
+**Voorbeeld:** Ubuntu installeert updates terwijl Xubuntu een programma installeert. Beide vragen dan tegelijk rekenwerk. Ze kunnen daardoor trager reageren. Meer vCPU's invullen maakt de echte processor niet krachtiger.
 
-Een laptop met 16 GB heeft dus niet 16 GB vrij voor gasten. Als de host te veel geheugen naar disk moet verplaatsen, kan de hele omgeving traag worden. Gebruik in dit eerste labo vaste geheugentoewijzing, zodat het budget zichtbaar blijft.
+### RAM: het werkgeheugen
 
-### Opslag
+Programma's die draaien gebruiken RAM. Dat is het werkgeheugen van de computer.
 
-De gast ziet een virtuele disk. De inhoud daarvan komt terecht in een bestand, volume of andere opslagstructuur van de hypervisor.
+Stel dat je Proxmox-VM 8 GB RAM krijgt. Die 8 GB verdelen we zo:
 
-Bij **thin provisioning** reserveer je een maximale virtuele capaciteit zonder die meteen volledig fysiek te vullen. Twee disks van 24 GB kunnen in het begin minder dan 48 GB fysieke ruimte innemen. Zodra de gasten data schrijven, groeit het verbruik. Als de onderliggende opslag vol raakt, kunnen meerdere VM's tegelijk problemen krijgen.
+| Waarvoor? | Hoeveel? |
+| --- | --- |
+| Ubuntu Server | 2 GB |
+| Xubuntu | 3 GB |
+| Over voor Proxmox en zijn eigen werk | Ongeveer 3 GB |
 
-Controleer daarom twee niveaus:
+Ubuntu en Xubuntu gebruiken dus samen 5 GB van de 8 GB. Ze komen daar niet nog eens bovenop.
 
-- In de gast: beschikbare ruimte van het eigen bestandssysteem, bijvoorbeeld met `df -h`.
-- In Proxmox en op de laptop: beschikbare ruimte van de opslag waarop de virtuele disks staan.
+Windows of Linux op je laptop heeft zelf ook RAM nodig. Geef daarom niet al het geheugen van je laptop aan Proxmox.
 
-De namen `local` en `local-lvm` verwijzen in veel installaties naar verschillende storage-definities. Een directory voor ISO-bestanden is niet automatisch de juiste plaats voor VM-disks. Bekijk het type en de toegestane inhoud in de beheerinterface.
+### Opslag: je bestanden bewaren
 
-### Virtuele hardware
+Elke virtuele machine krijgt een virtuele schijf. Daarop staan het besturingssysteem, de programma's en je bestanden.
 
-Linux ondersteunt VirtIO-drivers voor onder meer disk- en netwerktoegang. Die laten de gast efficiënt met de hypervisor samenwerken. De **QEMU Guest Agent** is andere software: die kan bijvoorbeeld gastinformatie aan Proxmox doorgeven en bepaalde beheeracties ondersteunen. De agent vervangt de netwerkdriver niet.
+We geven beide Linux-machines een schijf van 24 GB. Die schijven gebruiken uiteindelijk ruimte op de echte SSD of harde schijf.
 
-**Denkvraag:** De gast meldt 15 GB vrije ruimte, maar de thin pool op Proxmox zit vol. Welk niveau moet je onderzoeken en waarom?
+Je komt daarbij de term **thin provisioning** tegen. Dat werkt zo:
 
-## 3. Het netwerk tussen de machines
+- De virtuele machine ziet bijvoorbeeld een schijf van 24 GB.
+- Staan er nog maar enkele GB aan bestanden op, dan hoeft die schijf op de host nog niet de volle 24 GB in te nemen.
+- Naarmate je bestanden toevoegt, groeit de gebruikte ruimte op de host.
 
-### Netwerkkaart en bridge
+Je moet dus op meer dan één plaats vrije ruimte controleren. Ubuntu kan nog ruimte tonen, terwijl de opslag van Proxmox bijna vol is. Ook de SSD van je laptop kan vol raken.
 
-Elke VM krijgt een virtuele netwerkkaart met een eigen MAC-adres. Een **Linux bridge**, in ons voorbeeld `vmbr0`, verbindt virtuele netwerkkaarten op laag 2. Ze vervult een vergelijkbare rol als een switch.
+Met `df -h` bekijk je de vrije ruimte **in de Linux-machine waarin je het commando uitvoert**. De vrije ruimte van Proxmox bekijk je apart in zijn beheerpagina.
 
-Een bridge maakt niet vanzelf een DHCP-server, router of internetverbinding aan. Dat zijn afzonderlijke functies. Bij route A koppelt Proxmox de gasten via de bridge aan zijn virtuele uplink. De buitenste hosthypervisor biedt het NAT-netwerk aan. Bij route B legt de opleiding de bridge, VLAN's en routing vast.
+### Twee namen die je tijdens het aanmaken ziet
 
-### Adres, subnet, gateway en DNS
+**VirtIO** is een keuze voor onder andere de virtuele schijf en netwerkkaart. Linux kan daarmee goed samenwerken. We gebruiken die keuze in het labo.
 
-| Instelling | Betekenis | Voorbeeld voor Ubuntu Server |
+De **QEMU Guest Agent** is een klein programma in de Linux-machine. Het geeft bijvoorbeeld informatie over die machine door aan Proxmox. Je installeert het in Ubuntu en Xubuntu en zet de bijbehorende optie aan in Proxmox.
+
+## 4. Hoe vinden de machines elkaar?
+
+Je website werkt pas als Xubuntu contact kan maken met Ubuntu Server. Daarvoor krijgen beide machines een netwerkkaart en een IP-adres.
+
+### De bridge: een virtuele switch
+
+In Proxmox zie je een netwerkonderdeel met de naam `vmbr0`. Dat is een **bridge**. Je kunt die vergelijken met een switch waaraan je de netwerkkabels van de machines hangt.
+
+In ons labo verbind je beide machines met die bridge. Via de bridge kunnen ze ook het voorbereide netwerk buiten Proxmox bereiken.
+
+Alleen een bridge aanmaken is niet genoeg voor internet. Daarvoor moet er ook een verbinding met een router zijn. De docent helpt je controleren welk netwerk je gebruikt.
+
+### Vier instellingen die je nodig hebt
+
+Voor Ubuntu Server gebruiken we dit voorbeeld:
+
+| Instelling | Voorbeeld | Waarvoor dient het? |
 | --- | --- | --- |
-| IPv4-adres | Adres van deze netwerkinterface | `192.168.77.100` |
-| Prefix | Bepaalt welk netwerk lokaal bereikbaar is | `/24`, oftewel `255.255.255.0` |
-| Default gateway | Router voor bestemmingen buiten het lokale subnet | `192.168.77.2` |
-| DNS-server | Vertaalt namen naar adressen | De bevestigde DNS-forwarder `192.168.77.2` |
+| IP-adres | `192.168.77.100` | Het adres van je server. Xubuntu gebruikt dit om je website te vinden. |
+| Subnetmasker | `/24` of `255.255.255.0` | Hiermee bepaalt de machine welke adressen bij haar eigen netwerk horen. |
+| Gateway | `192.168.77.2` | De router waarlangs je andere netwerken, zoals internet, bereikt. |
+| DNS-server | `192.168.77.2` | Zoekt het IP-adres op dat bij een naam hoort. |
 
-In `192.168.77.0/24` is `.0` het netwerkadres en `.255` het broadcastadres. Die geef je niet aan een gast. Vaste adressen reserveer je buiten de DHCP-pool, zodat een DHCP-server hetzelfde adres niet aan een andere machine uitdeelt.
+De gateway en DNS-server hebben hier hetzelfde adres, omdat één apparaat beide taken doet. Dat hoeft niet in elk netwerk zo te zijn.
 
-Ubuntu Server `.100` en Xubuntu `.200` bevinden zich in dit voorbeeld in hetzelfde subnet. Hun onderlinge verkeer hoeft niet via de default gateway. Voor een pakketserver op internet gebruiken ze wel een route via de gateway.
+Xubuntu krijgt in het voorbeeld `192.168.77.200/24`. De twee machines zitten in hetzelfde netwerk en kunnen elkaar rechtstreeks bereiken. Voor een download van internet gebruiken ze de gateway.
 
-### NAT en bereikbaarheid
+**DNS-voorbeeld:** je vraagt `archive.ubuntu.com` op. De DNS-server zoekt welk IP-adres daarbij hoort. Zonder werkende DNS kan een software-installatie mislukken, ook als je de server nog via zijn IP-adres kunt bereiken.
 
-**Network Address Translation**, of NAT, vertaalt adressen tijdens het doorsturen van verkeer. Daardoor kunnen de private VM's een uitgaande verbinding naar internet opzetten via de buitenste hypervisor.
+Gebruik de adressen van je **verslag**. De voorbeeldadressen werken alleen als dat netwerk ook echt is ingesteld.
 
-```mermaid
-flowchart LR
-    client["Xubuntu .200"] --- bridge["Proxmox vmbr0"]
-    server["Ubuntu Server .100"] --- bridge
-    bridge --- nat["Buitenste NAT-netwerk, gateway .2"]
-    beheer["Laptop, virtuele adapter .1"] --- nat
-    nat --> internet["Internet"]
+### Een vast adres of DHCP
+
+Met **DHCP** krijgt een computer automatisch netwerkinstellingen. Met een **vast IP-adres** vul je die zelf in.
+
+We geven onze server een vast adres. Zo hoef je het adres van je website niet telkens opnieuw te zoeken.
+
+De docent bevestigt welke adressen je mag gebruiken. Ze mogen niet tegelijk door DHCP aan een andere machine worden uitgedeeld. Twee machines met hetzelfde adres kunnen elkaars verbinding verstoren.
+
+In ons voorbeeld zijn `192.168.77.0` en `192.168.77.255` speciale netwerkadressen. Die geef je niet aan je VM's.
+
+### Naar internet via NAT
+
+Bij de laptopopstelling gebruiken we meestal **NAT** in Workstation. Daarmee kunnen je virtuele machines via je laptop een verbinding met internet maken. Workstation vertaalt hun netwerkadressen en stuurt de antwoorden terug naar de juiste machine.
+
+Dat betekent nog niet dat je telefoon de website kan openen. Je telefoon zit bijvoorbeeld op wifi, terwijl je VM's in een apart virtueel netwerk zitten. Daar moet eerst een verbinding tussen zijn. Vandaag testen we daarom vanuit Xubuntu.
+
+### Waar stel je dit in?
+
+Op **Ubuntu Server** vul je het vaste adres in tijdens de installatie. De instellingen komen in een tekstbestand terecht. **Netplan** leest dat bestand en past de instellingen toe.
+
+Op **Xubuntu** gebruiken we **NetworkManager**. Dat programma bewaart de instellingen in een verbindingsprofiel. We passen dat profiel aan met het commando `nmcli`.
+
+De oplossingen tonen beide manieren. Voer netwerkcommando's uit in de console van de juiste VM. Dat is het scherm dat je in Proxmox opent. Zo kun je nog bij de machine als je de netwerkverbinding per ongeluk verbreekt.
+
+## 5. Een website openen is ook een test
+
+Op Ubuntu Server installeren we **NGINX**. Dat is een webserver: software die webpagina's naar een browser stuurt.
+
+Op Xubuntu open je daarna:
+
+```text
+http://192.168.77.100
 ```
 
-Dit schema toont route A. Proxmox heeft voor zijn beheer ook een adres, hier `.10`, op `vmbr0`. Op school kan het beheeradres in een ander netwerk liggen.
+Verschijnt de pagina? Dan weet je dat de browser de webserver bereikt en een pagina terugkrijgt.
 
-Uitgaande internettoegang zegt niets over een route van je telefoon naar de gast. Je telefoon zit meestal op een ander netwerk. Een router, toegestane route of VPN moet die verbinding mogelijk maken. Voor hoofdstuk 1 volstaat de browser op Xubuntu als client.
+### Waarvoor dient een poort?
 
-### Netwerkbeheer in Linux
+Op één computer kunnen meerdere programma's via het netwerk bereikbaar zijn. Een **poortnummer** helpt de verbinding bij het juiste programma te brengen.
 
-Ubuntu Server gebruikt in deze cursus Netplan met `systemd-networkd` als renderer. Een YAML-configuratie beschrijft de gewenste instellingen. De naam van de netwerkinterface moet overeenkomen met de echte interface, bijvoorbeeld `ens18` of `enp6s18`. Zoek die eerst op met `ip -br address`.
+| Wat wil je doen? | Poort in dit labo |
+| --- | --- |
+| Proxmox beheren in de browser | TCP 8006 |
+| Op Ubuntu aanmelden met SSH | TCP 22 |
+| De website openen via HTTP | TCP 80 |
 
-Xubuntu gebruikt NetworkManager. Daar passen we na installatie een bestaand verbindingsprofiel aan met `nmcli`. Een configuratiebestand voor Ubuntu Server blind kopiëren naar een desktopgast kan twee beheermethoden door elkaar laten werken. [NetworkManager](https://networkmanager.dev/docs/api/latest/nmcli.html)
+Bij gewoon HTTP gebruikt de browser automatisch poort 80. Daarom hoef je `:80` niet achter het adres te typen. Bij Proxmox typ je wel `:8006`.
 
-Bij wijzigingen aan een netwerkconfiguratie kun je je eigen verbinding verliezen. Werk in de VM-console en bewaar de vorige instellingen. Met `netplan try` kun je een wijziging tijdelijk testen; controleer ook na een rollback welke configuratie op disk staat. [Netplan](https://netplan.readthedocs.io/en/stable/netplan-try/)
+### Ping en de browser testen iets anders
 
-## 4. Een dienst bereikbaar maken
+Met `ping` controleer je of de andere machine antwoordt op een klein testbericht.
 
-Een IP-adres identificeert een netwerkinterface. Een **poortnummer** maakt het mogelijk om op dat adres een specifieke dienst te benaderen.
+Maar de machine kan antwoorden terwijl NGINX uitstaat. De website werkt dan niet. Je test de website dus ook met een browser of met `curl`:
 
-| Dienst | Protocol in dit labo | Gebruik |
-| --- | --- | --- |
-| Proxmox-webbeheer | HTTPS, TCP 8006 | Infrastructuur beheren |
-| OpenSSH | TCP 22 | Shell en SFTP |
-| NGINX | HTTP, TCP 80 | De oefenwebsite aanbieden |
+```bash
+curl -I http://192.168.77.100
+```
 
-Een geslaagde `ping` toont dat ICMP-verkeer mogelijk is. Het bewijst niet dat NGINX op TCP 80 luistert. Om de webdienst te testen gebruik je een browser of `curl`.
+`curl` vraagt hier een antwoord aan de webserver. Met `-I` toon je de antwoordinformatie in plaats van de volledige HTML. Een antwoord zoals `200 OK` betekent dat de webserver je vraag met succes heeft verwerkt.
 
-### Lokaal en op afstand
+### Wat betekent localhost?
 
-`localhost` en `127.0.0.1` verwijzen naar de machine waarop je de test uitvoert. `curl http://localhost` op Ubuntu Server onderzoekt die server. Hetzelfde commando op Xubuntu onderzoekt Xubuntu.
+`localhost` betekent **de computer waarop je nu werkt**.
 
-Dat verschil helpt bij diagnose. Als NGINX lokaal antwoordt maar de client de website niet bereikt, ligt de oorzaak mogelijk bij luisteren op de juiste interface, firewallregels of het netwerkpad.
+- Typ je op Ubuntu Server `curl http://localhost`? Dan test je de webserver op Ubuntu Server.
+- Typ je dat op Xubuntu? Dan zoek je een webserver op Xubuntu.
 
-### SSH en SFTP
+In het tweede geval test je dus niet je Ubuntu Server. Om die vanaf Xubuntu te testen, gebruik je het serveradres.
 
-Met **SSH** voer je op afstand commando's uit. Bij de eerste verbinding controleert de client de hostsleutel van de server. Vergelijk de getoonde vingerafdruk met de waarde in de vertrouwde VM-console. De sleutel helpt je controleren met welke server je verbinding maakt.
+## 6. Bestanden op de server zetten
 
-**SFTP** is het SSH File Transfer Protocol. Je kunt ermee bestanden uploaden via dezelfde SSH-dienst. In dit labo upload je naar je eigen home-directory. Daarna plaats je de website met een gerichte beheeractie in de webroot. Je hoeft hiervoor geen aparte FTP-server te installeren.
+Met **SSH** open je vanaf Xubuntu een terminal op Ubuntu Server. Je voert dan commando's op de server uit, zonder steeds zijn scherm in Proxmox te openen.
 
-## 5. Bestandsrechten voor een webserver
+Bij de eerste verbinding toont SSH een code die bij de server hoort: de **vingerafdruk van de hostsleutel**. Je vergelijkt die met de code in de serverconsole. Zo controleer je of je met de juiste server verbindt.
 
-Linux kent een eigenaar, groep en rechten per bestand of directory. Voor een bestand betekenen `r`, `w` en `x` lezen, schrijven en uitvoeren. Voor een directory betekent `x` dat een proces de directory mag doorlopen. Een webserver moet dus ook de bovenliggende directories kunnen doorlopen om een bestand te lezen.
+Met **SFTP** stuur je bestanden naar de server via dezelfde SSH-verbinding. Je gebruikt het om je HTML en CSS te uploaden. Je zet de bestanden eerst in je eigen gebruikersmap.
 
-NGINX draait zijn workerprocessen in de gekozen Ubuntu-opstelling als `www-data`. Voor onze statische website krijgt die gebruiker leesrechten op HTML en CSS, maar geen schrijfrechten. De gepubliceerde bestanden zijn van `root`, met mode `0644`; de webdirectory krijgt `0755`.
+NGINX zoekt de website in dit labo in `/var/www/html`. Dat heet de **webroot**: de map waarin de website staat. Na de upload verplaats of kopieer je de bestanden met beheerdersrechten naar die map.
 
-De student beheert zijn bronbestanden in de home-directory en publiceert met `sudo install`. Een fout in de webdienst geeft zo niet meteen schrijfrechten op de websitebestanden. `chmod 777` zou iedere lokale gebruiker schrijfrechten geven en is hier geen passende oplossing.
+### Wie mag de bestanden aanpassen?
 
-De firewall laat alleen de bedoelde bronadressen en diensten toe. HTTP gebruiken we in dit eerste geïsoleerde labo voor een statische pagina zonder aanmeldgegevens. HTTPS voor aangeboden applicaties krijgt later een eigen uitwerking.
+Linux houdt per bestand bij wie het mag lezen of wijzigen.
 
-**Denkvraag:** Waarom is een geslaagde upload naar je home-directory geen bewijs dat NGINX dat bestand al kan aanbieden?
+Voor onze website maken we deze afspraak:
 
-## 6. Storingen systematisch onderzoeken
+- Jij past de bronbestanden aan in je eigen map.
+- Je plaatst de afgewerkte bestanden met `sudo install` in de webmap.
+- NGINX mag de bestanden lezen om ze naar de browser te sturen.
+- NGINX mag de bestanden zelf niet wijzigen.
 
-Begin met een concrete vaststelling: welke client probeert welk adres en welke poort te bereiken? Verander daarna één ding tegelijk en bewaar het bewijs.
+NGINX gebruikt in Ubuntu de gebruiker `www-data` voor het verwerken van webvragen. De gepubliceerde bestanden worden van `root`, de beheerder. Zo hoeft `www-data` geen eigenaar van de website te zijn.
 
-| Niveau | Voorbeeldcontrole | Wat je ermee onderzoekt |
-| --- | --- | --- |
-| Hypervisor | VM-status en taaklog | Draait de bedoelde machine? |
-| Gastinterface | `ip -br address` | Staat het juiste adres op een actieve interface? |
-| Routes | `ip route` | Is de route naar de bestemming aanwezig? |
-| DNS | `resolvectl query archive.ubuntu.com` | Werkt naamomzetting? |
-| Service | `systemctl status nginx` | Is de webservice gestart? |
-| Luisterpoort | `sudo ss -ltnp` | Welk proces luistert op welke TCP-poort? |
-| HTTP | `curl -I http://localhost` | Antwoordt de lokale webdienst? |
-| Logs | `journalctl -u nginx` | Wat meldt de dienst? |
+In de oplossing zie je `0644` bij bestanden en `0755` bij mappen. Kort gezegd: de eigenaar mag aanpassen, de anderen mogen de website lezen en de map openen. `chmod 777` zou iedereen schrijfrechten geven. Dat hebben we hier niet nodig.
 
-Een ontbrekend DNS-antwoord vraagt een ander onderzoek dan een HTTP-antwoord `403 Forbidden`. Bij die laatste fout heeft de client al een webserver bereikt. Je onderzoekt dan onder meer de documentroot en bestandsrechten.
+### De firewall
 
-## 7. Snapshot en back-up
+Een **firewall** bepaalt welke netwerkverbindingen worden toegelaten. We laten op onze Ubuntu Server SSH en HTTP toe vanuit het labnetwerk.
 
-Een **snapshot** bewaart een terugkeerpunt van de VM op snapshotgeschikte opslag. Afhankelijk van de gekozen optie kan ook het werkgeheugen worden vastgelegd. Wij gebruiken een disksnapshot van een netjes afgesloten VM. Daardoor hoeven we in dit eerste labo geen live-geheugentoestand of applicatieconsistentie te beheren.
+Je voegt de SSH-regel toe vóór je de firewall aanzet. Anders kun je je eigen SSH-verbinding blokkeren. Daarom houd je ook de Proxmox-console bij de hand.
 
-Een snapshot staat in dezelfde opslagomgeving als de actieve VM. Hij is geschikt om snel een wijziging terug te draaien. Verlies je die opslag, dan kan ook de snapshot verloren zijn.
+## 7. Wat doe je als de website niet werkt?
 
-Een **back-up** is een afzonderlijke herstelkopie. In het labo maken we een gestopte VM-back-up naar een toegewezen back-upstorage. Voor bescherming tegen een defecte host moet die kopie ook buiten die host of fysieke opslag bewaard worden. Een tweede bestand op dezelfde SSD biedt die bescherming niet.
+Verander niet meteen vijf instellingen. Begin met één test en kijk wat het resultaat zegt.
 
-Een groen back-uplog bewijst dat de back-uptaak is voltooid. Pas door een restore uit te voeren en het resultaat te testen, toon je aan dat je ermee kunt herstellen.
+| Vraag | Wat doe je? |
+| --- | --- |
+| Staat de server aan? | Kijk in Proxmox of de VM draait. |
+| Heeft hij het juiste adres? | Voer op de server `ip -br address` uit. |
+| Antwoordt de server? | Ping vanaf Xubuntu het serveradres. |
+| Staat NGINX aan? | Voer op de server `systemctl status nginx` uit. |
+| Werkt de website op de server zelf? | Voer daar `curl -I http://localhost` uit. |
+| Werkt de website vanaf Xubuntu? | Open daar het serveradres in de browser. |
 
-### De identiteit van een herstelde machine
+**Voorbeeld uit het labo:** je stopt NGINX. Ping blijft werken, maar de browser toont geen pagina meer. Je start NGINX weer. De pagina verschijnt opnieuw. Je hebt nu gezien dat een werkende netwerkverbinding en een werkende website twee aparte dingen zijn.
 
-Een herstelde kopie kan dezelfde hostname, statische IP-configuratie en SSH-hostsleutels bevatten als het origineel. Een nieuw MAC-adres alleen voorkomt een conflict met het vaste IP niet. We starten de kopie daarom eerst met losgekoppelde netwerkkaart en testen de website in de console via `localhost`.
+Een foutmelding kan ook helpen. Bij `403 Forbidden` heb je al een webserver bereikt, maar krijg je geen toegang tot de gevraagde inhoud. Dan kijk je bijvoorbeeld naar de map en de leesrechten.
 
-Bij een echte vervanging kan de oorspronkelijke identiteit gewenst zijn. Bij een extra machine moet je die bewust aanpassen. In dit hoofdstuk blijft de kopie na de controle uitgeschakeld en behouden we het origineel.
+## 8. Een vorige toestand terugzetten
 
-## 8. Zelfcontrole
+Je gaat iets aan je website veranderen. Wat als je daarna terug wilt naar de versie van ervoor?
 
-Beantwoord de vragen in eigen woorden voordat je het labo afrondt.
+### Snapshot: terug naar vóór je wijziging
 
-1. Welke resources delen de twee gasten en wat gebeurt er bij uitval van de enige Proxmox-host?
-2. Wat is het verschil tussen een bridge, een default gateway en NAT?
-3. Waarom kan een client de server pingen terwijl de website onbereikbaar is?
-4. Waarom kan een DNS-fout pakketinstallatie blokkeren terwijl toegang via een IP-adres wel werkt?
-5. Waarom krijgt `www-data` in deze opstelling leesrechten en geen schrijfrechten?
-6. Welk probleem lost een snapshot snel op en tegen welk verlies beschermt hij niet?
-7. Welke maatregelen voorkomen dat een restoretest het oorspronkelijke systeem verstoort?
+Een **snapshot** bewaart een toestand waarnaar je kunt terugkeren. In dit labo sluit je de VM eerst netjes af en maak je dan de snapshot.
 
-Vergelijk je antwoorden na de oefening met de [modeloplossingen](oplossingen.md#antwoorden-op-de-zelfcontrole).
+Daarna start je de VM en verander je een zin op de website. Zet je de snapshot terug, dan verschijnt de oude zin weer. Het terugzetten heet in Proxmox **rollback**.
 
-## Bronnen en verdieping
+Let op: ook andere wijzigingen sinds die snapshot verdwijnen bij het terugzetten. Maak dus geen nieuwe belangrijke bestanden tijdens deze proef.
 
-- [Proxmox VE documentatie en beheergids](https://www.proxmox.com/en/downloads/proxmox-virtual-environment/documentation)
-- [Ubuntu Server netwerkconfiguratie](https://documentation.ubuntu.com/server/explanation/networking/configuring-networks/)
-- [Netplan try](https://netplan.readthedocs.io/en/stable/netplan-try/)
-- [NetworkManager nmcli](https://networkmanager.dev/docs/api/latest/nmcli.html)
-- [Ubuntu Server NGINX installeren](https://documentation.ubuntu.com/server/how-to/web-services/install-nginx/)
+Een snapshot hangt af van dezelfde opslag als de VM. Gaat die opslag verloren, dan kun je ook je snapshot verliezen.
 
-De oorspronkelijke inhoud van les 1 en labo 1 uit `base` vormt de basis voor de hypervisorvergelijking en de opdracht met Ubuntu Server, Xubuntu en NGINX. De uitleg over diagnose, rechten en herstel is uitgebreid voor dit leerpad.
+### Back-up: een aparte herstelkopie
+
+Een **back-up** is een aparte kopie waarmee je een machine opnieuw kunt opbouwen. We bewaren die op de plaats die de docent opgeeft.
+
+Een kopie op een andere fysieke schijf of server kan je helpen wanneer de oorspronkelijke schijf stukgaat. Een extra bestand op dezelfde laptop beschermt je niet tegen verlies van die laptop.
+
+Je weet pas of de back-up bruikbaar is als je hem ook terugzet en test. Dat noemen we een **restore**.
+
+### Waarom starten we de kopie zonder netwerk?
+
+De herstelde machine bevat nog het IP-adres van het origineel. Start je beide op hetzelfde netwerk, dan gebruiken ze hetzelfde adres. Dat veroorzaakt problemen.
+
+Daarom herstellen we naar een nieuw VM-nummer en koppelen we de netwerkkaart van de kopie los vóór het starten. We openen haar console en testen de website met `localhost`. Daarvoor is geen netwerkverbinding met Xubuntu nodig.
+
+Na de test sluiten we de kopie af. De originele server blijft bewaard voor het volgende hoofdstuk.
+
+## 9. Kun je dit al uitleggen?
+
+Gebruik je eigen opstelling om te antwoorden.
+
+1. Je zet de laptop uit waarop Proxmox draait. Wat gebeurt er met Ubuntu Server en Xubuntu?
+2. Je verbindt beide VM's met `vmbr0`. Met welk bekend netwerkapparaat kun je dat vergelijken? Waarvoor vul je daarnaast een gateway in?
+3. Je stopt NGINX. Waarom kan ping nog werken terwijl je website niet meer opent?
+4. Je bereikt een server via zijn IP-adres, maar niet via zijn naam. Welke instelling controleer je?
+5. NGINX moet je HTML naar de browser sturen. Moet `www-data` die HTML daarvoor ook kunnen wijzigen?
+6. Je maakt een snapshot en daarna gaat de schijf met de VM en de snapshot stuk. Kun je met die snapshot herstellen? Wat had je nodig?
+7. Je herstelt een back-up naar een tweede VM. Waarom koppel je haar netwerkkaart eerst los?
+
+Je vindt de [antwoorden bij de oplossingen](oplossingen.md#antwoorden-op-de-zelfcontrole).
+
+## Verder lezen
+
+Dit zijn de oorspronkelijke documentatiepagina's. Je hoeft ze niet volledig te lezen om het labo te maken.
+
+- [Proxmox-handleidingen](https://www.proxmox.com/en/downloads/proxmox-virtual-environment/documentation)
+- [Netwerkinstellingen op Ubuntu Server](https://documentation.ubuntu.com/server/explanation/networking/configuring-networks/)
+- [Een Netplan-wijziging tijdelijk proberen](https://netplan.readthedocs.io/en/stable/netplan-try/)
+- [NetworkManager en nmcli](https://networkmanager.dev/docs/api/latest/nmcli.html)
+- [NGINX op Ubuntu installeren](https://documentation.ubuntu.com/server/how-to/web-services/install-nginx/)

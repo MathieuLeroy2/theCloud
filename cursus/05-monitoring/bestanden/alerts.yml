@@ -1,0 +1,24 @@
+groups:
+  - name: thecloud
+    rules:
+      - alert: WebsiteOnbereikbaar
+        expr: probe_success{job="web"} == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: 'De oefenwebsite antwoordt niet met HTTP 200'
+      - alert: WindowsSchijfVol
+        expr: 100 * (1 - windows_logical_disk_free_bytes{job="windows",volume="C:"} / windows_logical_disk_size_bytes{job="windows",volume="C:"}) > 75
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: 'De Windows C-schijf is meer dan 75 procent gevuld'
+      - alert: ExporterOnbereikbaar
+        expr: up{job=~"linux|windows|cadvisor|web"} == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: 'Prometheus kan de meetgegevens niet ophalen'

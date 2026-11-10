@@ -1,0 +1,27 @@
+name: thecloud-iot
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2.0.22
+    user: '1883:1883'
+    labels:
+      thecloud_app: broker
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:1883:1883'
+    volumes:
+      - ./mosquitto:/mosquitto/config:ro
+      - mqtt-data:/mosquitto/data
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:2026.11.1
+    labels:
+      thecloud_app: dashboard
+    restart: unless-stopped
+    stop_grace_period: 60s
+    environment:
+      TZ: Europe/Brussels
+    ports:
+      - '127.0.0.1:8123:8123'
+    volumes:
+      - ./homeassistant:/config
+volumes:
+  mqtt-data:
