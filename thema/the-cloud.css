@@ -1,0 +1,105 @@
+/* @theme the-cloud */
+@import 'default';
+
+section {
+  background: #f8fafc;
+  color: #172b3a;
+  font-family: 'Aptos', 'DejaVu Sans', sans-serif;
+  font-size: 30px;
+  line-height: 1.45;
+  padding: 64px 76px 72px;
+  justify-content: flex-start;
+}
+
+h1 {
+  color: #075c67;
+  font-size: 44px;
+  line-height: 1.18;
+  margin: 0 0 30px;
+}
+
+h2 {
+  font-size: 34px;
+  color: #075c67;
+}
+
+p, ul, ol, table, pre {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+li + li {
+  margin-top: 12px;
+}
+
+a {
+  color: #075c67;
+}
+
+strong {
+  color: #075c67;
+}
+
+code {
+  font-family: 'DejaVu Sans Mono', monospace;
+  font-size: 0.85em;
+}
+
+pre {
+  font-size: 25px;
+  line-height: 1.4;
+}
+
+table {
+  font-size: 25px;
+  width: 100%;
+}
+
+th, td {
+  padding: 12px 16px;
+}
+
+thead th {
+  color: #ffffff;
+  background: #075c67;
+}
+
+header, footer {
+  color: #526773;
+  font-size: 17px;
+}
+
+header {
+  top: 20px;
+  left: 76px;
+}
+
+footer {
+  bottom: 20px;
+  left: 76px;
+}
+
+section::after {
+  color: #526773;
+  font-size: 17px;
+}
+
+section.lead {
+  justify-content: center;
+  background: #103642;
+  color: #f8fafc;
+}
+
+section.lead h1 {
+  color: #ffffff;
+  font-size: 58px;
+  max-width: 1000px;
+}
+
+section.lead strong {
+  color: #9de1db;
+}
+
+section.lead header, section.lead footer, section.lead::after {
+  color: #bcd5db;
+}

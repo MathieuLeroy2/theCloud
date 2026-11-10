@@ -1,0 +1,15 @@
+{
+  "name": "the-cloud-cursus",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Markdown-cursus en Marp-slides voor graduaat Internet of Things",
+  "scripts": {
+    "slides:build": "marp cursus/01-hypervisors/slides.md --theme-set thema/the-cloud.css --output dist/slides/01-hypervisors.html",
+    "slides:pdf": "marp cursus/01-hypervisors/slides.md --theme-set thema/the-cloud.css --pdf --output dist/slides/01-hypervisors.pdf",
+    "slides:preview": "marp cursus/01-hypervisors/slides.md --theme-set thema/the-cloud.css --preview",
+    "check": "node scripts/check-course.mjs"
+  },
+  "devDependencies": {
+    "@marp-team/marp-cli": "4.5.1"
+  }
+}
