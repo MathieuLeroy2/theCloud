@@ -12,13 +12,13 @@ Controleer SSH en updates. Installeer Docker Engine met de Compose-plugin via de
 
 ## H4.2 Eerst één container met de CLI
 
-Start een kleine NGINX-container met `docker run`, alleen bereikbaar op `127.0.0.1:8088` van de server. Test met `curl` op die server. Bekijk de container met `docker ps` en de logs. Stop en verwijder alleen die oefencontainer. Noteer wat image, container en poort betekenen.
+**CLI** betekent *Command Line Interface*: je typt opdrachten in plaats van te klikken. Start een kleine NGINX-container met `docker run`, alleen bereikbaar op `127.0.0.1:8088` van de server. Test met `curl` op die server. Bekijk de container met `docker ps` en de logs. Stop en verwijder alleen die oefencontainer. Noteer wat image, container en poort betekenen.
 
 **Klaar als:** je dezelfde container kunt starten en weet dat het image daarna nog aanwezig is.
 
 ## H4.3 Mosquitto beveiligen
 
-Zet de [Compose-file](bestanden/compose.yaml), [brokerinstellingen](bestanden/mosquitto/mosquitto.conf) en [ACL](bestanden/mosquitto/acl) op de VM in één werkmap. Maak de accounts `sensor` en `dashboard` allebei met wachtwoord `Student123`. Controleer de leesrechten van het gehashte wachtwoordbestand. Anonieme toegang staat uit.
+Zet de [Compose-file](bestanden/compose.yaml), [brokerinstellingen](bestanden/mosquitto/mosquitto.conf) en [ACL](bestanden/mosquitto/acl) (*Access Control List*, de lijst die bepaalt welke topics elk account mag lezen of beschrijven) op de VM in één werkmap. Maak de accounts `sensor` en `dashboard` allebei met wachtwoord `Student123`. Controleer de leesrechten van het gehashte wachtwoordbestand. Anonieme toegang staat uit.
 
 **Klaar als:** de broker start en verkeerde credentials worden geweigerd.
 
@@ -46,7 +46,7 @@ Laat de deur op DICHT staan met retain. Stop de stack met `docker compose down` 
 
 Beantwoord de vijf theorievragen. Neem in je enige verslag de Compose-file, brokerconfiguratie, ACL, sensor-YAML, commando's en testuitvoer op. Het vaste labowachtwoord mag in de commando’s staan. Het gehashte wachtwoordbestand neem je niet over. Noteer alleen hoe je dat bestand gemaakt en beschermd hebt.
 
-KMI en een echte telefoonclient zijn extra: alleen doen als de docent de benodigde toegang en actuele integratie bevestigt. De kernopdracht moet zonder externe weerdata werken.
+De weergegevens van **KMI** (*Koninklijk Meteorologisch Instituut*) en een echte telefoonclient zijn extra: alleen doen als de docent de benodigde toegang en actuele integratie bevestigt. De kernopdracht moet zonder externe weerdata werken.
 
 | Onderdeel | Punten |
 | --- | --- |

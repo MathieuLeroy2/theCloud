@@ -12,23 +12,41 @@ Een **domeinaccount** wordt centraal beheerd. De pc vraagt de domeinserver om de
 
 Een **domein** is hier een groep computers en accounts die samen beheerd worden. Ons oefendomein heet `sprookjes.test`. Dat is een naam voor het lab, geen website die je op internet moet registreren.
 
-Microsofts software hiervoor heet **Active Directory Domain Services**, afgekort **AD DS**. Een server met die taak heet een **domeincontroller**. In ons labo is dat SprookjesBoom.
+Microsofts software hiervoor heet **Active Directory Domain Services**, afgekort **AD DS**. Met de kortere naam **AD** bedoelen we hier Active Directory. Een server met die taak heet een **domeincontroller**. In ons labo is dat SprookjesBoom.
+
+Tijdens de installatie vraagt de wizard ook een **DSRM**-wachtwoord. DSRM betekent *Directory Services Restore Mode*: de herstelstand van de domeincontroller. Het is een apart herstelwachtwoord, geen nieuw dagelijks gebruikersaccount. Ook daar gebruiken we `Student123`.
 
 ## 2. DNS helpt de pc de server te vinden
 
-Denk terug aan hoofdstuk 1: DNS zoekt adressen bij namen. Een domein gebruikt DNS ook om te vinden welke server de aanmelding kan controleren.
+Denk terug aan hoofdstuk 1: **DNS** (*Domain Name System*) zoekt adressen bij namen. Een domein gebruikt DNS ook om te vinden welke server de aanmelding kan controleren.
 
 Daarom krijgen beide Windows-pc's **SprookjesBoom als DNS-server**. Ze gebruiken niet rechtstreeks een publieke DNS-server. Die kent ons oefendomein niet.
 
 SprookjesBoom kan onbekende vragen doorsturen naar de DNS-server van het lab. Dat heet een **forwarder**. De clients houden gewoon SprookjesBoom als hun enige DNS-server.
 
-Ook de klok moet kloppen. Windows gebruikt onder meer **Kerberos** om een aanmelding veilig af te handelen. Een groot tijdsverschil kan die aanmelding laten mislukken. AD gebruikt daarnaast **LDAP** om gegevens in de directory op te vragen. Je hoeft die protocollen nu niet zelf te bouwen; je moet wel weten waarom DNS en tijd belangrijk zijn.
+### Kerberos: een tijdelijk aanmeldbewijs
+
+**Kerberos** is een aanmeldprotocol: afspraken waarmee computers controleren wie zich aanmeldt. Na de controle krijgt je computer een tijdelijk digitaal bewijs, een **ticket**. Daarmee kan hij toegang tot diensten aanvragen zonder telkens opnieuw je wachtwoord te versturen. De dienst controleert ook nog of jouw account die toegang mag hebben.
+
+Zo’n ticket is maar een bepaalde tijd geldig. Daarom moeten de klokken van client en server bij elkaar passen. Bij een groot tijdsverschil kan de aanmelding mislukken. [Microsoft legt Kerberos en de tickets verder uit](https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview).
+
+**Voorbeeld:** Roodkapje meldt zich aan op haar pc. De computer krijgt een aanmeldbewijs waarmee hij vervolgens toegang tot een toegestane netwerkdienst kan aanvragen.
+
+### LDAP: informatie over accounts opvragen
+
+**LDAP** betekent *Lightweight Directory Access Protocol*. Het zijn afspraken om gegevens uit een centrale directory op te vragen. Een **directory** is hier een georganiseerde verzameling accountgegevens, geen map met je documenten.
+
+**Voorbeeld:** een programma vraagt welke groepen bij Roodkapje horen. Dat is gegevens opzoeken. Kerberos helpt bij de controle van de aanmelding. Beide hebben dus een andere taak. Je configureert in dit labo de domeinserver; je bouwt deze protocollen niet zelf.
 
 **Voorbeeld:** de server is bereikbaar via ping, maar de client vindt het domein niet. Kijk eerst welke DNS-server op de client is ingevuld.
 
 ## 3. Gebruikers in groepen zetten
 
 Je kunt rechten één voor één aan gebruikers geven. Bij veel gebruikers raak je dan snel het overzicht kwijt. Daarom maken we **groepen**.
+
+We kiezen namen die met **GG** beginnen. Dat betekent *Global Group*, of globale groep. In dit labo verzamelen we daarin gebruikers uit ons eigen domein. Bij het aanmaken kies je het bereik **Global** en het type **Security**: een groep waaraan je rechten kunt geven.
+
+`GG-Rood` betekent dus ‘globale groep voor het huis van Roodkapje’. **GG is onze naamafspraak**: alleen die letters in een naam zetten geeft nog geen rechten. Die rechten stellen we later in.
 
 - `GG-Rood`: gebruikers die op RoodkapjesHuis mogen werken.
 - `GG-Big`: gebruikers die op BiggetjesHuis mogen werken.
@@ -42,11 +60,13 @@ Gebruik een gewoon account voor dagelijks werk en een apart beheeraccount voor b
 
 ## 4. Mappen voor computers en centrale afspraken
 
-In Active Directory kun je computers en gebruikers in beheermappen zetten. Zo'n map heet een **Organizational Unit**, kort **OU**. Ze is geen gedeelde map voor bestanden.
+In Active Directory kun je computers en gebruikers in beheermappen zetten. Zo'n map heet een **Organizational Unit**, kort **OU**. Denk aan een map in de beheerboom van Active Directory. Je zet daarin bijvoorbeeld het computeraccount van RoodkapjesHuis. Een **computeraccount** is de registratie van die pc in Active Directory. Een gebruikersaccount stelt een persoon voor; een computeraccount stelt een machine voor. Het is geen gedeelde map waarin Roodkapje documenten bewaart.
 
 Wij maken twee computer-OU's. In de ene staat RoodkapjesHuis, in de andere BiggetjesHuis. Zo kunnen we per pc een andere afspraak toepassen.
 
-Een verzameling centrale instellingen heet een **Group Policy Object**, kort **GPO**. Wij gebruiken een GPO om te bepalen wie op een pc mag aanmelden. De pc haalt die instellingen op bij het domein.
+Een verzameling centrale instellingen heet een **Group Policy Object**, kort **GPO**. *Group Policy* betekent groepsbeleid: instellingen die je centraal beheert. Een GPO is het pakket waarin die instellingen staan. Wij gebruiken zo’n pakket om te bepalen wie op een pc mag aanmelden. De pc haalt die instellingen op bij het domein.
+
+**In onze oefening:** de gebruiker Roodkapje zit in groep `GG-Rood`. Het computeraccount RoodkapjesHuis staat in OU `PcRood`. Aan die OU hangt de GPO die zegt dat leden van GG-Rood op deze pc mogen aanmelden. De groep, beheermap en instellingen hebben dus elk een andere taak.
 
 Een GPO voor RoodkapjesHuis koppelen we alleen aan de OU van die pc. Als je ze per ongeluk aan het hele domein koppelt, kun je ook andere computers blokkeren. In dit labo verander je daarom niet de standaardinstellingen van het hele domein of de OU van de domeincontroller.
 
@@ -73,7 +93,7 @@ Dit is onze afspraak. ‘Ja’ geldt zowel voor aanmelden via het scherm als via
 | Big1 | Nee | Ja | Nee |
 | Wolf | Ja | Ja | Ja, op beide |
 
-Het domeinbeheeraccount blijft beschikbaar om fouten te herstellen. Gewone gebruikers mogen niet op de domeincontroller aanmelden.
+Het domeinbeheeraccount blijft beschikbaar om fouten te herstellen. Gewone gebruikers mogen niet op de domeincontroller aanmelden. De ingebouwde groep **Domain Admins** bevat beheerders van het domein. Dat is veel ruimer dan alleen één client beheren.
 
 Test ook de vakjes met ‘Nee’. Alleen een werkende beheerderslogin tonen is niet genoeg: een beheerder heeft vaak meer rechten dan een gewone gebruiker.
 
@@ -100,6 +120,9 @@ Je stopt de DNS-dienst niet om een fout te oefenen. We veranderen straks alleen 
 5. Wat is het verschil tussen afmelden en de RDP-verbinding sluiten?
 
 ## Bronnen
+
+- [Kerberos en aanmeldtickets](https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview)
+- [Beveiligingsgroepen en hun bereik](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-groups)
 
 - [AD DS installeren](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-)
 - [Recht om lokaal aan te melden](https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/allow-log-on-locally)

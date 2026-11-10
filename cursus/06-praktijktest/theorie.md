@@ -2,6 +2,20 @@
 
 In deze test combineer je wat je al geoefend hebt. Er komen geen nieuwe technieken bij. Je gebruikt je eigen VM's, Docker en de monitoring uit hoofdstuk 5.
 
+## Korte herhaling van de woorden
+
+| Woord | Wat bedoelen we hier? |
+| --- | --- |
+| VM — Virtual Machine | De virtuele computer waarop Ubuntu draait. |
+| SSH — Secure Shell | De beveiligde verbinding waarmee je op afstand commando’s uitvoert. |
+| CLI — Command Line Interface | Werken door commando’s te typen, bijvoorbeeld `docker run`. |
+| Bind mount / volume | Opslag buiten de tijdelijke container, zodat gegevens bewaard blijven. |
+| MQTT-broker en topic | Het berichtenprogramma en het onderwerpadres waarnaar je berichten stuurt. |
+| Exporter | Een programma dat metingen aanbiedt aan Prometheus. |
+| Query | Een vraag waarmee je de juiste metingen selecteert of berekent. |
+| Alert | Een waarschuwingsregel die je op die metingen toepast. |
+| JSON — JavaScript Object Notation | Het tekstformaat waarin Grafana je dashboard exporteert. |
+
 ## Wat moet je zonder een nieuw stappenplan kunnen?
 
 Je kunt een VM via SSH bereiken, een map maken, een configuratie aanpassen en een container starten met `docker run`. Je weet hoe je een loopbackpoort via SSH vanaf Xubuntu bereikt.

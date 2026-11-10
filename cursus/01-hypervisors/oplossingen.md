@@ -46,10 +46,12 @@ Een back-up op dezelfde laptop is bruikbaar om het terugzetten te oefenen. Als j
 
 Gebruik je de schoolomgeving? Ga dan naar stap 2 en voer de installatie alleen uit op de oefenmachine die de docent aanwijst.
 
+**VM** betekent *Virtual Machine*: een virtuele computer. Het bestand waarmee je Proxmox installeert heet een **ISO**: een bestand dat een installatieschijf voorstelt.
+
 1. Maak een nieuwe VM voor een 64-bits Linux-systeem.
 2. Koppel de Proxmox-ISO. Een ISO is het bestand waarmee je het besturingssysteem installeert.
 3. Geef de VM 4 vCPU's, 8 GB RAM en een virtuele schijf van 100 GB.
-4. Zet het doorgeven van hardwarevirtualisatie aan. In Workstation heet die optie bijvoorbeeld `Virtualize Intel VT-x/EPT or AMD-V/RVI`.
+4. Zet het doorgeven van hardwarevirtualisatie aan. In Workstation heet die optie bijvoorbeeld `Virtualize Intel VT-x/EPT or AMD-V/RVI`. Intel en AMD zijn de processormerken; VT-x/AMD-V geven VM’s hulp van de echte processor. **EPT** betekent *Extended Page Tables* en **RVI** *Rapid Virtualization Indexing*. Die processorfuncties helpen met de geheugenvertaling voor VM’s. Je kiest hier de optie die bij je processor hoort.
 5. Kies het voorbereide NAT-netwerk. Controleer met je verslag welk subnet en welke gateway daarbij horen.
 6. Start de VM.
 
@@ -59,7 +61,7 @@ Gebruik je de schoolomgeving? Ga dan naar stap 2 en voer de installatie alleen u
 
 1. Start de installer en accepteer de licentievoorwaarden.
 2. Kies de virtuele schijf waarop je Proxmox wilt installeren. Controleer dat dit de schijf van je oefenmachine is.
-3. Laat de docent de verdeling van de schijfruimte nakijken. Je hebt ruimte nodig voor Proxmox, de ISO-bestanden en de schijven van de twee Linux-VM's. Voor dit labo gebruiken we bijvoorbeeld ext4 en LVM-thin, een opslagtype waarop je snapshots kunt maken.
+3. Laat de docent de verdeling van de schijfruimte nakijken. Je hebt ruimte nodig voor Proxmox, de ISO-bestanden en de schijven van de twee Linux-VM's. Voor de Proxmox-systeemschijf gebruiken we bijvoorbeeld **ext4**, een indeling om Linux-bestanden op een schijf te bewaren. De gastschijven komen op **LVM-thin**. LVM betekent *Logical Volume Manager*: software die schijfruimte verdeelt in volumes. *Thin* betekent dat de fysieke ruimte groeit wanneer je gegevens toevoegt. Daarop kunnen we ook snapshots maken.
 4. Stel België, tijdzone `Europe/Brussels` en het juiste toetsenbord in.
 5. Gebruik `Student123` als beheerwachtwoord en vul de opgegeven contactgegevens in.
 6. Stel de naam en netwerkgegevens in. In ons voorbeeld is de volledige naam `pve-lab.lab.test`, het adres `192.168.77.10/24`, de gateway `192.168.77.2` en de DNS-server `192.168.77.2`.
@@ -80,7 +82,7 @@ https://192.168.77.10:8006
 
 Een eigen nieuwe Proxmox-installatie kan een certificaatwaarschuwing tonen. Controleer eerst het adres via het scherm van de Proxmox-machine. Vraag hulp als je niet zeker bent dat je de juiste server opent. Op school volg je de afgesproken manier om aan te melden.
 
-Op je eigen installatie meld je aan als `root`. Kies bij **Realm** voor `Linux PAM`. Op de schoolomgeving gebruik je het account en de aanmeldmethode die de docent geeft.
+Op je eigen installatie meld je aan als `root`. Kies bij **Realm** voor `Linux PAM`. *Realm* betekent hier welke aanmeldmethode Proxmox gebruikt. **PAM** (*Pluggable Authentication Modules*) laat Proxmox de lokale Linux-accounts controleren. Op de schoolomgeving gebruik je het account en de aanmeldmethode die de docent geeft.
 
 ### Stap 4 Kijk of Proxmox klaar is voor je VM's
 
@@ -107,7 +109,9 @@ De echte eindtest volgt bij het starten van Ubuntu en Xubuntu: die moeten ook me
 
 Zet de twee cursus-ISO's op de afgesproken opslagplaats. Op school kunnen ze al klaarstaan.
 
-Maak daarna de machines uit deze tabel. Gebruik je eigen vrije VM-nummers.
+Maak daarna de machines uit deze tabel. Gebruik je eigen vrije VM-nummers. Zo’n nummer heet een **VMID** (*Virtual Machine ID*): Proxmox gebruikt het om de juiste machine te kiezen.
+
+De schijfcontroller **VirtIO SCSI** is een virtueel onderdeel waarmee Linux de schijf aanspreekt. **SCSI** betekent *Small Computer System Interface*: de naam van de gebruikte afspraken voor opslagapparaten. Je hoeft daarvoor in dit labo geen fysieke kabels aan te sluiten.
 
 | Instelling | Ubuntu Server | Xubuntu |
 | --- | --- | --- |
@@ -120,7 +124,9 @@ Maak daarna de machines uit deze tabel. Gebruik je eigen vrije VM-nummers.
 | Bridge | Volgens verslag | Dezelfde bridge |
 | Installatiebestand | Ubuntu Server-ISO | Xubuntu-ISO |
 
-Zet de schijven op de opslagplaats waarop snapshots mogelijk zijn. Laat eventuele CPU-, BIOS- of UEFI-keuzes en een VLAN-tag overeenkomen met de afspraken van de docent. Houd het RAM voor deze oefening vast ingesteld.
+Zet de schijven op de opslagplaats waarop snapshots mogelijk zijn. Laat de processor- en opstartkeuzes overeenkomen met de afspraken van de docent. **BIOS** (*Basic Input/Output System*) en **UEFI** (*Unified Extensible Firmware Interface*) zijn twee soorten startsoftware waarmee de VM haar besturingssysteem kan laden. UEFI gebruikt soms een extra **EFI-schijf** voor zijn instellingen; EFI betekent *Extensible Firmware Interface*.
+
+Een **VLAN** (*Virtual Local Area Network*) is een apart netwerk binnen gedeelde netwerkinfrastructuur. De **VLAN-tag** is het nummer waarmee die scheiding wordt aangeduid. Vul alleen een tag in als de docent die opgeeft. Houd het RAM voor deze oefening vast ingesteld. Proxmox vraagt dat in **MiB** (*mebibyte*). 1.024 MiB is 1 **GiB** (*gibibyte*); 2.048 MiB is dus 2 GiB, vaak afgerond ‘2 GB RAM’ genoemd.
 
 ### Stap 2 Installeer Ubuntu Server
 
@@ -159,7 +165,7 @@ sudo netplan get
 sudo ls -l /etc/netplan
 ```
 
-Netplan bewaart de instellingen in een YAML-bestand. YAML is een tekstformaat waarin inspringen met spaties belangrijk is. Maak eerst een kopie van de huidige bestanden:
+Netplan bewaart de instellingen in een YAML-bestand. YAML is een tekstformaat voor instellingen waarin inspringen met spaties belangrijk is. `renderer: networkd` kiest het programma dat die netwerkinstellingen uitvoert. `ethernets` groepeert de bekabelde netwerkkaarten. `addresses` is het eigen adres; `routes` bevat de weg naar andere netwerken; `nameservers` bevat de DNS-servers. Maak eerst een kopie van de huidige bestanden:
 
 ```bash
 sudo mkdir -p /root/h1-netwerk-backup
@@ -208,7 +214,7 @@ nmcli -f NAME,UUID,TYPE,DEVICE connection show --active
 
 Het eerste commando stelt de computernaam in. De andere twee tonen je netwerkkaart en de actieve verbinding.
 
-Zoek de regel van de bekabelde verbinding. Kopieer de waarde in de kolom **UUID**. Dat is het unieke nummer van het verbindingsprofiel. Zo kiezen we zeker het juiste profiel, ook als de naam spaties bevat.
+Zoek de regel van de bekabelde verbinding. Kopieer de waarde in de kolom **UUID**. **UUID** betekent *Universally Unique Identifier*: een lange unieke code. Hier is dat de code van het verbindingsprofiel, de bewaarde instellingen van één netwerkverbinding. Zo kiezen we zeker het juiste profiel, ook als de naam spaties bevat.
 
 Vervang `UUID-UIT-JOUW-LIJST` hieronder door die waarde. De variabele `LAB_CONNECTION` bewaart het nummer voor de volgende commando's:
 
@@ -318,7 +324,7 @@ Daarmee installeer en start je SSH. Het programma start voortaan ook mee met Ubu
 sudo ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
 ```
 
-Noteer de code die met `SHA256:` begint. Dit is de vingerafdruk die je straks vergelijkt. Ze hoort bij de hostsleutel van deze server.
+Noteer de code die met `SHA256:` begint. Dit is de vingerafdruk die je straks vergelijkt. **SHA** betekent *Secure Hash Algorithm*. SHA256 berekent uit de sleutel een herkenningscode met een vaste lengte. Je vergelijkt die code; je hoeft de berekening niet zelf uit te voeren. Ze hoort bij de hostsleutel van deze server.
 
 **Waar? Op Xubuntu.**
 

@@ -12,7 +12,7 @@ De monitoringcontainers draaien op `cloud-containers`. Ze kunnen zo ook de conta
 
 ## H5.2 Exporters toevoegen
 
-Installeer Node Exporter op cloud-web en windows_exporter op de Windows-client. Laat de meetpoorten alleen toe vanaf cloud-containers. Test de `/metrics`-pagina's vanaf die machine. Noteer één voorbeeldwaarde per exporter.
+Een **exporter** is een programma dat meetgegevens aanbiedt aan Prometheus. Installeer Node Exporter op cloud-web en windows_exporter op de Windows-client. Laat de meetpoorten alleen toe vanaf cloud-containers. Test de `/metrics`-pagina's vanaf die machine. Noteer één voorbeeldwaarde per exporter.
 
 **Klaar als:** de monitoringmachine beide exporters kan bereiken en de firewall niet onnodig breed openstaat.
 
@@ -20,7 +20,7 @@ Installeer Node Exporter op cloud-web en windows_exporter op de Windows-client. 
 
 Kopieer de [startbestanden](bestanden/compose.yaml) met hun submappen naar `~/thecloud-monitoring` op cloud-containers. Pas de targetadressen in `prometheus.yml` aan. Maak het Grafana-beheerwachtwoordbestand met `Student123`, zoals in de oplossing.
 
-Controleer de YAML en Prometheus-configuratie en start de stack. Open Grafana en Prometheus via een SSH-tunnel. Bekijk de targets.
+Controleer de YAML en Prometheus-configuratie en start de stack. Open Grafana en Prometheus via een SSH-tunnel. Bekijk de **targets**: de meetpunten waarvan Prometheus de gegevens moet ophalen.
 
 **Klaar als:** de targets die je gebruikt op UP staan en Grafana Prometheus als databron heeft.
 
@@ -49,7 +49,7 @@ Test ook de schijfalert door de drempel tijdelijk lager te zetten dan het huidig
 
 ## H5.6 Bewaren en indienen
 
-Sla je dashboard op. Exporteer het dashboard als JSON en plak die JSON in je enige verslag, samen met queries, aangepaste YAML en testuitvoer. Het vaste labowachtwoord mag in voorbeelden staan. Neem geen private sleutels of persoonlijke geheimen op. De Grafana-export is dus geen aparte bijlage.
+Sla je dashboard op. Exporteer het dashboard als **JSON** (*JavaScript Object Notation*, een tekstformaat voor de beschrijving van je panelen) en plak die JSON in je enige verslag, samen met queries, aangepaste YAML en testuitvoer. Het vaste labowachtwoord mag in voorbeelden staan. Neem geen private sleutels of persoonlijke geheimen op. De Grafana-export is dus geen aparte bijlage.
 
 Beantwoord de vijf theorievragen. Laat het dashboard ook aan de docent zien. Apache/MariaDB-monitoring staat als extra oefening in [de uitbreiding](uitbreiding-web-database.md).
 

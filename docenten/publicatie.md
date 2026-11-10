@@ -45,7 +45,9 @@ Gebruik korte slides en plaats toelichting in Marp-commentaren als sprekersnotit
 Schrijf voor studenten die het onderwerp voor het eerst in de praktijk gebruiken. Hoofdstuk 1 is hiervoor in gewone taal herwerkt. Gebruik die aanpak ook bij volgende hoofdstukken:
 
 - Begin met iets dat de student gaat maken of zien, bijvoorbeeld een website op de server openen vanaf Xubuntu.
-- Leg één nieuw begrip tegelijk uit. Introduceer eerst de handeling of het voorbeeld en geef daarna de vakterm.
+- Leg één nieuw begrip tegelijk uit. Introduceer eerst de handeling of het voorbeeld en geef daarna de vakterm. Schrijf bij een nieuwe afkorting de volledige naam én wat die in ons labo doet. Alleen de Engelse naam uitschrijven is niet genoeg.
+- Zet die uitleg zichtbaar op de slide waar het begrip binnenkomt, niet alleen in notities of de theorie. Gebruik bij namen zoals GG-Rood ook de uitleg van het voorvoegsel en geef aan dat het een naamafspraak is.
+- Splits een slide als uitleg anders te veel tekst geeft. Verklein de letters niet om nog meer nieuwe woorden op één slide te zetten.
 - Gebruik korte zinnen en vaste namen voor de machines. Vermijd opeenvolgende onbekende afkortingen.
 - Zet bij commando's waar de student ze uitvoert, wat ze doen en welk resultaat verwacht wordt.
 - Verdeel opdrachten in kleine stappen. Eindig een deel met een concrete controle, zoals ‘zie je de pagina in je browser?’.

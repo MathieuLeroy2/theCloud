@@ -177,7 +177,7 @@ De verplichte Docker-applicatiepoorten zijn aan `127.0.0.1` gebonden en bereikba
 
 Node Exporter op cloud-web accepteert alleen de monitoring-VM als bron. De Windows MSI krijgt `REMOTE_ADDR` met dezelfde bron. cAdvisor draait met brede leesrechten en privileged uitsluitend in de eigen Ubuntu-VM. De hostnetwerkmodus van H5 is bewust bedoeld voor Linux Docker Engine, niet voor rechtstreeks gebruik op een persoonlijke desktop of een gedeelde Proxmox-node.
 
-Controleer `/dev/kmsg`, `/dev/disk` en het echte Docker Data Root. Docker met een andere opslagopzet, cgroup-instelling of containerd-image store kan aangepaste cAdvisor-mounts of flags vragen. Bevestig vóór de les dat de label-, geheugen-, CPU- en netwerkmetrics voor een eigen proefcontainer bestaan. Een succesvolle start van cAdvisor alleen is onvoldoende.
+Controleer `/dev/kmsg`, `/dev/disk` en het echte Docker Data Root. Een **cgroup** (*control group*) is een Linux-mechanisme om processen samen te volgen en hun middelen te begrenzen. De **Docker API** (*Application Programming Interface*) is de programma-interface waarmee cAdvisor informatie bij Docker opvraagt. Docker met een andere opslagopzet, cgroup-instelling of containerd-image store kan aangepaste cAdvisor-mounts of flags vragen. Bevestig vóór de les dat de label-, geheugen-, CPU- en netwerkmetrics voor een eigen proefcontainer bestaan. Een succesvolle start van cAdvisor alleen is onvoldoende.
 
 ### Praktijktest en extra oefening
 

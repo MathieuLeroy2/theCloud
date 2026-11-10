@@ -19,9 +19,11 @@ The Cloud · Hoofdstuk 2
 
 # Je schoolaccount op twee pc’s
 
-De pc vraagt aan een centrale server wie je bent.
+De **server** beheert de accounts.
+De **clients** zijn de pc’s waarop je ermee werkt.
 
-Vandaag bouw je dat zelf met **SprookjesBoom** en twee clients.
+Vandaag is SprookjesBoom de server.
+RoodkapjesHuis en BiggetjesHuis zijn de clients.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -33,8 +35,8 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 **Lokaal account:** bestaat op één pc.
 
-**Domeinaccount:** wordt centraal beheerd.
-Je gebruikt het op de pc’s waar je toegang krijgt.
+Een **domein** bundelt centraal beheerde accounts en computers.
+Een **domeinaccount** kan op de toegestane pc’s aanmelden.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -44,10 +46,11 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Active Directory
 
-**AD DS** bewaart accounts, groepen en computers.
+**AD DS = Active Directory Domain Services**.
+Microsofts software om accounts, groepen en pc’s te beheren.
 
 De server met die taak heet een **domeincontroller**.
-Ons oefendomein is **sprookjes.test**.
+Hier is dat SprookjesBoom in het domein sprookjes.test.
 
 <!--
 Bron: https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/install-active-directory-domain-services--level-100-
@@ -57,10 +60,11 @@ Bron: https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/ins
 
 # DNS vindt de domeinserver
 
-Beide clients gebruiken **SprookjesBoom als DNS-server**.
+**DNS = Domain Name System**: namen naar adressen opzoeken.
+Het helpt de client ook de domeincontroller te vinden.
 
+Beide clients gebruiken daarom **SprookjesBoom als DNS-server**.
 Een publieke DNS-server kent ons oefendomein niet.
-De server kan onbekende vragen wel doorsturen.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -68,15 +72,49 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 ---
 
-# Ook de klok moet kloppen
+# Kerberos gebruikt een tijdelijk aanmeldbewijs
 
-Windows gebruikt onder meer **Kerberos** bij aanmelden.
-Een groot tijdsverschil kan de controle laten mislukken.
+**Kerberos** controleert aanmeldingen met tijdelijke
+digitale bewijzen, **tickets** genoemd.
 
-Ping werkt? Controleer daarnaast DNS en tijd.
+De pc vraagt daarmee toegang tot diensten zonder
+telkens opnieuw het wachtwoord te versturen.
+Een ticket heeft een geldigheidsduur: daarom moet de klok kloppen.
 
 <!--
+Bron: https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview
+
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
+-->
+
+---
+
+# LDAP zoekt accountgegevens op
+
+**LDAP = Lightweight Directory Access Protocol**.
+Afspraken om gegevens uit de centrale directory op te vragen.
+
+Een **directory** is hier een georganiseerde accountverzameling.
+Voorbeeld: opvragen bij welke groepen Roodkapje hoort.
+Dat is een andere taak dan haar aanmelding controleren.
+
+<!--
+Bron: https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-groups
+-->
+
+---
+
+# Wat betekent GG in een groepsnaam?
+
+**GG = Global Group**, een globale groep.
+We verzamelen daarin gebruikers uit ons eigen domein.
+
+Bij het aanmaken kies je bereik **Global**, type **Security**.
+GG is onze naamafspraak, geen automatische instelling.
+Voorbeeld: GG-Rood is de groep voor RoodkapjesHuis.
+
+<!--
+Bron: https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-groups
 -->
 
 ---
@@ -112,12 +150,13 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Een OU is een beheermap
 
-Je zet computeraccounts in een **OU**.
+**OU = Organizational Unit**, een beheermap in Active Directory.
 
-RoodkapjesHuis komt in PcRood.
-BiggetjesHuis komt in PcBig.
+Een **computeraccount** is de registratie van de pc in het domein.
+Dat van RoodkapjesHuis zet je in OU PcRood.
+De instellingen aan die OU gelden dan voor deze pc.
 
-Een OU is geen gedeelde map voor bestanden.
+Dit is geen map waarin de gebruiker documenten bewaart.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -127,10 +166,12 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Een GPO bevat centrale afspraken
 
-Met een **GPO** stel je in wie op een pc mag aanmelden.
+**GPO = Group Policy Object**.
+Een pakket instellingen dat je vanuit het domein beheert.
 
-Koppel de juiste GPO aan de OU van die pc.
-Laat de OU van de domeincontroller met rust.
+Voorbeeld: je koppelt een pakket met aanmeldrechten aan PcRood.
+De computers in die OU krijgen die instellingen.
+De groep GG-Rood bepaalt vervolgens welke gebruikers erbij mogen.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -154,14 +195,29 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Het scherm of RDP
 
-**Console:** aanmelden op het scherm in Proxmox.
+**Console:** het scherm van de pc, hier geopend in Proxmox.
 
-**RDP:** via het netwerk het bureaublad van de pc openen.
+**RDP = Remote Desktop Protocol**.
+Daarmee open je het bureaublad van die pc via het netwerk.
 
-Beide hebben eigen rechten. Test dus beide manieren.
+Console en RDP hebben aparte aanmeldrechten.
 
 <!--
 Bron: https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/allow-log-on-through-remote-desktop-services
+-->
+
+---
+
+# NLA controleert vóór het bureaublad opent
+
+**NLA = Network Level Authentication**.
+RDP controleert eerst de aanmelding en opent daarna de sessie.
+
+Laat die beveiliging aan.
+Gebruik voor alle laboaccounts **Student123**.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
 -->
 
 ---
@@ -189,6 +245,20 @@ Controleer eerst:
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
+-->
+
+---
+
+# Het herstelwachtwoord in de wizard
+
+**DSRM = Directory Services Restore Mode**.
+Dat is de herstelstand van de domeincontroller.
+
+Het gevraagde DSRM-wachtwoord hoort bij die herstelstand.
+In dit labo gebruiken we ook daar **Student123**.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
 -->
 
 ---

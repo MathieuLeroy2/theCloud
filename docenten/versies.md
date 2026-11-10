@@ -30,7 +30,7 @@ Concrete tags zijn gekozen voor de eerste uitwerking, niet als belofte dat een v
 
 - Alle zes hoofdstukken hebben theorie/herhaling, Marp-slides, opdrachten, oplossingen en een verslagsjabloon. H6 heeft twee opdrachtvarianten en één rubric.
 - De aparte labkaart is verwijderd. Instellingen, code en bewijs horen in hetzelfde verslag. Alle lokale Markdown-links zijn gecontroleerd met `npm run check`.
-- Alle zes presentaties bouwen naar HTML. Alle 95 slides zijn gerenderd en visueel bekeken. De aanvullende geometriecontrole vond geen tekst buiten het slidevlak.
+- Alle zes presentaties bouwen naar HTML. Alle 115 slides zijn gerenderd en visueel bekeken. De aanvullende geometriecontrole vond geen tekst buiten het slidevlak.
 - De Bash-codeblokken uit cursus en docentenhandleidingen zijn gecontroleerd met `bash -n`. De commando's zijn daarmee niet op een VM uitgevoerd.
 - De losse YAML-bestanden, inclusief de alerttests, zijn geparseerd. Beide Compose-bestanden slagen voor `docker compose config --quiet`.
 - De 17 PromQL-queryvoorbeelden slagen voor een syntaxiscontrole via promtool-recordingregels.

@@ -61,7 +61,7 @@ sudo chown 1883:1883 mosquitto/passwords
 sudo chmod 640 mosquitto/passwords
 ```
 
-De optie `-b` gebruikt het opgegeven labowachtwoord `Student123` voor beide accounts. Gebruik `-c` alleen de eerste keer: het maakt een nieuw bestand en zou anders het eerste account overschrijven. De image gebruikt voor Mosquitto UID/GID 1883. Het bestand moet voor die service leesbaar zijn. Zet geen `chmod 777`.
+De optie `-b` gebruikt het opgegeven labowachtwoord `Student123` voor beide accounts. Gebruik `-c` alleen de eerste keer: het maakt een nieuw bestand en zou anders het eerste account overschrijven. **UID** betekent *User ID*, het Linux-gebruikersnummer. **GID** betekent *Group ID*, het groepsnummer. De image gebruikt voor de Mosquitto-service UID/GID 1883. Het bestand moet voor die service leesbaar zijn. Zet geen `chmod 777`.
 
 Controleer en start:
 

@@ -19,9 +19,11 @@ The Cloud · Hoofdstuk 4
 
 # Een deur zonder echte sensor
 
-Je verstuurt **OPEN** of **DICHT**.
-Mosquitto ontvangt het bericht.
-Home Assistant toont de toestand.
+**MQTT** is een berichtenprotocol: afspraken voor korte berichten.
+Een **broker** ontvangt die berichten en geeft ze door.
+
+Je verstuurt OPEN of DICHT naar Mosquitto, onze broker.
+Het **dashboard**, je overzichtsscherm, toont de toestand.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -45,11 +47,12 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # VM of container?
 
-Een VM heeft haar eigen OS en kernel.
-Containers delen de kernel van hun Linux-host.
+**VM = Virtual Machine**, een virtuele computer.
+**OS = Operating System**, het besturingssysteem.
 
-In dit labo draait Docker **in een Ubuntu-VM**.
-We installeren het niet op de Proxmox-node.
+De **kernel** is de kern die processor, geheugen en apparaten regelt.
+Een VM heeft haar eigen kernel; containers delen de hostkernel.
+In dit labo draait Docker in een Ubuntu-VM.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -59,10 +62,12 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Eerst docker run
 
-Met `docker run` beschrijf je één container.
+**CLI = Command Line Interface**: opdrachten typen in de terminal.
 
-Je kiest image, naam, label, poort en opslag.
-Test de kleine oefenwebsite vóór de IoT-stack.
+Met docker run beschrijf je één container.
+Je kiest image, naam, poort en opslag.
+
+Een **label** is een naam met waarde om de container te herkennen.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -72,10 +77,12 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Daarna Compose
 
-**compose.yaml** bewaart de instellingen van beide diensten.
+**Compose** start meerdere diensten vanuit één instellingenbestand.
 
-Met `docker compose up -d` start je ze samen.
-Met `docker compose ps` bekijk je hun toestand.
+Dat bestand heet **compose.yaml**.
+**YAML** is leesbare tekst met inspringing voor wat bij elkaar hoort.
+
+Met docker compose up -d start je de diensten samen.
 
 <!--
 Bron: https://docs.docker.com/compose/intro/features-uses/
@@ -97,14 +104,42 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 ---
 
+# Loopback en de SSH-tunnel
+
+**Loopback** betekent dat je dezelfde computer aanspreekt.
+Daarvoor gebruiken we **127.0.0.1**.
+
+**SSH = Secure Shell**, de beveiligde verbinding naar je server.
+Een **SSH-tunnel** stuurt één poort door die verbinding door.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
+-->
+
+---
+
 # Wat betekent deze poort?
 
-`127.0.0.1:1883:1883`
+**127.0.0.1:1883:1883**
 
-Alleen via de loopbackpoort van de VM kom je bij de broker.
-Vanaf Xubuntu gebruiken we een **SSH-tunnel**.
+Het eerste deel houdt de hostpoort lokaal op de VM.
+De laatste 1883 is de poort in de container.
 
-Alleen UFW is geen garantie bij Docker-poortpublicaties.
+Vanaf Xubuntu gebruiken we de SSH-tunnel.
+
+<!--
+Bron: https://docs.docker.com/engine/install/ubuntu/
+-->
+
+---
+
+# Waarom niet alleen de Ubuntu-firewall?
+
+**UFW = Uncomplicated Firewall**, de firewalltool op Ubuntu.
+
+Docker kan gepubliceerde poorten buiten gewone UFW-regels
+om bereikbaar maken. Daarom binden wij ze aan loopback
+en gebruiken we SSH voor toegang vanaf de client.
 
 <!--
 Bron: https://docs.docker.com/engine/install/ubuntu/
@@ -114,10 +149,11 @@ Bron: https://docs.docker.com/engine/install/ubuntu/
 
 # Berichten via de broker
 
-**Topic:** `iot/labo/deur`
-**Payload:** `OPEN` of `DICHT`
+**Topic:** het onderwerpadres van een bericht, hier iot/labo/deur.
+**Payload:** de inhoud, hier OPEN of DICHT.
 
-De sensor publiceert. Het dashboard abonneert zich.
+**Publiceren:** een bericht naar de broker sturen.
+**Abonneren:** de broker vragen berichten op een topic door te geven.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -127,12 +163,12 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Twee accounts, twee taken
 
-**sensor:** mag op iot/labo/# schrijven.
+**ACL = Access Control List**, een lijst met toegangsregels.
 
+**sensor:** mag op iot/labo/# schrijven.
 **dashboard:** mag die berichten lezen.
 
-Een ACL legt de topicrechten vast.
-Anonieme toegang staat uit.
+Beide gebruiken Student123; de ACL bepaalt wat ze mogen.
 
 <!--
 Bron: https://mosquitto.org/documentation/authentication-methods/
@@ -169,11 +205,12 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Home Assistant Container
 
-Dit is de containeruitvoering, niet Home Assistant OS.
-Mosquitto draait daarom apart.
+Home Assistant Container is de uitvoering in een container.
 
-Onze fictieve deur vraagt geen USB, Bluetooth
-of extra brede apparaatrechten.
+Home Assistant **OS (Operating System)** is een volledig
+besturingssysteem dat ook extra apps kan beheren.
+
+Wij gebruiken de container en installeren Mosquitto apart.
 
 <!--
 Bron: https://www.home-assistant.io/installation/linux/
@@ -219,6 +256,21 @@ Gebruik dezelfde werkmap en verwijder geen volumes.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
+-->
+
+---
+
+# Tag en digest kiezen verschillende dingen
+
+Een **tag** is een versie-etiket, bijvoorbeeld 2.0.22.
+
+Een **digest** is een berekende code van de image-inhoud.
+Verandert de inhoud, dan verandert de code.
+
+Noteer beide om bij te houden welke image je gebruikte.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
 -->
 
 ---

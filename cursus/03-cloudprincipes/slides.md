@@ -19,10 +19,11 @@ The Cloud · Hoofdstuk 3
 
 # Sneller een nieuwe server
 
-Je maakt een VM uit een voorbereid template.
+Een **VM (Virtual Machine)** is je virtuele computer.
+Een **template** is een voorbereid vertrekpunt voor een nieuwe VM.
 
-Daarop installeer je Jellyfin en speel je een testbestand af
-vanaf twee clients.
+Vandaag maak je daarvan een kopie en installeer je Jellyfin.
+Je gebruikt de dienst vanaf twee andere computers: de **clients**.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -56,16 +57,42 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 ---
 
-# Wie beheert welk deel?
+# IaaS: je krijgt infrastructuur
 
-| Vorm | Wat krijg je? |
-| --- | --- |
-| IaaS | Bijvoorbeeld een VM die je zelf beheert |
-| PaaS | Een plek om je eigen toepassing te draaien |
-| SaaS | Een afgewerkt programma om te gebruiken |
+**IaaS = Infrastructure as a Service**, infrastructuur als dienst.
+
+Je krijgt bijvoorbeeld een VM.
+Jij beheert het besturingssysteem en de toepassing.
+Dat lijkt op onze oefening.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
+-->
+
+---
+
+# PaaS: je krijgt een plek voor je toepassing
+
+**PaaS = Platform as a Service**, een platform als dienst.
+
+Je plaatst je eigen toepassing op een voorbereid platform.
+De aanbieder beheert meer van de software eronder.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
+-->
+
+---
+
+# SaaS: je gebruikt een afgewerkt programma
+
+**SaaS = Software as a Service**, software als dienst.
+
+Je gebruikt het programma via het netwerk, bijvoorbeeld webmail.
+De aanbieder installeert en beheert de toepassing.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
 -->
 
 ---
@@ -86,14 +113,28 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Een template als vertrekpunt
 
-Een template bespaart de gewone OS-installatie.
+Een **template** bespaart de gewone installatie van het OS.
+**OS = Operating System**, je besturingssysteem.
 
-**Cloud-init** vult bij de eerste start je naam, netwerk
-en publieke SSH-sleutel in.
-Iedere nieuwe VM krijgt eigen instellingen.
+**Cloud-init** is het programma voor de eerste inrichting.
+Het stelt naam, netwerk en publieke SSH-sleutel in.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
+-->
+
+---
+
+# SSH en een wachtzin
+
+**SSH = Secure Shell**, een beveiligde opdrachtverbinding.
+Met een sleutelpaar kun je je bij de server aanmelden.
+
+De **wachtzin** beschermt je private sleutelbestand.
+In dit labo is die **Student123**.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
 -->
 
 ---
@@ -141,11 +182,11 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # HTTPS vraagt een passend certificaat
 
-Het certificaat moet bij het echte serveradres passen.
-De client moet de uitgever vertrouwen.
+**HTTPS** is de beveiligde vorm van HTTP.
+**TLS = Transport Layer Security** versleutelt de verbinding.
 
-De opleiding voorziet die labcertificaten.
-Een waarschuwing overslaan is niet de eindoplossing.
+Een **certificaat** koppelt het serveradres aan een publieke sleutel.
+De browser controleert het adres en de uitgever.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -153,13 +194,28 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 ---
 
+# CA: de uitgever van het certificaat
+
+**CA = Certificate Authority**, certificaatuitgever.
+Die ondertekent het certificaat van je server.
+
+De opleiding levert een lab-CA die je op de client vertrouwt.
+Zo kan je browser controleren wie het certificaat uitgaf.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
+-->
+
+---
+
 # Een route blijft nodig
 
-HTTPS versleutelt de verbinding.
-Het maakt geen ontbrekende netwerkroute.
+HTTPS beveiligt de verbinding, maar maakt geen netwerkroute.
 
-Test vanaf twee clients die de server echt kunnen bereiken.
-Een telefoon is mogelijk, maar niet verplicht.
+Een **VPN = Virtual Private Network** kan een beveiligde
+verbinding van buiten het lokaal naar het labnetwerk maken.
+
+Test vanaf twee clients die je server echt kunnen bereiken.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.

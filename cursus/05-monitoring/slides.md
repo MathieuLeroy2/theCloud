@@ -32,10 +32,11 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Wat is een metric?
 
-Een getal met een betekenis, bijvoorbeeld vrije RAM in bytes.
+Een **metric** is een meetwaarde, bijvoorbeeld vrije RAM in bytes.
+**RAM = Random Access Memory**, het werkgeheugen.
 
 Bewaar ook het tijdstip. Dan zie je veranderingen.
-Een dalende grafiek kan waarschuwen voor een volle schijf.
+Een dalende grafiek kan een volle schijf aankondigen.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -47,9 +48,11 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 | Onderdeel | Taak |
 | --- | --- |
-| Exporter | Biedt metingen aan |
-| Prometheus | Haalt op en bewaart |
-| Grafana | Tekent het dashboard |
+| Exporter | Een programma dat meetgegevens aanbiedt |
+| Prometheus | Haalt die meetgegevens op en bewaart ze |
+| Grafana | Vraagt gegevens op en tekent het dashboard |
+
+Een **dashboard** is het overzichtsscherm met je metingen.
 
 <!--
 Bron: https://prometheus.io/docs/introduction/overview/
@@ -86,14 +89,29 @@ Bron: https://prometheus.io/docs/prometheus/latest/querying/functions/
 
 # De juiste machine kiezen
 
-Een **job** is de naam van een groep targets.
-Een **instance** wijst een target aan.
+Een **target** is een meetpunt, bijvoorbeeld 192.168.77.100:9100.
+Een **job** bundelt zulke meetpunten, bijvoorbeeld linux.
+**Instance** is het label met het concrete doeladres.
 
-Labels helpen je de juiste machine en schijf te selecteren.
-Controleer ze als een query geen gegevens toont.
+Een **label** is een naam met waarde bij een meting.
+Daarmee filter je de juiste computer of schijf.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
+-->
+
+---
+
+# Een query is een vraag aan je meetgegevens
+
+**PromQL = Prometheus Query Language**.
+De taal waarmee je metingen opvraagt en berekent.
+
+Zo’n vraag heet een **query**.
+Bijvoorbeeld: toon alleen de metingen met job="linux".
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
 -->
 
 ---
@@ -155,11 +173,12 @@ Bron: https://prometheus.io/docs/guides/cadvisor/
 
 # Eenheden horen bij de uitleg
 
-RAM en schijf: bytes, MiB of GiB.
-Netwerk: bytes per seconde.
-CPU: procent, met een duidelijk gekozen schaal.
+**CPU = Central Processing Unit**, de processor.
+100 procent bij onze containerquery is één CPU-kern.
 
-Bij onze containerquery is 100 procent één CPU-kern.
+**MiB = mebibyte:** 1.048.576 bytes.
+**GiB = gibibyte:** 1.024 MiB.
+Bytes is een hoeveelheid; bytes per seconde is een snelheid.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -218,6 +237,21 @@ Dat is een uitbreiding.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
+-->
+
+---
+
+# YAML voor instellingen, JSON voor het dashboard
+
+**YAML** is een tekstformaat voor instellingen met inspringing.
+Daarin staan onze Compose- en Prometheus-instellingen.
+
+**JSON = JavaScript Object Notation**, ook een tekstformaat.
+Grafana exporteert daarin de beschrijving van je dashboard.
+Je plakt die tekst in je verslag, zonder JavaScript te schrijven.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
 -->
 
 ---

@@ -12,7 +12,7 @@ Gebruik één [verslag.md](bestanden/verslag-sjabloon.md). Vul daarin eerst je i
 | RoodkapjesHuis, Windows 11 Pro/Education | `192.168.77.30/24` | 2 | 4 GB | 64 GB |
 | BiggetjesHuis, Windows 11 Pro/Education | `192.168.77.40/24` | 2 | 4 GB | 64 GB |
 
-Stop de Linux-VM's als je ze nu niet nodig hebt. De 8 GB van je oude Proxmox-VM is niet genoeg voor deze drie Windows-machines. Vergroot de omgeving alleen als je laptop dat aankan, of gebruik de schoolomgeving. De docent voorziet geldige Windows-images, licenties/evaluaties en de benodigde UEFI- en TPM-instellingen.
+Stop de Linux-VM's als je ze nu niet nodig hebt. De 8 GB van je oude Proxmox-VM is niet genoeg voor deze drie Windows-machines. Vergroot de omgeving alleen als je laptop dat aankan, of gebruik de schoolomgeving. De docent voorziet geldige Windows-installatiebestanden en licenties/evaluaties. Die zet ook **UEFI** (de startsoftware van de VM) en **TPM** (een virtuele beveiligingsmodule) klaar. De oplossing legt de menunamen verder uit.
 
 Installeer de machines, geef ze hun namen en vaste adressen. Noteer gateway, VMID's en opslag in je verslag.
 
@@ -20,7 +20,7 @@ Installeer de machines, geef ze hun namen en vaste adressen. Noteer gateway, VMI
 
 ## H2.2 Het domein maken
 
-Installeer op SprookjesBoom AD DS met DNS en maak het domein `sprookjes.test`, met korte naam `SPROOKJESBOS`. Stel een DNS-forwarder in naar de bevestigde lab-DNS. Gebruik ook voor het DSRM-herstelwachtwoord `Student123`.
+Installeer op SprookjesBoom **AD DS** (*Active Directory Domain Services*, centraal accountbeheer) met **DNS** (*Domain Name System*, namen en domeindiensten opzoeken) en maak het domein `sprookjes.test`, met korte naam `SPROOKJESBOS`. Stel een DNS-forwarder in naar de bevestigde lab-DNS. **DSRM** (*Directory Services Restore Mode*) is de herstelstand van de domeincontroller. Gebruik ook voor dat herstelwachtwoord `Student123`.
 
 Laat beide clients alleen SprookjesBoom als DNS-server gebruiken. Voeg ze aan het domein toe en herstart ze.
 
@@ -28,17 +28,17 @@ Laat beide clients alleen SprookjesBoom als DNS-server gebruiken. Voeg ze aan he
 
 ## H2.3 Accounts, groepen en OU's
 
-Maak de gebruikers Roodkapje, Big1 en Wolf met wachtwoord `Student123`. Maak de groepen `GG-Rood`, `GG-Big` en `GG-Beheer` en voeg de gebruikers toe zoals in de theorie.
+Maak de gebruikers Roodkapje, Big1 en Wolf met wachtwoord `Student123`. Ons voorvoegsel **GG** betekent *Global Group*: een globale groep met gebruikers uit het domein. Maak de groepen `GG-Rood`, `GG-Big` en `GG-Beheer` en voeg de gebruikers toe zoals in de theorie.
 
-Maak twee aparte computer-OU's. Verplaats RoodkapjesHuis en BiggetjesHuis elk naar hun eigen OU. Geef `GG-Beheer` lokale beheerdersrechten op beide clients. Voeg Wolf niet toe aan Domain Admins.
+Maak twee beheermappen voor computers. Zo’n **OU** (*Organizational Unit*) bevat computeraccounts, geen documenten. Verplaats RoodkapjesHuis en BiggetjesHuis elk naar hun eigen OU. Geef `GG-Beheer` lokale beheerdersrechten op beide clients. Voeg Wolf niet toe aan Domain Admins.
 
 **Klaar als:** je kunt laten zien welke gebruiker in welke groep zit en waar de computers staan.
 
 ## H2.4 Toegang instellen
 
-Maak voor elke client-OU één GPO. Stel daarin de toegestane groepen in voor lokaal aanmelden en voor RDP. Houd de lokale groep Administrators toegestaan, zodat je beheertoegang behoudt. Koppel de GPO's niet aan de domeincontroller.
+Maak voor elke computer-OU één **GPO** (*Group Policy Object*), een pakket centrale instellingen. Stel daarin de toegestane groepen in voor lokaal aanmelden en voor RDP. Houd de lokale groep Administrators toegestaan, zodat je beheertoegang behoudt. Koppel de GPO's niet aan de domeincontroller.
 
-Zet RDP aan op de twee clients en laat NLA aanstaan. Laat de benodigde RDP-firewallregel alleen toe op het domeinprofiel en vanuit het afgesproken labnetwerk. De oplossing toont de instellingen.
+Zet **RDP** (*Remote Desktop Protocol*, een bureaublad openen op afstand) aan op de twee clients. Laat **NLA** (*Network Level Authentication*) aanstaan: de aanmelding wordt dan gecontroleerd voordat het bureaublad opent. Laat de benodigde RDP-firewallregel alleen toe op het domeinprofiel en vanuit het afgesproken labnetwerk. De oplossing toont de instellingen.
 
 **Klaar als:** `gpresult` op de clients de bedoelde GPO toont en RDP ingeschakeld is.
 
@@ -54,7 +54,7 @@ Meld na elke test af. Noteer account, doel-pc, manier van aanmelden en resultaat
 
 Noteer op één client de juiste DNS-instelling. Vervang die tijdelijk door `192.0.2.1`, een voor documentatie gereserveerd adres, en voer `ipconfig /flushdns` uit. Voer daarna `nslookup -type=SRV _ldap._tcp.dc._msdcs.sprookjes.test` uit.
 
-Beschrijf de fout. Zet de juiste DNS terug en herhaal de zoekopdracht. Test geen afmelding of herstart zolang de DNS fout staat: een oude aanmeldcache kan het resultaat bovendien verwarrend maken.
+Beschrijf de fout. Zet de juiste DNS terug en herhaal de zoekopdracht. Test geen afmelding of herstart zolang de DNS fout staat: een oude **aanmeldcache** (lokaal bewaarde gegevens van een vorige aanmelding) kan het resultaat bovendien verwarrend maken.
 
 **Klaar als:** de DNS-zoekopdracht na herstel weer werkt en je weet waarom een ping alleen niet voldoende was.
 

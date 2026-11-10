@@ -26,7 +26,7 @@ Maak een beheeraccount en een afzonderlijk kijkaccount, allebei met `Student123`
 
 ## H3.4 HTTPS en beperkte toegang
 
-Installeer NGINX en pas de meegeleverde proxyconfiguratie aan. Gebruik het servercertificaat, de private sleutel en de CA-instructies van de opleiding. Voeg de lokale proxy `127.0.0.1` toe bij Jellyfins bekende proxies. Laat clienttoegang toe op HTTPS 443, niet rechtstreeks op 8096.
+Installeer NGINX en pas de meegeleverde proxyconfiguratie aan. Gebruik het servercertificaat, de private sleutel en de instructies van de opleiding voor de **CA** (*Certificate Authority*, de uitgever die het certificaat ondertekent). Voeg de lokale proxy `127.0.0.1` toe bij Jellyfins bekende proxies. Laat clienttoegang toe op HTTPS 443, niet rechtstreeks op 8096.
 
 **Klaar als:** beide clients via het juiste HTTPS-adres aanmelden zonder certificaatwaarschuwing. Gebruik geen blijvende uitzondering of `curl -k` als oplossing.
 

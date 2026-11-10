@@ -31,9 +31,11 @@ Een log is iets anders. Die bevat meldingen, bijvoorbeeld dat NGINX gestart is. 
 
 Dit lab gebruikt meestal **pull**: Prometheus gaat zelf naar de exporters. Dat is anders dan een agent die alles naar een clouddienst doorstuurt.
 
-We gebruiken Node Exporter voor Linux, windows_exporter voor Windows en cAdvisor voor containers. De standaardmetingen van Docker zelf vertellen niet automatisch hoeveel geheugen elke toepassing gebruikt.
+We gebruiken Node Exporter voor Linux, windows_exporter voor Windows en **cAdvisor** (*Container Advisor*, het meetprogramma voor containers) voor containers. De standaardmetingen van Docker zelf vertellen niet automatisch hoeveel geheugen elke toepassing gebruikt.
 
-Een doel dat Prometheus meet heet een **target**. Bij elke target zie je bijvoorbeeld een adres en een **job**: de naam van een groep metingen. Met zulke labels kies je op je dashboard de juiste machine.
+Een doel dat Prometheus meet heet een **target**. Een **job** bundelt targets met eenzelfde soort taak, bijvoorbeeld `linux`. Het label **instance** bevat gewoonlijk het concrete doeladres, bijvoorbeeld `192.168.77.100:9100`.
+
+Een **label** is een naam met een waarde die bij een meting staat. `job="linux"` kiest de Linux-metingen. `instance="192.168.77.100:9100"` kiest één meetpunt. Met zulke filters toon je niet per ongeluk de verkeerde machine.
 
 ## 3. ‘De meting lukt’ is niet ‘de website werkt’
 
@@ -47,7 +49,7 @@ Als Blackbox zelf onbereikbaar is, kunnen ook de webmetingen ontbreken. Kijk dan
 
 ## 4. Getallen begrijpen
 
-Prometheus gebruikt **PromQL** om waarden op te vragen en te berekenen. Je leert telkens een formule vanuit de vraag die je wilt beantwoorden.
+**PromQL** betekent *Prometheus Query Language*: de taal waarmee je Prometheus een vraag stelt. Zo’n vraag heet een **query**. Je kunt één meetwaarde opvragen of een berekening laten uitvoeren. Je leert telkens een formule vanuit de vraag die je wilt beantwoorden.
 
 **Hoeveel Linux-RAM is beschikbaar?** Vraag de gemeten beschikbare bytes op. Grafana kan de eenheid omzetten naar GiB. Je hoeft geen getal zoals ‘deze machine heeft altijd 4 GB’ in je formule te zetten.
 
@@ -57,11 +59,24 @@ Kies ook passende labels. Zonder `volume="C:"` kun je per ongeluk een andere sch
 
 ## 5. Containers herkennen
 
-In H4 gaven we de containers een label `thecloud_app`. cAdvisor biedt dat als `container_label_thecloud_app` aan. Zo kun je de broker volgen, ook als een container na opnieuw aanmaken een ander intern ID krijgt.
+In H4 gaven we de containers een label `thecloud_app`. cAdvisor biedt dat als `container_label_thecloud_app` aan. Zo kun je de broker volgen, ook als een container na opnieuw aanmaken een ander intern **ID**, dus identificatienummer, krijgt.
 
-Met de werkset van het geheugen zie je het RAM dat de container actief gebruikt. Met een CPU-teller bereken je CPU-gebruik per seconde. Een resultaat van 150 procent betekent bij onze berekening ongeveer anderhalve CPU-kern; het is geen percentage van een zelfgekozen VM-limiet.
+Met de werkset van het geheugen zie je het RAM dat de container actief gebruikt. Met een CPU-teller bereken je CPU-gebruik per seconde. **CPU** (*Central Processing Unit*) betekent processor; **RAM** (*Random Access Memory*) is werkgeheugen. Een resultaat van 150 procent betekent bij onze berekening ongeveer anderhalve CPU-kern; het is geen percentage van een zelfgekozen VM-limiet.
 
 cAdvisor heeft veel toegang tot de host nodig. In deze cursus is dat alleen onze eigen container-VM, niet de Proxmox-node van de opleiding.
+
+### Bytes, MiB en GiB
+
+Een **byte** is een kleine eenheid voor gegevens. In de gereedschappen zie je verschillende grotere eenheden:
+
+| Eenheid | Voluit | Hoeveel? |
+| --- | --- | --- |
+| MB | Megabyte | 1.000.000 bytes |
+| GB | Gigabyte | 1.000.000.000 bytes |
+| MiB | Mebibyte | 1.048.576 bytes |
+| GiB | Gibibyte | 1.024 MiB |
+
+Daarom kunnen twee programma’s voor dezelfde hoeveelheid data een iets ander getal tonen. **Bytes per seconde** is een snelheid; **bytes** alleen is een hoeveelheid.
 
 ## 6. Een nuttig dashboard
 
@@ -79,9 +94,15 @@ Een **alert** is een regel zoals ‘de website geeft langer dan één minuut gee
 
 Je ziet doorgaans drie stappen: normaal, **pending** terwijl de wachttijd loopt, en **firing** wanneer de regel lang genoeg waar is. Na herstel wordt de alert weer normaal.
 
-We tonen alerts in Prometheus. Dat is nog geen e-mail of bericht naar je telefoon. Voor zulke meldingen heb je bijvoorbeeld Alertmanager en een meldkanaal nodig. Dat blijft een uitbreiding.
+**Alertmanager** is een apart programma dat waarschuwingen groepeert en naar een meldkanaal kan sturen. We tonen alerts in Prometheus. Dat is nog geen e-mail of bericht naar je telefoon. Voor zulke meldingen heb je bijvoorbeeld Alertmanager en een meldkanaal nodig. Dat blijft een uitbreiding.
 
 Je test bewust. Stop alleen je eigen NGINX om de webalert te proberen. Vul niet je echte systeemschijf om een schijfalert uit te lokken. We zetten daarvoor de testdrempel tijdelijk lager en herstellen haar daarna.
+
+## 8. Instellingen en een dashboard bewaren
+
+De instellingen van Prometheus en Compose staan in **YAML**: leesbare tekst met inspringing die toont welke regels bij elkaar horen.
+
+Een Grafana-dashboard kun je bewaren als **JSON** (*JavaScript Object Notation*). Dat is ook tekst, maar met velden, waarden en accolades, bijvoorbeeld `{"title":"Mijn dashboard"}`. De export bevat de beschrijving van je panelen. Je plakt die volledige tekst in je verslag; je hoeft er geen JavaScript-programma voor te schrijven.
 
 ## Kun je dit uitleggen?
 

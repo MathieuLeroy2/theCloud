@@ -2,7 +2,7 @@
 
 Stel: je wilt de temperatuur van een lokaal op een website tonen. Je hebt een sensor die meet en een computer die de website aanbiedt. Je wilt de website ook testen. Dat doe je vanaf een tweede computer met een browser.
 
-Voor dit labo heb je geen twee extra computers nodig. Je maakt twee **virtuele machines**. Dat zijn computers die met software worden nagebouwd. Je kunt er een besturingssysteem op installeren, programma's starten en bestanden bewaren.
+Voor dit labo heb je geen twee extra computers nodig. Je maakt twee **virtuele machines**. Dat zijn computers die met software worden nagebouwd. Je kunt er een besturingssysteem op installeren, programma's starten en bestanden bewaren. **VM** komt van *Virtual Machine*: Engels voor virtuele machine. Een besturingssysteem, bijvoorbeeld Windows of Ubuntu, heet in Engelse documentatie een **OS** (*Operating System*).
 
 We bouwen eerst een gewone website. De sensorgegevens komen later in de cursus aan bod.
 
@@ -41,7 +41,7 @@ Twee woorden die je in documentatie vaak ziet:
 
 Er zijn twee veelgebruikte manieren om een hypervisor te gebruiken.
 
-**Type I:** je installeert de software voor virtualisatie rechtstreeks op een server. Proxmox gebruikt daarvoor KVM. Je beheert de virtuele machines via de Proxmox-website. Dit is een gebruikelijke aanpak op servers.
+**Type I:** je installeert de software voor virtualisatie rechtstreeks op een server. Proxmox gebruikt daarvoor **KVM** (*Kernel-based Virtual Machine*). Dat is het Linux-onderdeel dat de virtuele machines laat draaien. *Kernel* betekent de kern van een besturingssysteem: die regelt onder andere processor, geheugen en toegang tot apparaten. Je beheert de virtuele machines via de Proxmox-website. Dit is een gebruikelijke aanpak op servers.
 
 **Type II:** je installeert een programma zoals VMware Workstation of VirtualBox op je bestaande Windows- of Linux-computer. Je opent dat programma en maakt daarin virtuele machines.
 
@@ -78,7 +78,7 @@ Wanneer je een virtuele machine maakt, kies je hoeveel processor, geheugen en op
 
 ### Processor: het rekenwerk
 
-Bij de processor zie je de afkorting **vCPU**. Dat betekent virtuele processor.
+**CPU** betekent *Central Processing Unit*: de processor die instructies uitvoert. Bij een VM zie je **vCPU**, de virtuele versie van zo’n processor.
 
 In dit labo krijgt elke Linux-machine twee vCPU's. Daarmee kan ze rekenwerk laten uitvoeren op de echte processor. Die processor moet zijn tijd wel verdelen over alle machines die draaien.
 
@@ -86,7 +86,7 @@ In dit labo krijgt elke Linux-machine twee vCPU's. Daarmee kan ze rekenwerk late
 
 ### RAM: het werkgeheugen
 
-Programma's die draaien gebruiken RAM. Dat is het werkgeheugen van de computer.
+**RAM** betekent *Random Access Memory*: het werkgeheugen. Programma’s gebruiken het terwijl ze draaien. Je bestanden voor later bewaar je op de schijf.
 
 Stel dat je Proxmox-VM 8 GB RAM krijgt. Die 8 GB verdelen we zo:
 
@@ -104,7 +104,7 @@ Windows of Linux op je laptop heeft zelf ook RAM nodig. Geef daarom niet al het 
 
 Elke virtuele machine krijgt een virtuele schijf. Daarop staan het besturingssysteem, de programma's en je bestanden.
 
-We geven beide Linux-machines een schijf van 24 GB. Die schijven gebruiken uiteindelijk ruimte op de echte SSD of harde schijf.
+We geven beide Linux-machines een schijf van 24 GB. Die schijven gebruiken uiteindelijk ruimte op de echte opslag. Een **SSD** (*Solid State Drive*) bewaart gegevens in geheugenchips. Een klassieke harde schijf heet ook **HDD** (*Hard Disk Drive*) en heeft draaiende schijven. **GB** betekent gigabyte, een eenheid voor de hoeveelheid gegevens.
 
 Je komt daarbij de term **thin provisioning** tegen. Dat werkt zo:
 
@@ -118,23 +118,25 @@ Met `df -h` bekijk je de vrije ruimte **in de Linux-machine waarin je het comman
 
 ### Twee namen die je tijdens het aanmaken ziet
 
-**VirtIO** is een keuze voor onder andere de virtuele schijf en netwerkkaart. Linux kan daarmee goed samenwerken. We gebruiken die keuze in het labo.
+**VirtIO** is de naam van virtuele apparaten die speciaal zijn gemaakt voor samenwerking met een hypervisor. Linux gebruikt er **drivers** voor: kleine besturingsprogramma’s waarmee het een apparaat bedient. Je kiest VirtIO voor onder andere de virtuele schijf en netwerkkaart. We gebruiken die keuze in het labo.
 
-De **QEMU Guest Agent** is een klein programma in de Linux-machine. Het geeft bijvoorbeeld informatie over die machine door aan Proxmox. Je installeert het in Ubuntu en Xubuntu en zet de bijbehorende optie aan in Proxmox.
+**QEMU** is de naam van software die meehelpt om de virtuele computer op te bouwen. De **QEMU Guest Agent** is een klein hulpprogramma in de Linux-machine. *Guest* betekent gast en *agent* betekent hier helper. Het geeft bijvoorbeeld informatie over die machine door aan Proxmox. Je installeert het in Ubuntu en Xubuntu en zet de bijbehorende optie aan in Proxmox.
 
 ## 4. Hoe vinden de machines elkaar?
 
-Je website werkt pas als Xubuntu contact kan maken met Ubuntu Server. Daarvoor krijgen beide machines een netwerkkaart en een IP-adres.
+Je website werkt pas als Xubuntu contact kan maken met Ubuntu Server. Daarvoor krijgen beide machines een netwerkkaart en een IP-adres. Elke virtuele netwerkkaart heeft ook een **MAC-adres** (*Media Access Control*), haar herkenningsadres in het lokale netwerk. Dat is iets anders dan het IP-adres dat je in Linux instelt. Een nieuw MAC-adres maakt een gekopieerd vast IP-adres dus niet vanzelf anders.
 
 ### De bridge: een virtuele switch
 
-In Proxmox zie je een netwerkonderdeel met de naam `vmbr0`. Dat is een **bridge**. Je kunt die vergelijken met een switch waaraan je de netwerkkabels van de machines hangt.
+In Proxmox zie je een netwerkonderdeel met de naam `vmbr0`. Dat is een **bridge**. Je kunt die vergelijken met een **switch**: een apparaat dat computers in hetzelfde netwerk met elkaar verbindt. Aan de virtuele switch hangen virtuele netwerkkaarten in plaats van echte kabels.
 
 In ons labo verbind je beide machines met die bridge. Via de bridge kunnen ze ook het voorbereide netwerk buiten Proxmox bereiken.
 
 Alleen een bridge aanmaken is niet genoeg voor internet. Daarvoor moet er ook een verbinding met een router zijn. De docent helpt je controleren welk netwerk je gebruikt.
 
 ### Vier instellingen die je nodig hebt
+
+**IP** betekent *Internet Protocol*: de afspraken voor het adresseren en doorsturen van netwerkverkeer. Een **IP-adres** is het adres van een netwerkkaart. Wij gebruiken **IPv4**, de versie met adressen zoals `192.168.77.100`.
 
 Voor Ubuntu Server gebruiken we dit voorbeeld:
 
@@ -149,13 +151,15 @@ De gateway en DNS-server hebben hier hetzelfde adres, omdat één apparaat beide
 
 Xubuntu krijgt in het voorbeeld `192.168.77.200/24`. De twee machines zitten in hetzelfde netwerk en kunnen elkaar rechtstreeks bereiken. Voor een download van internet gebruiken ze de gateway.
 
+**DNS** betekent *Domain Name System*: de dienst die adressen bij namen opzoekt.
+
 **DNS-voorbeeld:** je vraagt `archive.ubuntu.com` op. De DNS-server zoekt welk IP-adres daarbij hoort. Zonder werkende DNS kan een software-installatie mislukken, ook als je de server nog via zijn IP-adres kunt bereiken.
 
 Gebruik de adressen van je **verslag**. De voorbeeldadressen werken alleen als dat netwerk ook echt is ingesteld.
 
 ### Een vast adres of DHCP
 
-Met **DHCP** krijgt een computer automatisch netwerkinstellingen. Met een **vast IP-adres** vul je die zelf in.
+**DHCP** betekent *Dynamic Host Configuration Protocol*. Met die afspraken kan een computer automatisch een IP-adres en andere netwerkinstellingen krijgen. Met een **vast IP-adres** vul je die zelf in.
 
 We geven onze server een vast adres. Zo hoef je het adres van je website niet telkens opnieuw te zoeken.
 
@@ -165,7 +169,7 @@ In ons voorbeeld zijn `192.168.77.0` en `192.168.77.255` speciale netwerkadresse
 
 ### Naar internet via NAT
 
-Bij de laptopopstelling gebruiken we meestal **NAT** in Workstation. Daarmee kunnen je virtuele machines via je laptop een verbinding met internet maken. Workstation vertaalt hun netwerkadressen en stuurt de antwoorden terug naar de juiste machine.
+Bij de laptopopstelling gebruiken we meestal **NAT** (*Network Address Translation*, adresvertaling) in Workstation. Daarmee kunnen je virtuele machines via je laptop een verbinding met internet maken. Workstation vertaalt hun netwerkadressen en stuurt de antwoorden terug naar de juiste machine.
 
 Dat betekent nog niet dat je telefoon de website kan openen. Je telefoon zit bijvoorbeeld op wifi, terwijl je VM's in een apart virtueel netwerk zitten. Daar moet eerst een verbinding tussen zijn. Vandaag testen we daarom vanuit Xubuntu.
 
@@ -175,11 +179,13 @@ Op **Ubuntu Server** vul je het vaste adres in tijdens de installatie. De instel
 
 Op **Xubuntu** gebruiken we **NetworkManager**. Dat programma bewaart de instellingen in een verbindingsprofiel. We passen dat profiel aan met het commando `nmcli`.
 
-De oplossingen tonen beide manieren. Voer netwerkcommando's uit in de console van de juiste VM. Dat is het scherm dat je in Proxmox opent. Zo kun je nog bij de machine als je de netwerkverbinding per ongeluk verbreekt.
+De oplossingen tonen beide manieren. Voer netwerkcommando's uit in de console van de juiste VM. Dat is het scherm dat je in Proxmox opent, alsof je rechtstreeks voor die virtuele computer zit. Zo kun je nog bij de machine als je de netwerkverbinding per ongeluk verbreekt.
 
 ## 5. Een website openen is ook een test
 
-Op Ubuntu Server installeren we **NGINX**. Dat is een webserver: software die webpagina's naar een browser stuurt.
+Op Ubuntu Server installeren we **NGINX**. Dat is de naam van een webserver: software die webpagina’s naar een browser stuurt.
+
+De inhoud en structuur van zo’n pagina schrijf je in **HTML** (*HyperText Markup Language*). De opmaak, zoals kleuren en lettergroottes, schrijf je in **CSS** (*Cascading Style Sheets*). Je gebruikt dus twee soorten bestanden voor twee taken.
 
 Op Xubuntu open je daarna:
 
@@ -198,6 +204,10 @@ Op één computer kunnen meerdere programma's via het netwerk bereikbaar zijn. E
 | Proxmox beheren in de browser | TCP 8006 |
 | Op Ubuntu aanmelden met SSH | TCP 22 |
 | De website openen via HTTP | TCP 80 |
+
+**HTTP** betekent *Hypertext Transfer Protocol*: de afspraken waarmee de browser een webpagina opvraagt en de server antwoordt. **HTTPS** is de beveiligde vorm: de verbinding wordt versleuteld.
+
+**TCP** betekent *Transmission Control Protocol*. Het verzorgt een verbinding die gegevens in de juiste volgorde aflevert en ontbrekende gegevens opnieuw kan versturen. HTTP en SSH gebruiken in ons labo TCP.
 
 Bij gewoon HTTP gebruikt de browser automatisch poort 80. Daarom hoef je `:80` niet achter het adres te typen. Bij Proxmox typ je wel `:8006`.
 
@@ -224,11 +234,11 @@ In het tweede geval test je dus niet je Ubuntu Server. Om die vanaf Xubuntu te t
 
 ## 6. Bestanden op de server zetten
 
-Met **SSH** open je vanaf Xubuntu een terminal op Ubuntu Server. Je voert dan commando's op de server uit, zonder steeds zijn scherm in Proxmox te openen.
+**SSH** betekent *Secure Shell*. Daarmee open je vanaf Xubuntu een **terminal** op Ubuntu Server: een venster waarin je commando’s typt. Je voert dan commando's op de server uit, zonder steeds zijn scherm in Proxmox te openen.
 
 Bij de eerste verbinding toont SSH een code die bij de server hoort: de **vingerafdruk van de hostsleutel**. Je vergelijkt die met de code in de serverconsole. Zo controleer je of je met de juiste server verbindt.
 
-Met **SFTP** stuur je bestanden naar de server via dezelfde SSH-verbinding. Je gebruikt het om je HTML en CSS te uploaden. Je zet de bestanden eerst in je eigen gebruikersmap.
+**SFTP** betekent *SSH File Transfer Protocol*. Daarmee stuur je bestanden naar de server via dezelfde SSH-verbinding. Je gebruikt het om je HTML en CSS te uploaden. Je zet de bestanden eerst in je eigen gebruikersmap.
 
 NGINX zoekt de website in dit labo in `/var/www/html`. Dat heet de **webroot**: de map waarin de website staat. Na de upload verplaats of kopieer je de bestanden met beheerdersrechten naar die map.
 
@@ -249,7 +259,7 @@ In de oplossing zie je `0644` bij bestanden en `0755` bij mappen. Kort gezegd: d
 
 ### De firewall
 
-Een **firewall** bepaalt welke netwerkverbindingen worden toegelaten. We laten op onze Ubuntu Server SSH en HTTP toe vanuit het labnetwerk.
+Een **firewall** bepaalt welke netwerkverbindingen worden toegelaten. Op Ubuntu gebruiken we daarvoor **UFW** (*Uncomplicated Firewall*), een programma waarmee je die regels instelt. We laten op onze Ubuntu Server SSH en HTTP toe vanuit het labnetwerk.
 
 Je voegt de SSH-regel toe vóór je de firewall aanzet. Anders kun je je eigen SSH-verbinding blokkeren. Daarom houd je ook de Proxmox-console bij de hand.
 

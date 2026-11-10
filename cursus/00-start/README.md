@@ -1,6 +1,6 @@
 # Starten met The Cloud
 
-In deze cursus maak je zelf een kleine serveromgeving. Je begint met twee virtuele computers en een website. Later komen daar onder andere gebruikersbeheer, containers en monitoring bij. Met monitoring volg je op of je machines en programma's goed werken.
+In deze cursus maak je zelf een kleine serveromgeving. **IoT** betekent *Internet of Things*: apparaten die gegevens meten en via een netwerk uitwisselen. Je begint met twee virtuele computers en een website. Later komen daar onder andere gebruikersbeheer, containers en monitoring bij. Met monitoring volg je op of je machines en programma's goed werken.
 
 Je gebruikt je machines in meerdere hoofdstukken. Bewaar ze tot de docent zegt dat ze weg mogen.
 
@@ -12,11 +12,11 @@ Gebruik altijd **`Student123`**, met hoofdletter S. Kies geen eigen wachtwoord e
 | --- | --- |
 | Proxmox en de lokale Linux-/Windows-accounts | `Student123` |
 | Domeinbeheerder, Roodkapje, Big1 en Wolf | `Student123` |
-| DSRM-herstelwachtwoord van Active Directory | `Student123` |
+| Herstelwachtwoord van de Windows-domeinserver | `Student123` |
 | Jellyfin-beheerder en kijkaccount | `Student123` |
-| Home Assistant, MQTT-sensor en MQTT-dashboard | `Student123` |
+| Home Assistant en de accounts voor de sensorberichten | `Student123` |
 | Grafana-admin en database-monitoringaccount | `Student123` |
-| Wachtzin van je SSH-private sleutel | `Student123` |
+| Wachtzin van de private sleutel voor aanmelden op afstand | `Student123` |
 
 Schakel bij de laboaccounts geen verplichte wachtwoordwijziging bij de eerste aanmelding in. Alleen wanneer een opdracht bewust een verkeerde aanmelding test, gebruik je daar een fout wachtwoord. Je maakt nog steeds aparte accounts met verschillende rechten, ook al is het wachtwoord hetzelfde.
 
@@ -24,7 +24,7 @@ Heb je een labo al gemaakt met een ander wachtwoord? Wijzig dat account dan naar
 
 ## Wat moet je al kunnen?
 
-Je hebt al gewerkt met IP-adressen en subnetmaskers. Je kunt bestanden en mappen beheren, eenvoudige HTML en CSS schrijven en basiscommando's in een Linux-terminal uitvoeren.
+Je hebt al gewerkt met netwerkadressen (**IP**, *Internet Protocol*) en subnetmaskers. Je kunt bestanden en mappen beheren. Je kent de basis van **HTML** (*HyperText Markup Language*, de inhoud van webpagina’s) en **CSS** (*Cascading Style Sheets*, de opmaak). In een **terminal**, een venster om commando’s te typen, kun je al eenvoudige Linux-opdrachten uitvoeren.
 
 Je hoeft Proxmox nog niet te kennen. Dat leren we in hoofdstuk 1. Begrijp je een commando niet? Lees eerst de uitleg erbij en vraag hulp voor je het uitvoert.
 
@@ -43,7 +43,7 @@ Op school oefen je de Proxmox-installatie eventueel op een aparte tijdelijke mac
 
 ### Wat heeft je laptop nodig?
 
-Voor hoofdstuk 1 rekenen we op een x86-64-laptop met minstens 16 GB RAM en ongeveer 120 GB vrije ruimte op de SSD. Je geeft de Proxmox-VM 8 GB RAM en een virtuele schijf van 100 GB.
+Voor hoofdstuk 1 rekenen we op een x86-64-laptop met minstens 16 GB werkgeheugen (**RAM**, *Random Access Memory*) en ongeveer 120 GB vrije ruimte op de **SSD** (*Solid State Drive*, opslag in geheugenchips). **GB** betekent gigabyte, een eenheid voor de hoeveelheid gegevens. Je geeft de Proxmox-VM 8 GB RAM en een virtuele schijf van 100 GB.
 
 32 GB RAM op je laptop geeft meer ruimte voor de volgende hoofdstukken. Dit betekent niet dat alle machines van de hele cursus tegelijk op een laptop met 16 GB kunnen draaien.
 
@@ -51,7 +51,7 @@ De docent controleert ook of jouw laptop VM's binnen een VM kan draaien. Lukt da
 
 ## Leg dit klaar
 
-- Een browser en een terminal met een SSH-client. Met SSH meld je later op de server aan.
+- Een browser en een terminal met een **SSH**-client (*Secure Shell*). Met dat programma open je later een beveiligde opdrachtverbinding naar je server.
 - Voor route A: het programma dat de docent opgeeft om VM's te maken.
 - De installatiebestanden voor Proxmox, Ubuntu Server en Xubuntu. Die bestanden heten ISO's.
 - De cursusbestanden en een map voor je eigen verslag.
@@ -81,7 +81,7 @@ Boven de commando's staat op welke machine je werkt. Een terminal op Xubuntu is 
 
 Gebruik `sudo` waar de opdracht beheerdersrechten nodig heeft. Op een gedeelde schoolserver voert de docent sommige stappen samen met je uit.
 
-Gebruik overal het vaste labowachtwoord `Student123`. Dat mag ook in je configuratievoorbeelden staan. Neem geen private SSH-sleutels op in je verslag of in Git. Test fouten alleen op je eigen oefenmachines. Zet geen eigen DHCP-server op het schoolnetwerk en maak de beheerpagina van Proxmox niet bereikbaar voor iedereen op internet.
+Gebruik overal het vaste labowachtwoord `Student123`. Dat mag ook in je configuratievoorbeelden staan. Neem geen private SSH-sleutels op in je verslag of in Git. Test fouten alleen op je eigen oefenmachines. Zet geen eigen **DHCP**-server (*Dynamic Host Configuration Protocol*, de dienst die automatisch netwerkinstellingen uitdeelt) op het schoolnetwerk en maak de beheerpagina van Proxmox niet bereikbaar voor iedereen op internet.
 
 ## Je verslag
 

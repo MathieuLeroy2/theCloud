@@ -60,7 +60,9 @@ systemctl status jellyfin --no-pager
 curl -I http://127.0.0.1:8096
 ```
 
-Je verwacht een draaiende service en een HTTP-antwoord, mogelijk een doorverwijzing. Noteer de pakketversie met `dpkg-query -W jellyfin-server`. De docent kan de gebruikte pakketten voor een leseditie vooraf vastleggen.
+Je verwacht een draaiende service en een HTTP-antwoord, mogelijk een doorverwijzing. Een **pakketbron** is de plaats waar Ubuntu software en updates ophaalt. **Checksum** betekent een berekende controlecode waarmee je controleert of het gedownloade bestand overeenkomt met de aangeboden code.
+
+Noteer de pakketversie met `dpkg-query -W jellyfin-server`. De docent kan de gebruikte pakketten voor een leseditie vooraf vastleggen.
 
 ### De mediamappen
 
@@ -111,7 +113,7 @@ sudo apt install nginx ufw
 sudo install -d -m 0700 /etc/nginx/tls
 ```
 
-De opleiding laat je een certificaat voor jouw serveradres en de bijbehorende sleutel plaatsen. De bestanden heten hier `/etc/nginx/tls/media.crt` en `/etc/nginx/tls/media.key`, met eigenaar root en alleen leesrecht voor root op de private sleutel (`0600`). Gebruik de overdrachtsprocedure van de docent; plak de sleutel nooit in je verslag.
+De opleiding laat je een certificaat voor jouw serveradres en de bijbehorende sleutel plaatsen. Een **CA** (*Certificate Authority*) is de uitgever die het certificaat ondertekent. De publieke CA helpt je client die uitgever vertrouwen; de private server- en CA-sleutels blijven geheim. De bestanden heten hier `/etc/nginx/tls/media.crt` en `/etc/nginx/tls/media.key`, met eigenaar root en alleen leesrecht voor root op de private sleutel (`0600`). Gebruik de overdrachtsprocedure van de docent; plak de sleutel nooit in je verslag.
 
 Kopieer [de proxyconfiguratie](bestanden/media.nginx.conf.example) naar `/etc/nginx/sites-available/media`. Laat de paden aansluiten op de echte certificaatbestanden.
 

@@ -30,7 +30,7 @@ Je verwacht tekstregels met metricnamen, geen gewone webpagina. De installatie i
 
 ### Windows
 
-De docent zet de officiële MSI van **windows_exporter 0.30.8 amd64** klaar en controleert de herkomst. We kiezen deze versie zodat de gebruikte metricnamen bij de uitleg passen. Een nieuwe leseditie controleert updates en queries opnieuw.
+**MSI** is het Windows-installatiepakket (*Microsoft Installer*). De docent zet de officiële MSI van **windows_exporter 0.30.8 amd64** klaar en controleert de herkomst. We kiezen deze versie zodat de gebruikte metricnamen bij de uitleg passen. Een nieuwe leseditie controleert updates en queries opnieuw.
 
 **Op RoodkapjesHuis, in PowerShell als beheerder**, vanuit de map met de MSI:
 
@@ -65,11 +65,13 @@ sudo chown 472:472 grafana-admin.txt
 sudo chmod 400 grafana-admin.txt
 ```
 
-De Grafana-image gebruikt UID 472. Het secretbestand moet voor die gebruiker leesbaar zijn. Neem het niet op in je verslag. Het stelt het eerste adminwachtwoord in; bij een bestaand Grafana-volume verandert alleen dit bestand het bestaande accountwachtwoord niet.
+Een **secretbestand** is hier een apart tekstbestand dat de toepassing als wachtwoord leest. **UID** (*User ID*) is het Linux-gebruikersnummer. De Grafana-image gebruikt UID 472. Het secretbestand moet voor die gebruiker leesbaar zijn. Neem het niet op in je verslag. Het stelt het eerste adminwachtwoord in; bij een bestaand Grafana-volume verandert alleen dit bestand het bestaande accountwachtwoord niet.
 
 Heb je Grafana al met een ander wachtwoord gebruikt? Meld aan met dat bestaande account en wijzig het wachtwoord via je profiel naar `Student123`. Verwijder het datavolume niet: je dashboards moeten behouden blijven. Ben je het oude wachtwoord kwijt, dan helpt de docent om alleen het account te herstellen.
 
-Pas de targetadressen aan in `prometheus.yml`. Controleer of de hostpaden van cAdvisor op jouw Ubuntu-VM bestaan. Docker hoort hier zijn gewone datafolder `/var/lib/docker` te gebruiken. Bij een afwijkende opslagdriver of datamap moet de docent de cAdvisor-mounts passend maken.
+Een **target** is het doeladres waarvan Prometheus metingen ophaalt. Dat ophalen heet **scrapen**. In `prometheus.yml` betekent `scrape_interval` hoe vaak dat gebeurt; `evaluation_interval` hoe vaak de alertregels worden bekeken. `rule_files` wijst de bestanden met die regels aan.
+
+Pas de targetadressen aan in `prometheus.yml`. Het blok `relabel_configs` bij de webtest geeft de website-URL als doel door aan Blackbox en laat Prometheus de meting bij Blackbox ophalen. Een **URL** (*Uniform Resource Locator*) is het volledige adres, hier inclusief `http://`. Controleer of de hostpaden van cAdvisor op jouw Ubuntu-VM bestaan. Docker hoort hier zijn gewone datafolder `/var/lib/docker` te gebruiken. Bij een afwijkende opslagdriver of datamap moet de docent de cAdvisor-mounts passend maken.
 
 ```bash
 sudo docker compose config --quiet
@@ -88,7 +90,7 @@ ssh -L 13000:127.0.0.1:3000 -L 19090:127.0.0.1:9090 student@192.168.77.120
 
 Voeg indien nodig je SSH-sleutel met `-i` toe. Open `http://localhost:19090` voor Prometheus en `http://localhost:13000` voor Grafana. Meld bij Grafana aan als `admin` met wachtwoord `Student123`.
 
-Bij Prometheus **Targets** verwacht je de jobs linux, windows, cadvisor, web en prometheus op UP. De webtarget is de scrape van Blackbox; controleer daarnaast `probe_success{job="web"}`. In Grafana staat de databron al klaar dankzij het provisioningbestand.
+Bij Prometheus **Targets** verwacht je de jobs linux, windows, cadvisor, web en prometheus op UP. De webtarget is de scrape van Blackbox; controleer daarnaast `probe_success{job="web"}`. In Grafana staat de databron al klaar dankzij het **provisioningbestand**: het YAML-bestand dat die databron bij het starten automatisch aanmaakt.
 
 ## H5.4 Queries en dashboard
 

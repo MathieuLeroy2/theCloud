@@ -4,7 +4,7 @@ Gebruik de adressen uit je verslag. De voorbeelden gebruiken `.20` voor Sprookje
 
 ## H2.1 De Windows-machines
 
-Maak in Proxmox de drie VM's uit de opdracht. Windows 11 gebruikt de door de opleiding geteste UEFI- en TPM 2.0-instellingen. Koppel de VirtIO-driver-ISO als de installer de schijf of netwerkkaart niet ziet. De docent zet die drivers vooraf klaar. Gebruik geen omweg die de installatie-eisen van Windows uitschakelt.
+Maak in Proxmox de drie VM's uit de opdracht. Windows 11 gebruikt de door de opleiding geteste **UEFI**- en **TPM 2.0**-instellingen. UEFI (*Unified Extensible Firmware Interface*) is de startsoftware van de VM. TPM (*Trusted Platform Module*) is een beveiligingsmodule; Proxmox maakt voor deze oefening een virtuele variant. Koppel de VirtIO-driver-ISO als de installer de schijf of netwerkkaart niet ziet. Een **driver** is het besturingsprogramma waarmee Windows zo’n apparaat gebruikt. De **ISO** is het schijfbestand waarin die drivers worden meegeleverd. De docent zet die drivers vooraf klaar. Gebruik geen omweg die de installatie-eisen van Windows uitschakelt.
 
 Installeer op de server **Desktop Experience**, zodat je een bureaublad krijgt. Installeer op de clients de Pro- of Education-editie. Gebruik de account- en licentieprocedure van de opleiding. Stel lokale labaccounts en Administrator in met `Student123`. Gebruik op de Windows-clients bijvoorbeeld `labbeheer` als lokaal beheeraccount. Het is niet nodig om voor deze cursus een eigen Microsoft-cloudaccount aan te maken.
 
@@ -26,13 +26,13 @@ Controleer naam, adres en DNS. Op de clients mag geen tweede publieke DNS-server
 1. Kies **Add a new forest**, met naam `sprookjes.test`.
 2. Laat DNS en Global Catalog aanstaan. Gebruik de voorgestelde functionele niveaus die bij de serverversie passen.
 3. Gebruik `Student123` als DSRM-herstelwachtwoord.
-4. De korte NetBIOS-naam wordt `SPROOKJESBOS`; pas ze aan als de wizard iets anders voorstelt.
-5. Laat de voorgestelde databasepaden staan en controleer de vereisten. Een melding over het ontbreken van een DNS-delegatie is in dit aparte testdomein mogelijk. Andere fouten los je vóór installatie op.
+4. De **NetBIOS-naam** is de korte domeinnaam die je vóór de backslash in een aanmelding ziet. Die wordt `SPROOKJESBOS`; pas ze aan als de wizard iets anders voorstelt.
+5. Laat de voorgestelde databasepaden staan en controleer de vereisten. Een melding over het ontbreken van een **DNS-delegatie** is in dit aparte testdomein mogelijk. Zo’n delegatie is een verwijzing vanuit een bovenliggend DNS-domein naar de server van een subdomein. Die bovenliggende koppeling maken we in dit losse oefendomein niet. Andere fouten los je vóór installatie op.
 6. Installeer en laat de server herstarten. Meld aan met `SPROOKJESBOS\Administrator`.
 
 Open **DNS Manager**. Bij de eigenschappen van de DNS-server, **Forwarders**, voeg je de bevestigde lab-DNS toe, in het voorbeeld `.2`. Die stuurt vragen over internetnamen verder. De client-DNS blijft `.20`.
 
-**Op elke client:**
+**Op elke client:** de tweede opdracht vraagt een **SRV-record** op. SRV komt van *service*: zo’n DNS-record verwijst naar de server die een bepaalde dienst aanbiedt. Hier zoeken we de domeincontroller.
 
 ```powershell
 nslookup SprookjesBoom.sprookjes.test
@@ -47,9 +47,9 @@ Open op de client `sysdm.cpl`, **Change**, kies **Domain** en vul `sprookjes.tes
 
 **Op de server, Active Directory Users and Computers:**
 
-1. Maak onder het domein een OU `LabGebruikers`. Maak daarin de gebruikers `Roodkapje`, `Big1` en `Wolf`.
+1. Maak onder het domein een **OU** (*Organizational Unit*, beheermap) `LabGebruikers`. Maak daarin de gebruikers `Roodkapje`, `Big1` en `Wolf`.
 2. Gebruik voor alle drie `Student123`. Vink **User must change password at next logon** uit en **Password never expires** aan voor deze laboaccounts. Zo blijft het wachtwoord gedurende de labo’s hetzelfde.
-3. Maak in dezelfde OU drie **Global Security**-groepen: `GG-Rood`, `GG-Big`, `GG-Beheer`.
+3. Maak in dezelfde beheermap (**OU**, *Organizational Unit*) drie groepen met bereik **Global** en type **Security**. Global groepeert hier accounts uit ons domein; Security maakt het mogelijk rechten aan de groep te geven. Ons voorvoegsel **GG** betekent *Global Group*. De namen zijn: `GG-Rood`, `GG-Big`, `GG-Beheer`.
 4. Voeg Roodkapje, Big1 en Wolf aan hun bijbehorende groep toe.
 5. Maak naast LabGebruikers de OU's `PcRood` en `PcBig`. Verplaats de computeraccounts van de twee clients uit `Computers` naar de juiste OU. Verplaats de domeincontroller niet.
 
@@ -61,7 +61,7 @@ Get-ADGroupMember GG-Big
 Get-ADGroupMember GG-Beheer
 ```
 
-**Op beide clients, in 64-bits PowerShell als domeinbeheerder:**
+**Op beide clients, in 64-bits PowerShell als domeinbeheerder:** **PowerShell** is de Windows-opdrachtomgeving waarin je deze beheercommando’s typt. Een **SID** (*Security Identifier*) is de vaste Windows-code van een account of groep. We gebruiken de SID van de ingebouwde beheerdersgroep, zodat de taal van Windows geen verschil maakt.
 
 ```powershell
 $LabAdmins = (Get-LocalGroup -SID 'S-1-5-32-544').Name
@@ -84,6 +84,8 @@ Computer Configuration
           User Rights Assignment
 ```
 
+Een **GPO** (*Group Policy Object*) is het pakket centrale instellingen. Het pad hierboven brengt je naar **User Rights Assignment**: de plaats waar je aanmeldrechten instelt.
+
 Vink bij de volgende twee rechten **Define these policy settings** aan en stel expliciet deze lijst in:
 
 | Recht | Toegang-Rood | Toegang-Big, gekoppeld aan PcBig |
@@ -95,7 +97,7 @@ Gebruik de knop om groepen op te zoeken en namen te controleren. Kies voor Admin
 
 Maak de tweede GPO op dezelfde manier bij `PcBig`. Laat de standaardbeveiligingsfilter op de GPO staan; de **computer** in de gekoppelde OU moet de instellingen mogen lezen en toepassen. Wijzig geen Deny-rechten: een bestaande Deny-regel kan voorrang krijgen op Allow.
 
-**Op elke client, als beheerder:** zet via **Settings > System > Remote Desktop** RDP aan. Houd NLA aan. Voeg de bijbehorende groep ook toe via **Remote Desktop users**, zodat ze bij de lokale groep Remote Desktop Users hoort. Controleer in Windows Defender Firewall de ingebouwde RDP-inboundregels: alleen het domeinprofiel en het bevestigde labsubnet als bron. Zet de firewall niet volledig uit.
+**Op elke client, als beheerder:** zet via **Settings > System > Remote Desktop** RDP aan. Houd **NLA** (*Network Level Authentication*) aan: de pc controleert de aanmelding voordat hij de volledige RDP-sessie opent. Voeg de bijbehorende groep ook toe via **Remote Desktop users**, zodat ze bij de lokale groep Remote Desktop Users hoort. Controleer in Windows Defender Firewall de ingebouwde RDP-**inboundregels** (regels voor binnenkomende verbindingen): alleen het domeinprofiel en het bevestigde labsubnet als bron. Zet de firewall niet volledig uit.
 
 Daarna op de client:
 
@@ -116,9 +118,11 @@ Voer elke combinatie uit voor **console** en **RDP**:
 | SPROOKJESBOS\Big1 | Geweigerd | Toegestaan |
 | SPROOKJESBOS\Wolf | Toegestaan | Toegestaan |
 
-Open op de Windows-machine waarvan je vertrekt `mstsc`. Vul de volledige naam van de doel-pc in. Kies expliciet **Use a different account** en de juiste domeingebruiker. Controleer de doelnaam ook als er een certificaatmelding verschijnt. Vermijd opgeslagen credentials die de test met een vorig account zouden uitvoeren.
+Open op de Windows-machine waarvan je vertrekt `mstsc`. Vul de volledige naam van de doel-pc in. Kies expliciet **Use a different account** en de juiste domeingebruiker. Controleer de doelnaam ook als er een certificaatmelding verschijnt. Vermijd opgeslagen **credentials**, dus bewaarde aanmeldgegevens, die de test met een vorig account zouden uitvoeren.
 
 Meld volledig af na elke poging. Windows-clientedities bieden hier geen onbeperkt aantal gelijktijdige actieve bureaubladsessies.
+
+**UAC** betekent *User Account Control*: het Windows-venster dat toestemming of een beheerdersaccount vraagt voor een beheertaak.
 
 **Beheertest:** meld Wolf aan op een client en open PowerShell met **Run as administrator**. Dat moet als Wolf kunnen na de UAC-bevestiging. Roodkapje moet voor diezelfde actie gegevens van een afzonderlijke beheerder opgeven. Gebruik bij de gevraagde beheerder ook `Student123` en noteer de uitkomst.
 

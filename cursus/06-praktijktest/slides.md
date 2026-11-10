@@ -32,10 +32,12 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Twee varianten
 
-**A:** een kleine website met HTML en CSS.
-**B:** een MQTT-broker met eigen accounts en topics.
+**A:** een website met HTML voor inhoud en CSS voor opmaak.
 
-De docent vertelt vooraf welke je maakt.
+**B:** een MQTT-broker, het programma voor sensorberichten.
+Een **topic** is het onderwerpadres van zo’n bericht.
+
+De docent vertelt vooraf welke variant je maakt.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -45,10 +47,12 @@ Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen 
 
 # Wat staat vooraf klaar?
 
-VM’s, SSH, Docker, images, exporters en monitoringbasis.
+Je virtuele machines (**VM = Virtual Machine**).
+Een beveiligde opdrachtverbinding (**SSH = Secure Shell**).
+Docker en de images: pakketten waaruit je containers maakt.
+Exporters: programma’s die meetgegevens aanbieden.
 
-De toetscontainer, data, eigen dashboard en alert
-maak je tijdens de drie uur.
+De toetscontainer, data, dashboard en alert maak je zelf.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
@@ -79,6 +83,20 @@ Leg uit wat je testresultaat betekent.
 
 <!--
 Bespreek dit met de concrete opstelling uit het labo. Laat de student aanwijzen op welke machine deze stap gebeurt.
+-->
+
+---
+
+# Metingen opvragen en bewaren
+
+Een **query** is een vraag waarmee je meetgegevens kiest.
+Een **alert** is een waarschuwingsregel voor die gegevens.
+
+**JSON = JavaScript Object Notation**.
+In dat tekstformaat exporteer je het Grafana-dashboard.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
 -->
 
 ---

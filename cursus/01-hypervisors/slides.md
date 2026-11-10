@@ -24,6 +24,21 @@ Vraag wie al eens een virtuele machine heeft gebruikt en wat die ermee deed.
 
 ---
 
+# Een virtuele machine
+
+**VM = Virtual Machine**, Engels voor virtuele machine.
+Een computer die met software wordt nagebouwd.
+
+Je installeert er een besturingssysteem op, zoals Ubuntu.
+Dat heet ook **OS = Operating System**.
+
+<!--
+Laat een VM zien voordat je nieuwe termen introduceert.
+Een VM is geen tweede fysieke computer in de laptop.
+-->
+
+---
+
 # Dit gaan we bouwen
 
 | Onderdeel | Wat doe je ermee? |
@@ -37,22 +52,6 @@ Daarna zet je een oude versie terug met een snapshot en back-up.
 <!--
 Maak het verschil zichtbaar tussen de server die de pagina verstuurt en de client die ze opvraagt.
 Beide machines blijven bewaard voor latere hoofdstukken.
--->
-
----
-
-# Een virtuele machine
-
-Een **VM** is een computer die met software wordt nagebouwd.
-
-Je kunt er Linux op installeren, programma's starten
-en bestanden bewaren.
-
-Zo maak je op één laptop meerdere computers voor je labo.
-
-<!--
-Laat een VM zien voordat je nieuwe termen introduceert.
-Een VM is geen tweede fysieke computer in de laptop.
 -->
 
 ---
@@ -76,13 +75,13 @@ Vraag wat er gebeurt als de batterij van de laptop leeg is.
 
 # Type I en type II
 
-| Type | Hoe gebruik je het? | Voorbeeld |
-| --- | --- | --- |
-| I | Op een server, rechtstreeks op de hardware | KVM in Proxmox |
-| II | Als programma op je bestaande computer | Workstation |
+| Type | Hoe gebruik je het? |
+| --- | --- |
+| I | Virtualisatie rechtstreeks op de serverhardware |
+| II | Een programma op je bestaande computer, zoals Workstation |
 
-Proxmox is het beheerplatform.
-KVM is het onderdeel dat de VM's laat draaien.
+Proxmox gebruikt **KVM: Kernel-based Virtual Machine**.
+Dat Linux-onderdeel laat de VM’s draaien.
 
 <!--
 Laat studenten de programma's koppelen aan hun eigen opstelling.
@@ -109,9 +108,20 @@ Workstation moet de virtualisatiefunctie aan Proxmox doorgeven.
 
 ---
 
+# Hoeveel gegevens is een GB?
+
+**GB = gigabyte**, ongeveer een miljard bytes.
+Het is een eenheid voor de hoeveelheid gegevens.
+
+Zowel werkgeheugen als een schijf hebben een grootte.
+RAM is voor het werk dat nu draait; de schijf bewaart bestanden.
+
+---
+
 # Je kunt RAM niet dubbel gebruiken
 
-De Proxmox-VM krijgt in ons voorbeeld **8 GB RAM**.
+**RAM = Random Access Memory**, het werkgeheugen.
+De Proxmox-VM krijgt in ons voorbeeld **8 GB**.
 
 | Daarvan gebruikt ... | Hoeveel? |
 | --- | --- |
@@ -119,7 +129,7 @@ De Proxmox-VM krijgt in ons voorbeeld **8 GB RAM**.
 | Xubuntu | 3 GB |
 | Proxmox zelf en zijn andere werk | Ongeveer 3 GB |
 
-Je laptop heeft daarnaast RAM nodig voor Windows of Linux.
+Je laptop heeft daarnaast geheugen nodig voor zijn eigen OS.
 
 <!--
 Laat studenten 2 + 3 + 3 optellen. De gasten gebruiken geheugen binnen de Proxmox-VM.
@@ -130,13 +140,12 @@ Dit is het werkbudget van het labo, geen universeel minimum.
 
 # De processor doet het rekenwerk
 
-**vCPU** betekent virtuele processor.
-De echte processor verdeelt zijn tijd over de VM's.
+**CPU = Central Processing Unit**: de processor.
+Een **vCPU** is een virtuele processor van een VM.
 
-Ubuntu en Xubuntu installeren tegelijk updates.
-Daardoor kunnen beide trager reageren.
-
-Meer vCPU's invullen maakt je laptop niet krachtiger.
+De echte processor verdeelt zijn tijd over de VM’s.
+Installeren Ubuntu en Xubuntu tegelijk updates?
+Dan kunnen beide trager reageren.
 
 <!--
 Vraag of studenten dit herkennen wanneer meerdere programma's tegelijk veel werk doen.
@@ -164,12 +173,12 @@ Laat in Proxmox zien waar studenten die ruimte kunnen bekijken.
 
 # De bridge is je virtuele switch
 
-In Proxmox zie je bijvoorbeeld **vmbr0**.
-Dat is een bridge: vergelijk ze met een netwerkswitch.
+Een **switch** verbindt computers in hetzelfde netwerk.
+Een **bridge** doet dat hier in software.
 
-Je verbindt beide VM's met die bridge.
-
-Voor internet heb je ook een verbinding met een router nodig.
+In Proxmox heet ze bijvoorbeeld **vmbr0**.
+Je verbindt beide VM’s met die virtuele switch.
+Voor internet blijft ook een verbinding met een router nodig.
 
 <!--
 Wijs vmbr0 en de netwerkkaarten aan in de echte opstelling.
@@ -180,14 +189,16 @@ Vermijd een uitleg over OSI-lagen voordat studenten zien wat ze moeten verbinden
 
 # Elke machine krijgt een adres
 
-| In ons voorbeeld | IP-adres |
-| --- | --- |
-| Proxmox | `192.168.77.10` |
-| Ubuntu Server | `192.168.77.100` |
-| Xubuntu | `192.168.77.200` |
+**IP = Internet Protocol**, de afspraken voor netwerkadressen.
+Een IP-adres hoort hier bij de netwerkkaart van een machine.
 
-Bij dit netwerk gebruiken we `/24` als subnetmasker.
-**Schrijf jouw echte instellingen in je verslag.**
+| Machine | Voorbeeldadres |
+| --- | --- |
+| Proxmox | 192.168.77.10 |
+| Ubuntu Server | 192.168.77.100 |
+| Xubuntu | 192.168.77.200 |
+
+Gebruik de adressen en het subnetmasker uit je verslag.
 
 <!--
 De voorbeeldadressen werken pas als dat netwerk voorbereid is.
@@ -196,15 +207,29 @@ De docent bevestigt dat de vaste adressen vrijgehouden zijn.
 
 ---
 
+# Een vast adres of DHCP
+
+**DHCP = Dynamic Host Configuration Protocol**.
+Daarmee krijgt een computer automatisch netwerkinstellingen.
+
+Bij een **vast IP-adres** vul je ze zelf in.
+Onze server krijgt een vast adres, zodat je hem terugvindt.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
+-->
+
+---
+
 # Gateway en DNS hebben elk een taak
 
 **Gateway:** de router naar andere netwerken.
-Je gebruikt die bijvoorbeeld om updates te downloaden.
+Bijvoorbeeld om updates van internet te downloaden.
 
-**DNS:** zoekt een IP-adres bij een naam.
-Bijvoorbeeld bij `archive.ubuntu.com`.
+**DNS = Domain Name System:** zoekt adressen bij namen.
+Bijvoorbeeld het adres van archive.ubuntu.com.
 
-In ons voorbeeld doet `192.168.77.2` beide taken.
+In ons voorbeeld doet 192.168.77.2 beide taken.
 
 <!--
 Vraag wat er kan mislopen als toegang via een IP werkt, maar via een naam niet.
@@ -215,12 +240,11 @@ Ubuntu en Xubuntu hebben in ditzelfde subnet geen default gateway nodig om elkaa
 
 # Internet via je laptop
 
-**NAT** in Workstation helpt je VM's om via de laptop
-verbinding met internet te maken.
+**NAT = Network Address Translation**, adresvertaling.
+Workstation vertaalt de adressen bij de verbinding naar buiten.
+Zo kunnen je VM’s via de laptop naar internet.
 
-Dat betekent nog niet dat je telefoon de VM kan bereiken.
-Je telefoon zit mogelijk op een ander netwerk.
-
+Dat maakt nog geen route vanaf je telefoon naar de VM.
 Vandaag openen we de website vanaf **Xubuntu**.
 
 <!--
@@ -268,6 +292,21 @@ Laat de student eerst deze uitvoer lezen vóór je meer commando's toevoegt.
 
 ---
 
+# Browser en webserver spreken HTTP
+
+**NGINX** is de naam van onze webserversoftware.
+
+**HTTP = Hypertext Transfer Protocol:**
+de afspraken waarmee een browser pagina’s opvraagt.
+
+**HTTPS** is de beveiligde vorm: de verbinding is versleuteld.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
+-->
+
+---
+
 # Ping werkt, maar de website niet
 
 `ping` vraagt of de andere machine antwoordt.
@@ -287,14 +326,43 @@ Vraag wat er gebeurt als NGINX gestopt is maar Ubuntu nog draait.
 
 ---
 
+# HTML voor inhoud, CSS voor opmaak
+
+**HTML = HyperText Markup Language**.
+Daarmee schrijf je de inhoud en structuur van de pagina.
+
+**CSS = Cascading Style Sheets**.
+Daarmee kies je bijvoorbeeld kleuren en lettergroottes.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
+-->
+
+---
+
+# Waar typ je de commando’s?
+
+Een **terminal** is een venster waarin je commando’s typt.
+
+De **console** in Proxmox toont het scherm van je VM,
+alsof je rechtstreeks voor die computer zit.
+
+Controleer altijd op welke machine je werkt.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
+-->
+
+---
+
 # Op de server werken vanaf Xubuntu
 
-**SSH:** je opent een terminal op Ubuntu Server.
-Controleer bij de eerste verbinding de servercode.
-Die code heet de hostsleutelvingerafdruk.
+**SSH = Secure Shell**.
+Daarmee open je op afstand een beveiligde terminal.
+Vergelijk bij de eerste verbinding de servervingerafdruk.
 
-**SFTP:** je stuurt je HTML en CSS naar de server.
-Je uploadt eerst naar je eigen gebruikersmap.
+**SFTP = SSH File Transfer Protocol**.
+Daarmee verstuur je bestanden via dezelfde SSH-dienst.
 
 <!--
 Demonstreer het vergelijken van de SHA256-code met de console.
@@ -321,15 +389,31 @@ Bron: https://documentation.ubuntu.com/server/how-to/web-services/install-nginx/
 
 ---
 
+# Een firewall laat verbindingen toe of blokkeert ze
+
+Op Ubuntu gebruiken we **UFW = Uncomplicated Firewall**.
+Dat is het programma waarmee je firewallregels instelt.
+
+Laat SSH toe vóór je de firewall aanzet.
+Zo sluit je je eigen verbinding niet per ongeluk af.
+
+<!--
+Gebruik de concrete machines van het labo. Laat de student dit in eigen woorden uitleggen.
+-->
+
+---
+
 # Poorten: bij welk programma kom je uit?
 
-| Wat wil je doen? | Poort |
-| --- | --- |
-| Proxmox beheren | TCP 8006 |
-| SSH of SFTP gebruiken | TCP 22 |
-| De website openen via HTTP | TCP 80 |
+**TCP = Transmission Control Protocol**.
+Het levert gegevens via een verbinding in de juiste volgorde af.
+Een poortnummer helpt de juiste dienst kiezen.
 
-Laat SSH toe **vóór** je de firewall op Ubuntu aanzet.
+| Dienst | TCP-poort |
+| --- | --- |
+| Proxmox-beheer | 8006 |
+| SSH en SFTP | 22 |
+| HTTP-website | 80 |
 
 <!--
 Een poortnummer helpt de verbinding bij het juiste programma te brengen.
